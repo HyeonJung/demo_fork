@@ -5,8 +5,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 @Controller
 public class HomeController {
-    @RequestMapping("/home/main")
+    @RequestMapping("/")
     public String main(){
+        return "redirect:/auth/login";
+/*
         return "/home/home001";
+*/
     }
 }
