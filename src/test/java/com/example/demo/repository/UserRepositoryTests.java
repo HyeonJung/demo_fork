@@ -22,6 +22,7 @@ public class UserRepositoryTests extends DemoApplicationTests {
         user.setCreatedAt(LocalDateTime.now());
         user.setCreatedBy("admin");
         user.setEmail("test@test.com");
+        user.setUpdatedAt(LocalDateTime.now());
         User newUser = userRepository.save(user);
         System.out.println(newUser);
     }

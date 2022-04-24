@@ -3,19 +3,18 @@ package framework.com.example.demo.service;
 import framework.com.example.demo.ifs.CrudInterface;
 import framework.com.example.demo.model.entity.User;
 import framework.com.example.demo.model.network.Header;
-import framework.com.example.demo.model.network.UserApiRequest;
+import framework.com.example.demo.model.network.request.UserApiRequest;
 import framework.com.example.demo.model.network.response.UserApiResponse;
 import framework.com.example.demo.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.Optional;
 
 @Service
-public class UserApiLogicService implements CrudInterface<UserApiRequest, UserApiResponse> {
+public class UserApiLogicService extends BaseService<UserApiRequest, UserApiResponse, User> {
 
-    @Autowired
-    private UserRepository userRepository;
     @Override
     public Header<UserApiResponse> create(Header<UserApiRequest> request) {
 
@@ -29,23 +28,53 @@ public class UserApiLogicService implements CrudInterface<UserApiRequest, UserAp
                 .createdBy("admn")
                 .build();
 
-        User newUser = userRepository.save(user);
+        User newUser = baseRepository.save(user);
         return response(newUser);
     }
 
     @Override
     public Header<UserApiResponse> read(Long id) {
-        return null;
+        return baseRepository.findById(id)
+                .map(user-> response(user))
+                .orElseGet(()-> Header.ERROR("데이터 없음"));
+
     }
 
     @Override
     public Header<UserApiResponse> update(Header<UserApiRequest> request) {
-        return null;
+        UserApiRequest userApiRequest = request.getData();
+        Optional<User> optional = baseRepository.findById(userApiRequest.getId());
+
+        return optional.map(user-> {
+            user.setAccount(userApiRequest.getAccount())
+                .setEmail(userApiRequest.getEmail())
+                    .setUpdatedAt(LocalDateTime.now())
+                    .setPhoneNumber(userApiRequest.getPhoneNumber());
+            return user;
+        })
+                .map(user-> baseRepository.save(user))
+                .map(user->response(user))
+                .orElseGet(()->Header.ERROR("데이터 없음"));
+
+
+
     }
 
     @Override
     public Header delete(Long id) {
-        return null;
+        //id -> repository -> user find
+
+         Optional<User> optional = baseRepository.findById(id);
+
+        // repository -> delete
+        // return response
+        return optional.map(user->{
+                baseRepository.delete(user);
+                return Header.OK();
+                })
+                .orElseGet(() -> Header.ERROR("데이터 없음"));
+
+
     }
 
     private Header<UserApiResponse> response(User user){
