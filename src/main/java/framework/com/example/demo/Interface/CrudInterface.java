@@ -1,4 +1,4 @@
-package framework.com.example.demo.ifs;
+package framework.com.example.demo.Interface;
 
 import framework.com.example.demo.model.network.Header;
 

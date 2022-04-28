@@ -1,6 +1,6 @@
 package framework.com.example.demo.controller;
 
-import framework.com.example.demo.ifs.CrudInterface;
+import framework.com.example.demo.Interface.CrudInterface;
 import framework.com.example.demo.model.network.Header;
 import framework.com.example.demo.service.BaseService;
 import org.springframework.beans.factory.annotation.Autowired;

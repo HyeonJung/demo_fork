@@ -1,12 +1,9 @@
 package framework.com.example.demo.service;
 
-import framework.com.example.demo.ifs.CrudInterface;
 import framework.com.example.demo.model.entity.User;
 import framework.com.example.demo.model.network.Header;
 import framework.com.example.demo.model.network.request.UserApiRequest;
 import framework.com.example.demo.model.network.response.UserApiResponse;
-import framework.com.example.demo.repository.UserRepository;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
