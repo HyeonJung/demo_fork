@@ -12,7 +12,7 @@ import lombok.NoArgsConstructor;
 public class UserApiResponse {
     private Long id;
 
-    private String account;
+    private String userid;
 
     private String password;
 

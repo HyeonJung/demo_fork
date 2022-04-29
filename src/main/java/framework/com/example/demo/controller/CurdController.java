@@ -21,6 +21,12 @@ public abstract class CurdController<Req, Res, Entity> implements CrudInterface<
     }
 
     @Override
+    @PostMapping("/regist")
+    public Header<Res> create(@RequestBody Req request) {
+        return baseService.create(request);
+    }
+
+    @Override
     @GetMapping("{id}")
     public Header<Res> read(@PathVariable Long id) {
         return baseService.read(id);

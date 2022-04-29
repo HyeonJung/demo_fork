@@ -18,17 +18,32 @@ public class UserApiLogicService extends BaseService<UserApiRequest, UserApiResp
         UserApiRequest userApiRequest = request.getData();
 
         User user = User.builder()
-                .account(userApiRequest.getAccount())
+                .userid(userApiRequest.getUserid())
                 .password(userApiRequest.getPassword())
                 .phoneNumber(userApiRequest.getPhoneNumber())
                 .createdAt(LocalDateTime.now())
-                .createdBy("admn")
+                .createdBy("admin")
                 .build();
 
         User newUser = baseRepository.save(user);
         return response(newUser);
     }
+    @Override
+    public Header<UserApiResponse> create(UserApiRequest request) {
 
+        UserApiRequest userApiRequest = request;
+
+        User user = User.builder()
+                .userid(userApiRequest.getUserid())
+                .password(userApiRequest.getPassword())
+                .phoneNumber(userApiRequest.getPhoneNumber())
+                .createdAt(LocalDateTime.now())
+                .createdBy("admin")
+                .build();
+
+        User newUser = baseRepository.save(user);
+        return response(newUser);
+    }
     @Override
     public Header<UserApiResponse> read(Long id) {
         return baseRepository.findById(id)
@@ -43,7 +58,7 @@ public class UserApiLogicService extends BaseService<UserApiRequest, UserApiResp
         Optional<User> optional = baseRepository.findById(userApiRequest.getId());
 
         return optional.map(user-> {
-            user.setAccount(userApiRequest.getAccount())
+            user.setUserid(userApiRequest.getUserid())
                 .setEmail(userApiRequest.getEmail())
                     .setUpdatedAt(LocalDateTime.now())
                     .setPhoneNumber(userApiRequest.getPhoneNumber());
@@ -78,7 +93,7 @@ public class UserApiLogicService extends BaseService<UserApiRequest, UserApiResp
         //user -> userApiResponse
         UserApiResponse userApiResponse = UserApiResponse.builder()
                 .id(user.getId())
-                .account(user.getAccount())
+                .userid(user.getUserid())
                 .password(user.getPassword())
                 .phoneNumber(user.getPhoneNumber())
                 .build();
