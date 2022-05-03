@@ -16,7 +16,7 @@ import java.time.LocalDateTime;
 @Builder
 @Data
 @Accessors(chain = true)
-public class User {
+public class Member {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -39,12 +39,11 @@ public class User {
 
     private String name;
 
-    public User toEntity(){
-        return User.builder()
+    public Member toEntity(){
+        return Member.builder()
                 .id(id)
                 .email(email)
                 .password(password)
                 .build();
     }
-
 }

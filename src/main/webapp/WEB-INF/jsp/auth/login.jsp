@@ -1,3 +1,6 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ taglib uri="http://java.sun.com/jstl/core" prefix="c" %>
+<%@ taglib uri="http://www.springframework.org/security/tags" prefix="sec" %>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -26,11 +29,12 @@
 
     <div class="container">
 
-      <form class="form-signin" action="index.html">
-        <h2 class="form-signin-heading">sign in now</h2>
+      <form class="form-signin" action="/auth/login" method="post">
+          <sec:csrfInput/>
+          <h2 class="form-signin-heading">sign in now</h2>
         <div class="login-wrap">
-            <input type="text" class="form-control" placeholder="User ID" autofocus>
-            <input type="password" class="form-control" placeholder="Password">
+            <input type="text" class="form-control" name="username" placeholder="User ID" autofocus>
+            <input type="password" class="form-control" name="password" placeholder="Password">
             <label class="checkbox">
                 <input type="checkbox" value="remember-me"> Remember me
                 <span class="pull-right">

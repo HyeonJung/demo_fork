@@ -16,7 +16,6 @@ public class UserRepositoryTests extends DemoApplicationTests {
     public void create(){
 
         User user = new User();
-        user.setAccount("pizza301");
         user.setPassword("password");
         user.setPhoneNumber("01000000000");
         user.setCreatedAt(LocalDateTime.now());

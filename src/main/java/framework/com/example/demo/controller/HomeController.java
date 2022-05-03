@@ -1,6 +1,9 @@
 package framework.com.example.demo.controller;
 
+import framework.com.example.demo.model.dto.MemberDto;
 import framework.com.example.demo.model.entity.User;
+import framework.com.example.demo.service.MemberService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -10,6 +13,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @Controller
 @RequestMapping("/")
 public class HomeController {
+    @Autowired
+    private  MemberService memberService;
+
     @RequestMapping("/")
     public String main(){
         return "redirect:/auth/login";
@@ -29,6 +35,27 @@ public class HomeController {
         return "redirect:/auth/login";
     }
 
+    @PostMapping("/sampleSignUp")
+    public String sampleSignUp(MemberDto memberDto){
+        memberService.joinUser(memberDto);
 
+        return "redirect:/auth/login";
+    }
+
+    @RequestMapping("/sampleLogin")
+    public String sampleLogin(MemberDto memberDto){
+        return "redirect:/mainPage";
+    }
+
+
+    @RequestMapping("/home/mainPage")
+        public String mainPage(){
+            return "/home/index";
+    }
+
+    @RequestMapping("/home/sample1")
+    public String sample1(){
+        return "/home/sample1";
+    }
 
 }

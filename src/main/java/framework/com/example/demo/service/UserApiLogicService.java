@@ -4,6 +4,7 @@ import framework.com.example.demo.model.entity.User;
 import framework.com.example.demo.model.network.Header;
 import framework.com.example.demo.model.network.request.UserApiRequest;
 import framework.com.example.demo.model.network.response.UserApiResponse;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -14,12 +15,12 @@ public class UserApiLogicService extends BaseService<UserApiRequest, UserApiResp
 
     @Override
     public Header<UserApiResponse> create(Header<UserApiRequest> request) {
-
+        BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
         UserApiRequest userApiRequest = request.getData();
 
         User user = User.builder()
                 .userid(userApiRequest.getUserid())
-                .password(userApiRequest.getPassword())
+                .password(passwordEncoder.encode(userApiRequest.getPassword()))
                 .phoneNumber(userApiRequest.getPhoneNumber())
                 .createdAt(LocalDateTime.now())
                 .createdBy("admin")

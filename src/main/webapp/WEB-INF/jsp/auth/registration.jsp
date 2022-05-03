@@ -1,4 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ taglib uri="http://java.sun.com/jstl/core" prefix="c" %>
+<%@ taglib uri="http://www.springframework.org/security/tags" prefix="sec" %>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -45,7 +47,8 @@
 
 <div class="container">
 
-    <form class="form-signin" id="regForm" method="post" action="/api/user/regist">
+    <form class="form-signin" id="regForm" method="post" action="/sampleSignUp">
+        <sec:csrfInput/>
         <h2 class="form-signin-heading">registration now</h2>
         <div class="login-wrap">
             <p>Enter your personal details below</p>
@@ -69,7 +72,7 @@
 <%--            <label class="checkbox">
                 <input type="checkbox" value="agree this condition"> I agree to the Terms of Service and Privacy Policy
             </label>--%>
-            <button class="btn btn-lg btn-login btn-block" type="button" onclick="cmdReg();">회원가입</button>
+            <button class="btn btn-lg btn-login btn-block" type="submit" >회원가입</button>
             <div class="registration">
                 Already Registered.
                 <a class="" href="/auth/login">
@@ -137,7 +140,7 @@
             toastr['error'](msg, "회원가입오류"); // Wire up an event handler to a button in the toast, if it exists
         }
 
-        const serializedValues = $('#regForm').serializeObject();
+       /* const serializedValues = $('#regForm').serializeObject();
 
         $.ajax({
             type : 'post',
@@ -155,7 +158,7 @@
                     alert('회원가입성공');
                 }
             },
-        });
+        });*/
     };
 </script>
 
