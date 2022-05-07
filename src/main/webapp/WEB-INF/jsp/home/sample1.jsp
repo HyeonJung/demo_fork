@@ -64,25 +64,27 @@
               <div class="row">
                   <div class="col-lg-12">
                       <section class="card">
-                          <header class="card-header">
-                              Advanced Table
+                          <header id="coin-title" class="card-header">
+
                           </header>
                           <table class="table table-striped table-advance table-hover">
                               <thead>
                               <tr>
+                                  <th><i class="fa"></i></th>
                                   <th><i class="fa fa-upload"></i>수량</th>
                                   <th class=""><i class="fa fa-gift"></i>채굴량</th>
-                                  <th><i class="fa fa-gift"></i>절반채굴량</th>
                                   <th><i class=" fa fa-money"></i>일일보상</th>
                                   <th><i class=" fa fa-money"></i>월보상</th>
-                                  <th><i class=" fa fa-money"></i>총금액</th>
                                   <th><i class=" fa fa-money"></i>깡통가(선미기준)</th>
                                   <th><i class=" fa fa-money"></i>깡통가(메콩)</th>
                                   <th><i class=" fa fa-money"></i>깡통가(지릴)</th>
                                   <th></th>
                               </tr>
                               </thead>
-                              <tbody>
+                              <tbody id="tbody">
+
+
+
 <%--                              <tr>
                                   <td><a href="#">Vector Ltd</a></td>
                                   <td class="hidden-phone">Lorem Ipsum dorolo imit</td>
@@ -142,16 +144,34 @@
                   alert(JSON.stringify(xhr));
               },
               success : function(json){
-                  alert(JSON.stringify(json));
-                  if(json.result_code =="OK"){
-                      alert('회원가입성공');
-                  }
+                  $('#coin-title').html("Coin - " + json["data"]["name"] + '<br/>' +
+                                        "환율 - " + json["data"]["price"]);
+
+
+                  var str = "";
+                  $.each(json["data"]["soldiers"], function (i, v) {
+                      console.log(JSON.stringify(v));
+                      str += "<tr>";
+                      str += "<td>" + v.name + "</td>";
+                      str += "<td>" + priceToString(v.qty) + "</td>";
+                      str += "<td>" + priceToString(v.get_qty) + "</td>";
+                      str += "<td>" + priceToString(v.day_item) + "</td>";
+                      str += "<td>" + priceToString(v.month_item) + "</td>";
+                      str += "<td>" + "</td>";
+                      str += "<td>" + "</td>";
+                      str += "<td>" + "</td>";
+                      str += "<td>" + "</td>";
+                      str += "<tr>";
+                  });
+                  $('#tbody').append(str);
               },
           });
       });
 
 
-
+      function priceToString(price) {
+          return price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+      }
 
   </script>
 

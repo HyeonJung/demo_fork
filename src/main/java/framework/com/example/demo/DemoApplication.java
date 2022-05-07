@@ -16,4 +16,5 @@ public class DemoApplication extends SpringBootServletInitializer {
     protected SpringApplicationBuilder configure(SpringApplicationBuilder bulder){
         return bulder.sources(DemoApplication.class);
     }
+
 }
