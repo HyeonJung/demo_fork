@@ -72,7 +72,7 @@ public class HomeApiLogicService {
         homeApiResponse.setPercent(percent);
         homeApiResponse.setPrice(GetRate(price));
         homeApiResponse.setSoldiers(soldiers);
-
+        선미Rate();
 
         return  response(homeApiResponse);
 
@@ -85,7 +85,7 @@ public class HomeApiLogicService {
 
     private String GetRate(String price) throws IOException {
         String url ="https://ko.valutafx.com/LookupRate.aspx?to=KRW&from=USD&amount=" +
-                encodeURIComponent("0.12555") +
+                encodeURIComponent(price) +
                 "&offset=" +
                 encodeURIComponent("-540");
         HttpGet request = new HttpGet(url);
@@ -312,5 +312,24 @@ public class HomeApiLogicService {
 
         jsonObject.add("users",Users);
         return jsonObject;
+    }
+
+    public void 선미Rate() throws IOException {
+        String url ="https://www.mexc.com/api/platform/spot/market/symbols";
+        HttpGet request = new HttpGet(url);
+        request.addHeader("Referer","https://www.mexc.com/exchange/FAVOR_USDT");
+        HttpResponse response = Excute(request);
+        HttpEntity entity = response.getEntity();
+        String result = "";
+        if (entity != null) {
+            // return it as a String
+            result = EntityUtils.toString(entity);
+
+            System.out.println(result);
+        }
+        Gson gson = new Gson();
+        JsonObject jsonObject = gson.fromJson(result, JsonObject.class);
+
+//        return jsonObject.get("Rate").toString().replace("\"","");
     }
 }

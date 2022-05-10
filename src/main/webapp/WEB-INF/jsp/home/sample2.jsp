@@ -67,22 +67,8 @@
                           <header id="coin-title" class="card-header">
 
                           </header>
-                          <table class="table table-striped table-advance table-hover">
-                              <thead>
-                              <tr>
-                                  <th><i class="fa"></i></th>
-                                  <th><i class="fa fa-upload"></i>수량</th>
-                                  <th class=""><i class="fa fa-gift"></i>채굴량</th>
-                                  <th><i class=" fa fa-money"></i>일일보상</th>
-                                  <th><i class=" fa fa-money"></i>월보상</th>
-                                  <th><i class=" fa fa-money"></i>깡통가(선미기준)</th>
-                                  <th><i class=" fa fa-money"></i>깡통가(메콩)</th>
-                                  <th><i class=" fa fa-money"></i>깡통가(지릴)</th>
-                                  <th></th>
-                              </tr>
-                              </thead>
-                              <tbody id="tbody">
-                              </tbody>
+                          <table class="table table-striped table-advance table-hover" id="table">
+
                           </table>
                       </section>
                   </div>
@@ -123,33 +109,12 @@
 
           $.ajax({
               type : 'get',
-              url : '/api/soldiers',
-              contentType : "application/json; charset=utf-8",
+              url : '/home/soldiers',
               error: function(xhr, status, error){
                   alert(status);
-                  alert(JSON.stringify(xhr));
               },
-              success : function(json){
-                  $('#coin-title').html("Coin - " + json["data"]["name"] + '<br/>' +
-                                        "환율 - " + json["data"]["price"]);
-
-
-                  var str = "";
-                  $.each(json["data"]["soldiers"], function (i, v) {
-                      console.log(JSON.stringify(v));
-                      str += "<tr>";
-                      str += "<td>" + v.name + "</td>";
-                      str += "<td>" + priceToString(v.qty) + "</td>";
-                      str += "<td>" + priceToString(v.get_qty) + "</td>";
-                      str += "<td>" + priceToString(v.day_item) + "</td>";
-                      str += "<td>" + priceToString(v.month_item) + "</td>";
-                      str += "<td>" + "</td>";
-                      str += "<td>" + "</td>";
-                      str += "<td>" + "</td>";
-                      str += "<td>" + "</td>";
-                      str += "<tr>";
-                  });
-                  $('#tbody').append(str);
+              success : function(html){
+                  $('#table').html(html);
               },
           });
       });
