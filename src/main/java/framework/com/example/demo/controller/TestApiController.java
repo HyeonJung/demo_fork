@@ -1,16 +1,15 @@
-package framework.com.example.demo.controller.sunmi;
+package framework.com.example.demo.controller;
 
 
 import framework.com.example.demo.model.network.request.SunmiApiRequestDto;
 import framework.com.example.demo.model.network.response.SunmiApiResponseDto;
 import framework.com.example.demo.service.SunmiApiService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/api/sun-mi")
-public class SunmiApiController {
+@RequestMapping("/api/test")
+public class TestApiController {
     @Autowired
     private SunmiApiService sunmiApiService;
 

@@ -5,11 +5,16 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.reflect.TypeToken;
+import framework.com.example.demo.domain.soldierfp.SoldierFPApiRepository;
+import framework.com.example.demo.domain.soldierfp.soldierfp;
+import framework.com.example.demo.domain.sunmi.SunmiApiRepository;
+import framework.com.example.demo.domain.sunmi.ssunmi;
 import framework.com.example.demo.model.entity.Soldier;
 import framework.com.example.demo.model.entity.Unit;
 import framework.com.example.demo.model.entity.sunmi;
 import framework.com.example.demo.model.network.Header;
 import framework.com.example.demo.model.network.response.HomeApiResponse;
+import lombok.RequiredArgsConstructor;
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpHost;
 import org.apache.http.HttpResponse;
@@ -43,9 +48,12 @@ import java.util.concurrent.ExecutionException;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-
+@RequiredArgsConstructor
 @Service
 public class SunmiLogicService extends CoinBaseService<sunmi> {
+    private final SunmiApiRepository sunmiApiRepository;
+    private final SoldierFPApiRepository soldierFPApiRepository;
+
     private String GetRate(String price) throws IOException {
         String url = "https://ko.valutafx.com/LookupRate.aspx?to=KRW&from=USD&amount=" +
                 encodeURIComponent(price) +
@@ -390,6 +398,8 @@ public class SunmiLogicService extends CoinBaseService<sunmi> {
 
 
         /*  선미   */
+        String 선미FP = "0";
+        String 솔져스FP = "0";
         JsonObject 선미 = 선미Rate();
         JsonArray 환율리스트 = 선미.getAsJsonObject("data")
                 .getAsJsonArray("USDT");
@@ -405,15 +415,17 @@ public class SunmiLogicService extends CoinBaseService<sunmi> {
             }
         }
         usdt = GetRate(usdt);
-        CompletableFuture<String> 선미Task = CompletableFuture.supplyAsync(()-> {
-            try {
-                return 선미FP();
-            } catch (IOException e) {
-                throw new RuntimeException(e);
-            } catch (URISyntaxException e) {
-                throw new RuntimeException(e);
-            }
-        });
+
+        List<ssunmi> sunmiList = sunmiApiRepository.findAll();
+        if(sunmiList.size() > 0){
+            선미FP = sunmiList.get(0).getFp();
+        }
+        List<soldierfp> soldierList = soldierFPApiRepository.findAll();
+        if(soldierList.size() > 0){
+            솔져스FP = soldierList.get(0).getFp();
+        }
+
+/*
         CompletableFuture<String> 솔져스Task = CompletableFuture.supplyAsync(()-> {
             try {
                 return 솔져스FP();
@@ -423,21 +435,17 @@ public class SunmiLogicService extends CoinBaseService<sunmi> {
                 throw new RuntimeException(e);
             }
         });
-        while( !선미Task.isDone() && !솔져스Task.isDone()){
+        while( !솔져스Task.isDone()){
             System.out.println("Processing....");
         }
-        String 선미FP = "0";
-        try {
-            선미FP = 선미Task.get();
-        } catch (ExecutionException e) {
-            throw new RuntimeException(e);
-        }
+
         String 솔져스FP = "0";
         try {
             솔져스FP = 솔져스Task.get();
         } catch (ExecutionException e) {
             throw new RuntimeException(e);
         }
+*/
 
 
         /**********************/
