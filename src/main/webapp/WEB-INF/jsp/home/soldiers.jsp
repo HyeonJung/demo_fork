@@ -51,7 +51,7 @@
                                     <td><fmt:formatNumber value="${unit.getQty}" /></td>
                                     <td><fmt:formatNumber value="${unit.day_item}" /></td>
                                     <td><fmt:formatNumber value="${unit.month_item}" /></td>
-                                    <td></td>
+                                    <td><fmt:formatNumber value="${unit.sunmi}" /></td>
                                     <td></td>
                                     <td></td>
                                     <td></td>

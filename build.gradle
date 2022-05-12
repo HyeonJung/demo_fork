@@ -19,6 +19,7 @@ repositories {
 }
 
 dependencies {
+    implementation 'io.jsonwebtoken:jjwt:0.9.1'
     implementation 'xyz.hexile:cloudflarescraper:1.0'
     implementation 'org.apache.httpcomponents:httpclient:4.5.13'
     implementation 'com.google.code.gson:gson:2.8.5'

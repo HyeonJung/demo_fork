@@ -23,4 +23,6 @@ public class Soldier {
         private double day_item;
 
         private double month_item;
+
+        private double sunmi;
 }

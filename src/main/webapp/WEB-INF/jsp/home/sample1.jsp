@@ -67,22 +67,8 @@
                           <header id="coin-title" class="card-header">
 
                           </header>
-                          <table class="table table-striped table-advance table-hover">
-                              <thead>
-                              <tr>
-                                  <th><i class="fa"></i></th>
-                                  <th><i class="fa fa-upload"></i>수량</th>
-                                  <th class=""><i class="fa fa-gift"></i>채굴량</th>
-                                  <th><i class=" fa fa-money"></i>일일보상</th>
-                                  <th><i class=" fa fa-money"></i>월보상</th>
-                                  <th><i class=" fa fa-money"></i>깡통가(선미기준)</th>
-                                  <th><i class=" fa fa-money"></i>깡통가(메콩)</th>
-                                  <th><i class=" fa fa-money"></i>깡통가(지릴)</th>
-                                  <th></th>
-                              </tr>
-                              </thead>
-                              <tbody id="tbody">
-                              </tbody>
+                          <table class="table table-striped table-advance table-hover" id="table">
+
                           </table>
                       </section>
                   </div>
@@ -121,7 +107,7 @@
       $(function () {
         console.log('test22');
 
-          $.ajax({
+        /*  $.ajax({
               type : 'get',
               url : '/api/soldiers',
               contentType : "application/json; charset=utf-8",
@@ -150,6 +136,17 @@
                       str += "<tr>";
                   });
                   $('#tbody').append(str);
+              },
+          });*/
+
+          $.ajax({
+              type : 'get',
+              url : '/home/soldiers',
+              error: function(xhr, status, error){
+                  alert(status);
+              },
+              success : function(html){
+                  $('#table').html(html);
               },
           });
       });
