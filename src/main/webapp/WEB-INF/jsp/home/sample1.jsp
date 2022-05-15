@@ -35,9 +35,9 @@
               <i class="fa fa-bars"></i>
           </div>
           <!--logo start-->
-          <a href="#" class="logo">Flat<span>lab</span></a>
+<%--          <a href="#" class="logo">Flat<span>lab</span></a>--%>
+          <img style="width:100px; height: 50px;" src="/img/logo.jpeg"/>
           <!--logo end-->
-
       </header>
       <!--header end-->
       <!--sidebar start-->

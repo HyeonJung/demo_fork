@@ -27,7 +27,8 @@
 
                         <header id="coin-title" class="card-header">
                             Coin - <c:out value="${unit.name}"/> <br/>
-                            환율 - <c:out value="${unit.price}"/>
+                            환율 - <c:out value="${unit.price}"/> <br/>
+                            FP - <fmt:formatNumber value="${unit.soldiersFP}" />
                         </header>
                         <table class="table table-striped table-advance table-hover">
                             <thead>
@@ -35,22 +36,32 @@
                                 <th><i class="fa"></i></th>
                                 <th><i class="fa fa-upload"></i>수량</th>
                                 <th class=""><i class="fa fa-gift"></i>채굴량</th>
-                                <th><i class=" fa fa-money"></i>일일보상</th>
-                                <th><i class=" fa fa-money"></i>월보상</th>
-                                <th><i class=" fa fa-money"></i>깡통가(선미기준)</th>
-                                <th><i class=" fa fa-money"></i>깡통가(메콩)</th>
-                                <th><i class=" fa fa-money"></i>깡통가(지릴)</th>
+                                <th>보유수량(빈칸: 1)</th>
+                                <th><i class=" fa fa-money"></i>채굴금액(일)</th>
+                                <th><i class=" fa fa-money"></i>채굴금액(월)</th>
+                                <th>
+                                    <i class=" fa fa-money"></i>적정FP가(선미기준)<br/>
+                                    선미1개 채굴금액(일) - <fmt:formatNumber value="${unit.sunmiOnePrice}" />  <br/>
+                                    선미FP - <fmt:formatNumber value="${unit.sunmiFP}" />
+                                </th>
+                                <th>
+                                    <i class=" fa fa-money"></i>적정FP가(메콩기준)<br/>
+                                    메콩1개 채굴금액(일) - <fmt:formatNumber value="${unit.sunmiOnePrice}" />  <br/>
+                                    메콩FP - <fmt:formatNumber value="${unit.sunmiFP}" />
+                                </th>
+                                <th><i class=" fa fa-money"></i>적정FP가(지릴)</th>
                                 <th></th>
                             </tr>
                             </thead>
                             <tbody id="tbody">
-                            <c:forEach var="unit" items="${unit.soldiers}">
+                            <c:forEach var="unit" items="${unit.soldiers}" varStatus="status">
                                 <tr>
                                     <td>${unit.name}</td>
                                     <td><fmt:formatNumber value="${unit.qty}" /></td>
                                     <td><fmt:formatNumber value="${unit.getQty}" /></td>
-                                    <td><fmt:formatNumber value="${unit.day_item}" /></td>
-                                    <td><fmt:formatNumber value="${unit.month_item}" /></td>
+                                    <td><input type="text"  class="input-small" style="width:40px;" id="txtSoldierQty" value="1" onkeyup="DayCalc(${unit.day_item}, ${unit.month_item}, ${status.index}, this)"></td>
+                                    <td id="tdDayItem${status.index}"><fmt:formatNumber value="${unit.day_item}" /></td>
+                                    <td id="tdMonthItem${status.index}"><fmt:formatNumber value="${unit.month_item}" /></td>
                                     <td><fmt:formatNumber value="${unit.sunmi}" /></td>
                                     <td></td>
                                     <td></td>
@@ -81,6 +92,17 @@
     });
     function priceToString(price) {
         return price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+    }
+    function DayCalc(dayPrice, monthPrice, index, qty){
+        var DayItem = 1 * dayPrice;
+        var MonthItem = 1 * monthPrice;
+        if(qty.value != '1' && qty.value != ''){
+            DayItem = qty.value * dayPrice;
+            MonthItem = qty.value * monthPrice;
+        }
+        $('#tdDayItem' + index).text(priceToString(DayItem));
+        $('#tdMonthItem' + index).text(priceToString(MonthItem));
+
     }
 </script>
 </body>

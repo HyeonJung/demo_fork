@@ -17,6 +17,12 @@ public class Unit<coin>{
 
     private String percent;
 
+    private String sunmiOnePrice;
+
+    private String sunmiFP;
+
+    private String SoldiersFP;
+
     private List<Soldier> soldiers;
 
 
