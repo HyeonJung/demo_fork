@@ -61,4 +61,9 @@ public class HomeController extends CoinController<sunmi> {
     public String sample2(){
         return "/home/sample2";
     }
+
+    @RequestMapping("/home/sample3")
+    public String sample3(){
+        return "/index";
+    }
 }

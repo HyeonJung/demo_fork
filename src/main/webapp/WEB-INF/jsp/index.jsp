@@ -6,6 +6,6 @@
     <title>Insert title here</title>
 </head>
 <body>
-테스트 페이지
+<iframe width="800px" height="800px" src="https://solds.bigdragon.shop:9090"/>
 </body>
 </html>
