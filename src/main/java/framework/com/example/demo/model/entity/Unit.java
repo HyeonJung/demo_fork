@@ -23,6 +23,14 @@ public class Unit<coin>{
 
     private String SoldiersFP;
 
+    private String metaKongsOnePrice;
+
+    private String metakongsFP;
+
+    private String grillaOnePrice;
+
+    private String grillaFP;
+
     private List<Soldier> soldiers;
 
 

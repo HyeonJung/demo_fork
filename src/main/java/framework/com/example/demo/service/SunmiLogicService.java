@@ -5,6 +5,10 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.reflect.TypeToken;
+import framework.com.example.demo.domain.grilla.GrillaApiRepository;
+import framework.com.example.demo.domain.grilla.grillafp;
+import framework.com.example.demo.domain.metakongs.MetakongsApiRepository;
+import framework.com.example.demo.domain.metakongs.metakongsfp;
 import framework.com.example.demo.domain.soldierfp.SoldierFPApiRepository;
 import framework.com.example.demo.domain.soldierfp.soldierfp;
 import framework.com.example.demo.domain.sunmi.SunmiApiRepository;
@@ -54,6 +58,9 @@ public class SunmiLogicService extends CoinBaseService<sunmi> {
     private final SunmiApiRepository sunmiApiRepository;
     private final SoldierFPApiRepository soldierFPApiRepository;
 
+    private  final  MetakongsApiRepository metakongsApiRepository;
+
+    private final GrillaApiRepository grillaApiRepository;
     private String GetRate(String price) throws IOException {
         String url = "https://ko.valutafx.com/LookupRate.aspx?to=KRW&from=USD&amount=" +
                 encodeURIComponent(price) +
@@ -107,7 +114,7 @@ public class SunmiLogicService extends CoinBaseService<sunmi> {
         return result;
     }
 
-    public JsonObject UserInit(String price, String 선미price, String 선미FP, String 솔저스FP) {
+    public JsonObject UserInit(String price, String 선미price, String 메타콩즈price, String 지릴라Price, String 선미FP, String 솔저스FP, String 메타콩즈FP, String 지릴라FP) {
         JsonObject jsonObject = new JsonObject();
         JsonArray Users = new JsonArray();
 
@@ -118,7 +125,9 @@ public class SunmiLogicService extends CoinBaseService<sunmi> {
         User.addProperty("getQty", Qty);
         User.addProperty("day_item", Math.floor(Double.parseDouble(price) * Qty));
         User.addProperty("month_item", Math.floor(Double.parseDouble(price) * Qty * 30));
-        User.addProperty("sunmi", Math.floor(((Double.parseDouble(price) * Qty) /  (Double.parseDouble(선미price)  * 4.16) * 100) * Double.parseDouble(선미FP) / 100));;
+        User.addProperty("sunmi", Math.floor(((Double.parseDouble(price) * Qty) /  (Double.parseDouble(선미price)  * 4.16) * 100) * Double.parseDouble(선미FP) / 100));
+        User.addProperty("metakongs", Math.floor(((Double.parseDouble(price) * Qty) /  (Double.parseDouble(메타콩즈price)  * 4) * 100) * Double.parseDouble(메타콩즈FP) / 100));
+        User.addProperty("grilla", Math.floor(((Double.parseDouble(price) * Qty) /  (Double.parseDouble(메타콩즈price)  * 0.4) * 100) * Double.parseDouble(지릴라FP) / 100));
 
         Users.add(User);
 
@@ -130,6 +139,8 @@ public class SunmiLogicService extends CoinBaseService<sunmi> {
         User.addProperty("day_item", Math.floor(Double.parseDouble(price) * Qty));
         User.addProperty("month_item", Math.floor(Double.parseDouble(price) * Qty * 30));
         User.addProperty("sunmi", Math.floor(((Double.parseDouble(price) * Qty) /  (Double.parseDouble(선미price)  * 4.16) * 100) * Double.parseDouble(선미FP) / 100));;
+        User.addProperty("metakongs", Math.floor(((Double.parseDouble(price) * Qty) /  (Double.parseDouble(메타콩즈price)  * 4) * 100) * Double.parseDouble(메타콩즈FP) / 100));
+        User.addProperty("grilla", Math.floor(((Double.parseDouble(price) * Qty) /  (Double.parseDouble(메타콩즈price)  * 0.4) * 100) * Double.parseDouble(지릴라FP) / 100));
 
         Users.add(User);
 
@@ -141,6 +152,8 @@ public class SunmiLogicService extends CoinBaseService<sunmi> {
         User.addProperty("day_item", Math.floor(Double.parseDouble(price) * Qty));
         User.addProperty("month_item", Math.floor(Double.parseDouble(price) * Qty * 30));
         User.addProperty("sunmi", Math.floor(((Double.parseDouble(price) * Qty) /  (Double.parseDouble(선미price)  * 4.16) * 100) * Double.parseDouble(선미FP) / 100));;
+        User.addProperty("metakongs", Math.floor(((Double.parseDouble(price) * Qty) /  (Double.parseDouble(메타콩즈price)  * 4) * 100) * Double.parseDouble(메타콩즈FP) / 100));
+        User.addProperty("grilla", Math.floor(((Double.parseDouble(price) * Qty) /  (Double.parseDouble(메타콩즈price)  * 0.4) * 100) * Double.parseDouble(지릴라FP) / 100));
 
         Users.add(User);
 
@@ -152,6 +165,8 @@ public class SunmiLogicService extends CoinBaseService<sunmi> {
         User.addProperty("day_item", Math.floor(Double.parseDouble(price) * Qty));
         User.addProperty("month_item", Math.floor(Double.parseDouble(price) * Qty * 30));
         User.addProperty("sunmi", Math.floor(((Double.parseDouble(price) * Qty) /  (Double.parseDouble(선미price)  * 4.16) * 100) * Double.parseDouble(선미FP) / 100));;
+        User.addProperty("metakongs", Math.floor(((Double.parseDouble(price) * Qty) /  (Double.parseDouble(메타콩즈price)  * 4) * 100) * Double.parseDouble(메타콩즈FP) / 100));
+        User.addProperty("grilla", Math.floor(((Double.parseDouble(price) * Qty) /  (Double.parseDouble(메타콩즈price)  * 0.4) * 100) * Double.parseDouble(지릴라FP) / 100));
 
         Users.add(User);
 
@@ -163,6 +178,8 @@ public class SunmiLogicService extends CoinBaseService<sunmi> {
         User.addProperty("day_item", Math.floor(Double.parseDouble(price) * Qty));
         User.addProperty("month_item", Math.floor(Double.parseDouble(price) * Qty * 30));
         User.addProperty("sunmi", Math.floor(((Double.parseDouble(price) * Qty) /  (Double.parseDouble(선미price)  * 4.16) * 100) * Double.parseDouble(선미FP) / 100));;
+        User.addProperty("metakongs", Math.floor(((Double.parseDouble(price) * Qty) /  (Double.parseDouble(메타콩즈price)  * 4) * 100) * Double.parseDouble(메타콩즈FP) / 100));
+        User.addProperty("grilla", Math.floor(((Double.parseDouble(price) * Qty) /  (Double.parseDouble(메타콩즈price)  * 0.4) * 100) * Double.parseDouble(지릴라FP) / 100));
 
         Users.add(User);
 
@@ -174,6 +191,8 @@ public class SunmiLogicService extends CoinBaseService<sunmi> {
         User.addProperty("day_item", Math.floor(Double.parseDouble(price) * Qty));
         User.addProperty("month_item", Math.floor(Double.parseDouble(price) * Qty * 30));
         User.addProperty("sunmi", Math.floor(((Double.parseDouble(price) * Qty) /  (Double.parseDouble(선미price)  * 4.16) * 100) * Double.parseDouble(선미FP) / 100));;
+        User.addProperty("metakongs", Math.floor(((Double.parseDouble(price) * Qty) /  (Double.parseDouble(메타콩즈price)  * 4) * 100) * Double.parseDouble(메타콩즈FP) / 100));
+        User.addProperty("grilla", Math.floor(((Double.parseDouble(price) * Qty) /  (Double.parseDouble(메타콩즈price)  * 0.4) * 100) * Double.parseDouble(지릴라FP) / 100));
 
         Users.add(User);
 
@@ -185,6 +204,8 @@ public class SunmiLogicService extends CoinBaseService<sunmi> {
         User.addProperty("day_item", Math.floor(Double.parseDouble(price) * Qty));
         User.addProperty("month_item", Math.floor(Double.parseDouble(price) * Qty * 30));
         User.addProperty("sunmi", Math.floor(((Double.parseDouble(price) * Qty) /  (Double.parseDouble(선미price)  * 4.16) * 100) * Double.parseDouble(선미FP) / 100));;
+        User.addProperty("metakongs", Math.floor(((Double.parseDouble(price) * Qty) /  (Double.parseDouble(메타콩즈price)  * 4) * 100) * Double.parseDouble(메타콩즈FP) / 100));
+        User.addProperty("grilla", Math.floor(((Double.parseDouble(price) * Qty) /  (Double.parseDouble(메타콩즈price)  * 0.4) * 100) * Double.parseDouble(지릴라FP) / 100));
 
         Users.add(User);
 
@@ -196,6 +217,8 @@ public class SunmiLogicService extends CoinBaseService<sunmi> {
         User.addProperty("day_item", Math.floor(Double.parseDouble(price) * Qty));
         User.addProperty("month_item", Math.floor(Double.parseDouble(price) * Qty * 30));
         User.addProperty("sunmi", Math.floor(((Double.parseDouble(price) * Qty) /  (Double.parseDouble(선미price)  * 4.16) * 100) * Double.parseDouble(선미FP) / 100));;
+        User.addProperty("metakongs", Math.floor(((Double.parseDouble(price) * Qty) /  (Double.parseDouble(메타콩즈price)  * 4) * 100) * Double.parseDouble(메타콩즈FP) / 100));
+        User.addProperty("grilla", Math.floor(((Double.parseDouble(price) * Qty) /  (Double.parseDouble(메타콩즈price)  * 0.4) * 100) * Double.parseDouble(지릴라FP) / 100));
 
         Users.add(User);
 
@@ -207,6 +230,8 @@ public class SunmiLogicService extends CoinBaseService<sunmi> {
         User.addProperty("day_item", Math.floor(Double.parseDouble(price) * Qty));
         User.addProperty("month_item", Math.floor(Double.parseDouble(price) * Qty * 30));
         User.addProperty("sunmi", Math.floor(((Double.parseDouble(price) * Qty) /  (Double.parseDouble(선미price)  * 4.16) * 100) * Double.parseDouble(선미FP) / 100));;
+        User.addProperty("metakongs", Math.floor(((Double.parseDouble(price) * Qty) /  (Double.parseDouble(메타콩즈price)  * 4) * 100) * Double.parseDouble(메타콩즈FP) / 100));
+        User.addProperty("grilla", Math.floor(((Double.parseDouble(price) * Qty) /  (Double.parseDouble(메타콩즈price)  * 0.4) * 100) * Double.parseDouble(지릴라FP) / 100));
 
         Users.add(User);
 
@@ -218,6 +243,8 @@ public class SunmiLogicService extends CoinBaseService<sunmi> {
         User.addProperty("day_item", Math.floor(Double.parseDouble(price) * Qty));
         User.addProperty("month_item", Math.floor(Double.parseDouble(price) * Qty * 30));
         User.addProperty("sunmi", Math.floor(((Double.parseDouble(price) * Qty) /  (Double.parseDouble(선미price)  * 4.16) * 100) * Double.parseDouble(선미FP) / 100));;
+        User.addProperty("metakongs", Math.floor(((Double.parseDouble(price) * Qty) /  (Double.parseDouble(메타콩즈price)  * 4) * 100) * Double.parseDouble(메타콩즈FP) / 100));
+        User.addProperty("grilla", Math.floor(((Double.parseDouble(price) * Qty) /  (Double.parseDouble(메타콩즈price)  * 0.4) * 100) * Double.parseDouble(지릴라FP) / 100));
 
         Users.add(User);
 
@@ -229,6 +256,8 @@ public class SunmiLogicService extends CoinBaseService<sunmi> {
         User.addProperty("day_item", Math.floor(Double.parseDouble(price) * Qty));
         User.addProperty("month_item", Math.floor(Double.parseDouble(price) * Qty * 30));
         User.addProperty("sunmi", Math.floor(((Double.parseDouble(price) * Qty) /  (Double.parseDouble(선미price)  * 4.16) * 100) * Double.parseDouble(선미FP) / 100));;
+        User.addProperty("metakongs", Math.floor(((Double.parseDouble(price) * Qty) /  (Double.parseDouble(메타콩즈price)  * 4) * 100) * Double.parseDouble(메타콩즈FP) / 100));
+        User.addProperty("grilla", Math.floor(((Double.parseDouble(price) * Qty) /  (Double.parseDouble(메타콩즈price)  * 0.4) * 100) * Double.parseDouble(지릴라FP) / 100));
 
         Users.add(User);
 
@@ -240,6 +269,8 @@ public class SunmiLogicService extends CoinBaseService<sunmi> {
         User.addProperty("day_item", Math.floor(Double.parseDouble(price) * Qty));
         User.addProperty("month_item", Math.floor(Double.parseDouble(price) * Qty * 30));
         User.addProperty("sunmi", Math.floor(((Double.parseDouble(price) * Qty) /  (Double.parseDouble(선미price)  * 4.16) * 100) * Double.parseDouble(선미FP) / 100));;
+        User.addProperty("metakongs", Math.floor(((Double.parseDouble(price) * Qty) /  (Double.parseDouble(메타콩즈price)  * 4) * 100) * Double.parseDouble(메타콩즈FP) / 100));
+        User.addProperty("grilla", Math.floor(((Double.parseDouble(price) * Qty) /  (Double.parseDouble(메타콩즈price)  * 0.4) * 100) * Double.parseDouble(지릴라FP) / 100));
 
         Users.add(User);
 
@@ -251,6 +282,8 @@ public class SunmiLogicService extends CoinBaseService<sunmi> {
         User.addProperty("day_item", Math.floor(Double.parseDouble(price) * Qty));
         User.addProperty("month_item", Math.floor(Double.parseDouble(price) * Qty * 30));
         User.addProperty("sunmi", Math.floor(((Double.parseDouble(price) * Qty) /  (Double.parseDouble(선미price)  * 4.16) * 100) * Double.parseDouble(선미FP) / 100));;
+        User.addProperty("metakongs", Math.floor(((Double.parseDouble(price) * Qty) /  (Double.parseDouble(메타콩즈price)  * 4) * 100) * Double.parseDouble(메타콩즈FP) / 100));
+        User.addProperty("grilla", Math.floor(((Double.parseDouble(price) * Qty) /  (Double.parseDouble(메타콩즈price)  * 0.4) * 100) * Double.parseDouble(지릴라FP) / 100));
 
         Users.add(User);
 
@@ -262,6 +295,8 @@ public class SunmiLogicService extends CoinBaseService<sunmi> {
         User.addProperty("day_item", Math.floor(Double.parseDouble(price) * Qty));
         User.addProperty("month_item", Math.floor(Double.parseDouble(price) * Qty * 30));
         User.addProperty("sunmi", Math.floor(((Double.parseDouble(price) * Qty) /  (Double.parseDouble(선미price)  * 4.16) * 100) * Double.parseDouble(선미FP) / 100));;
+        User.addProperty("metakongs", Math.floor(((Double.parseDouble(price) * Qty) /  (Double.parseDouble(메타콩즈price)  * 4) * 100) * Double.parseDouble(메타콩즈FP) / 100));
+        User.addProperty("grilla", Math.floor(((Double.parseDouble(price) * Qty) /  (Double.parseDouble(메타콩즈price)  * 0.4) * 100) * Double.parseDouble(지릴라FP) / 100));
 
         Users.add(User);
 
@@ -273,6 +308,8 @@ public class SunmiLogicService extends CoinBaseService<sunmi> {
         User.addProperty("day_item", Math.floor(Double.parseDouble(price) * Qty));
         User.addProperty("month_item", Math.floor(Double.parseDouble(price) * Qty * 30));
         User.addProperty("sunmi", Math.floor(((Double.parseDouble(price) * Qty) /  (Double.parseDouble(선미price)  * 4.16) * 100) * Double.parseDouble(선미FP) / 100));;
+        User.addProperty("metakongs", Math.floor(((Double.parseDouble(price) * Qty) /  (Double.parseDouble(메타콩즈price)  * 4) * 100) * Double.parseDouble(메타콩즈FP) / 100));
+        User.addProperty("grilla", Math.floor(((Double.parseDouble(price) * Qty) /  (Double.parseDouble(메타콩즈price)  * 0.4) * 100) * Double.parseDouble(지릴라FP) / 100));
 
         Users.add(User);
 
@@ -284,6 +321,8 @@ public class SunmiLogicService extends CoinBaseService<sunmi> {
         User.addProperty("day_item", Math.floor(Double.parseDouble(price) * Qty));
         User.addProperty("month_item", Math.floor(Double.parseDouble(price) * Qty * 30));
         User.addProperty("sunmi", Math.floor(((Double.parseDouble(price) * Qty) /  (Double.parseDouble(선미price)  * 4.16) * 100) * Double.parseDouble(선미FP) / 100));;
+        User.addProperty("metakongs", Math.floor(((Double.parseDouble(price) * Qty) /  (Double.parseDouble(메타콩즈price)  * 4) * 100) * Double.parseDouble(메타콩즈FP) / 100));
+        User.addProperty("grilla", Math.floor(((Double.parseDouble(price) * Qty) /  (Double.parseDouble(메타콩즈price)  * 0.4) * 100) * Double.parseDouble(지릴라FP) / 100));
 
         Users.add(User);
 
@@ -295,6 +334,8 @@ public class SunmiLogicService extends CoinBaseService<sunmi> {
         User.addProperty("day_item", Math.floor(Double.parseDouble(price) * Qty));
         User.addProperty("month_item", Math.floor(Double.parseDouble(price) * Qty * 30));
         User.addProperty("sunmi", Math.floor(((Double.parseDouble(price) * Qty) /  (Double.parseDouble(선미price)  * 4.16) * 100) * Double.parseDouble(선미FP) / 100));;
+        User.addProperty("metakongs", Math.floor(((Double.parseDouble(price) * Qty) /  (Double.parseDouble(메타콩즈price)  * 4) * 100) * Double.parseDouble(메타콩즈FP) / 100));
+        User.addProperty("grilla", Math.floor(((Double.parseDouble(price) * Qty) /  (Double.parseDouble(메타콩즈price)  * 0.4) * 100) * Double.parseDouble(지릴라FP) / 100));
 
         Users.add(User);
 
@@ -306,6 +347,8 @@ public class SunmiLogicService extends CoinBaseService<sunmi> {
         User.addProperty("day_item", Math.floor(Double.parseDouble(price) * Qty));
         User.addProperty("month_item", Math.floor(Double.parseDouble(price) * Qty * 30));
         User.addProperty("sunmi", Math.floor(((Double.parseDouble(price) * Qty) /  (Double.parseDouble(선미price)  * 4.16) * 100) * Double.parseDouble(선미FP) / 100));;
+        User.addProperty("metakongs", Math.floor(((Double.parseDouble(price) * Qty) /  (Double.parseDouble(메타콩즈price)  * 4) * 100) * Double.parseDouble(메타콩즈FP) / 100));
+        User.addProperty("grilla", Math.floor(((Double.parseDouble(price) * Qty) /  (Double.parseDouble(메타콩즈price)  * 0.4) * 100) * Double.parseDouble(지릴라FP) / 100));
 
         Users.add(User);
 
@@ -317,6 +360,8 @@ public class SunmiLogicService extends CoinBaseService<sunmi> {
         User.addProperty("day_item", Math.floor(Double.parseDouble(price) * Qty));
         User.addProperty("month_item", Math.floor(Double.parseDouble(price) * Qty * 30));
         User.addProperty("sunmi", Math.floor(((Double.parseDouble(price) * Qty) /  (Double.parseDouble(선미price)  * 4.16) * 100) * Double.parseDouble(선미FP) / 100));;
+        User.addProperty("metakongs", Math.floor(((Double.parseDouble(price) * Qty) /  (Double.parseDouble(메타콩즈price)  * 4) * 100) * Double.parseDouble(메타콩즈FP) / 100));
+        User.addProperty("grilla", Math.floor(((Double.parseDouble(price) * Qty) /  (Double.parseDouble(메타콩즈price)  * 0.4) * 100) * Double.parseDouble(지릴라FP) / 100));
 
         Users.add(User);
 
@@ -344,16 +389,12 @@ public class SunmiLogicService extends CoinBaseService<sunmi> {
 //        return jsonObject.get("Rate").toString().replace("\"","");
     }
 
-    public String 선미FP() throws IOException, URISyntaxException {
-        HttpGet request = new HttpGet("http://220.230.124.179:11111/api/Test/Index?url=https://opensea.io/collection/sunmiya-club-official");
-        request.addHeader("Host","opensea.io");
-        request.addHeader("sec-ch-ua-platform","\"Windows\"");
-        request.addHeader("sec-ch-ua","\" Not A;Brand\";v=\"99\", \"Chromium\";v=\"101\", \"Google Chrome\";v=\"101\"");
-        request.addHeader("Accept","*/*");
-        request.addHeader("Sec-Fetch-Site","none");
-        request.addHeader("Sec-Fetch-Mode","cors");
-        request.addHeader("Sec-Fetch-Dest","empty");
-        request.setHeader("User-Agent","Mozilla/5.0 (Windows NT 10.0; Win64; WOW64; Trident/7.0; rv:11.0) like Gecko");
+    public String 메타콩즈Rate() throws IOException {
+        String usdt = "0";
+
+        String url = "https://www.mexc.com/api/platform/spot/market/symbols";
+        HttpGet request = new HttpGet(url);
+        request.addHeader("Referer", "https://www.mexc.com/exchange/FAVOR_USDT");
         HttpResponse response = Excute(request);
         HttpEntity entity = response.getEntity();
         String result = "";
@@ -363,35 +404,25 @@ public class SunmiLogicService extends CoinBaseService<sunmi> {
 
             System.out.println(result);
         }
-        Pattern pattern = Pattern.compile("\\\\\\\"floorPrice\\\\\\\":\\{\\\\\\\"unit\\\\\\\":\\\\\\\"(.*?)\\\\\\\""); //영문자만
-        String val = result; //대상문자열
-        Matcher match = pattern.matcher(val);
-        match.find();
-        result=match.group(1);
-        return result;
-    }
+        Gson gson = new Gson();
+        JsonObject jsonObject = gson.fromJson(result, JsonObject.class);
 
-    public String 솔져스FP() throws IOException, URISyntaxException {
+        JsonArray 환율리스트 = jsonObject.getAsJsonObject("data")
+                .getAsJsonArray("USDT");
+        for (JsonElement 환율 : 환율리스트) {
+            if (환율.getAsJsonObject()
+                    .get("currency")
+                    .toString().replace("\"", "").equals("MKC")){
+                usdt = 환율.getAsJsonObject()
+                        .get("c")
+                        .toString().replace("\"", "");
 
-        HttpGet request = new HttpGet("http://220.230.124.179:11111/api/Test/Index?url=https://opensea.io/collection/thesoldiersofficial");
-        request.addHeader("Host","opensea.io");
-        request.addHeader("User-Agent","Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/101.0.4951.54 Safari/537.36");
-        HttpResponse response = Excute(request);
-        HttpEntity entity = response.getEntity();
-        String result = "";
-        if (entity != null) {
-            // return it as a String
-            result = EntityUtils.toString(entity);
-
-            System.out.println(result);
+            }
         }
-        Pattern pattern = Pattern.compile("\\\\\\\"floorPrice\\\\\\\":\\{\\\\\\\"unit\\\\\\\":\\\\\\\"(.*?)\\\\\\\""); //영문자만
-        String val = result; //대상문자열
-        Matcher match = pattern.matcher(val);
-        match.find();
-        result=match.group(1);
-        return result;
+        return usdt;
+//        return jsonObject.get("Rate").toString().replace("\"","");
     }
+
     @Override
     public Unit<sunmi> getCoin() throws IOException, URISyntaxException, ScriptException, ScraperException, InterruptedException {
         Unit<sunmi> unit = new Unit<sunmi>();
@@ -400,21 +431,26 @@ public class SunmiLogicService extends CoinBaseService<sunmi> {
         /*  선미   */
         String 선미FP = "0";
         String 솔져스FP = "0";
+        String 메타콩즈FP = "0";
+        String 지릴라FP = "0";
+
         JsonObject 선미 = 선미Rate();
         JsonArray 환율리스트 = 선미.getAsJsonObject("data")
                 .getAsJsonArray("USDT");
-        String usdt = "";
+        String 선미usdt = "";
+        String 메타콩즈Rate = 메타콩즈Rate();
         for (JsonElement 환율 : 환율리스트) {
             if (환율.getAsJsonObject()
                     .get("currency")
                     .toString().replace("\"", "").equals("FAVOR")){
-                usdt = 환율.getAsJsonObject()
+                선미usdt = 환율.getAsJsonObject()
                         .get("c")
                         .toString().replace("\"", "");
 
             }
         }
-        usdt = GetRate(usdt);
+        선미usdt = GetRate(선미usdt);
+        메타콩즈Rate = GetRate(메타콩즈Rate);
         List<ssunmi> sunmiList = sunmiApiRepository.findAll();
         if(sunmiList.size() > 0){
             선미FP = sunmiList.get(0).getFp();
@@ -423,9 +459,22 @@ public class SunmiLogicService extends CoinBaseService<sunmi> {
         if(soldierList.size() > 0){
             솔져스FP = soldierList.get(0).getFp();
         }
-        unit.setSunmiOnePrice(String.valueOf(Math.floor(Double.parseDouble(usdt) * 4.16)));
+        List<metakongsfp> metakongsfps = metakongsApiRepository.findAll();
+        if(metakongsfps.size() > 0){
+            메타콩즈FP = metakongsfps.get(0).getFp();
+        }
+        List<grillafp> grillafps = grillaApiRepository.findAll();
+        if(grillafps.size() > 0){
+            지릴라FP = grillafps.get(0).getFp();
+        }
+        unit.setSunmiOnePrice(String.valueOf(Math.floor(Double.parseDouble(선미usdt) * 4.16)));
+        unit.setMetaKongsOnePrice(String.valueOf(Math.floor(Double.parseDouble(메타콩즈Rate) * 4)));
+        unit.setGrillaOnePrice(String.valueOf(Math.floor(Double.parseDouble(메타콩즈Rate) * 0.4)));
         unit.setSunmiFP(선미FP);
         unit.setSoldiersFP(솔져스FP);
+        unit.setMetakongsFP(메타콩즈FP);
+        unit.setGrillaFP(지릴라FP);
+
         /**********************/
 
         HttpGet request = new HttpGet("https://www.lbank.info/request/ticker/tick24hr?symbol=usd&");
@@ -457,7 +506,7 @@ public class SunmiLogicService extends CoinBaseService<sunmi> {
                 break;
             }
         }
-        List<Soldier> soldiers = gson.fromJson(UserInit(GetRate(unit.getPrice()), usdt, 선미FP, 솔져스FP).getAsJsonArray("users"),
+        List<Soldier> soldiers = gson.fromJson(UserInit(GetRate(unit.getPrice()), 선미usdt, 메타콩즈Rate, 메타콩즈Rate,  선미FP, 솔져스FP, 메타콩즈FP, 지릴라FP).getAsJsonArray("users"),
                 new TypeToken<List<Soldier>>() {
                 }.getType());
 

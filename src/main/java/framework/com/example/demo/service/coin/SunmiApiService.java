@@ -1,4 +1,4 @@
-package framework.com.example.demo.service;
+package framework.com.example.demo.service.coin;
 
 import framework.com.example.demo.domain.sunmi.SunmiApiRepository;
 import framework.com.example.demo.domain.sunmi.ssunmi;

@@ -25,4 +25,8 @@ public class Soldier {
         private double month_item;
 
         private double sunmi;
+
+        private double metakongs;
+
+        private double grilla;
 }

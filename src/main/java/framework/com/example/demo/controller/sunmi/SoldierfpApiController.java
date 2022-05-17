@@ -2,11 +2,8 @@ package framework.com.example.demo.controller.sunmi;
 
 
 import framework.com.example.demo.model.network.request.SoldierfpApiRequestDto;
-import framework.com.example.demo.model.network.request.SunmiApiRequestDto;
 import framework.com.example.demo.model.network.response.SoldierfpApiResponseDto;
-import framework.com.example.demo.model.network.response.SunmiApiResponseDto;
-import framework.com.example.demo.service.SoldierfpApiService;
-import framework.com.example.demo.service.SunmiApiService;
+import framework.com.example.demo.service.coin.SoldierfpApiService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 

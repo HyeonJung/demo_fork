@@ -1,4 +1,4 @@
-package framework.com.example.demo.service;
+package framework.com.example.demo.service.coin;
 
 import framework.com.example.demo.domain.soldierfp.SoldierFPApiRepository;
 import framework.com.example.demo.domain.soldierfp.soldierfp;
