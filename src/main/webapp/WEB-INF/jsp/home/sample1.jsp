@@ -51,7 +51,12 @@
                           <span>Dashboard</span>
                       </a>
                   </li>
-
+                  <li>
+                      <a id="btnHolderCheck" href="#">
+                          <i class="fa fa-dashboard"></i>
+                          <span>홀더 추세</span>
+                      </a>
+                  </li>
               </ul>
               <!-- sidebar menu end-->
           </div>
@@ -107,38 +112,6 @@
       $(function () {
         console.log('test22');
 
-        /*  $.ajax({
-              type : 'get',
-              url : '/api/soldiers',
-              contentType : "application/json; charset=utf-8",
-              error: function(xhr, status, error){
-                  alert(status);
-                  alert(JSON.stringify(xhr));
-              },
-              success : function(json){
-                  $('#coin-title').html("Coin - " + json["data"]["name"] + '<br/>' +
-                                        "환율 - " + json["data"]["price"]);
-
-
-                  var str = "";
-                  $.each(json["data"]["soldiers"], function (i, v) {
-                      console.log(JSON.stringify(v));
-                      str += "<tr>";
-                      str += "<td>" + v.name + "</td>";
-                      str += "<td>" + priceToString(v.qty) + "</td>";
-                      str += "<td>" + priceToString(v.get_qty) + "</td>";
-                      str += "<td>" + priceToString(v.day_item) + "</td>";
-                      str += "<td>" + priceToString(v.month_item) + "</td>";
-                      str += "<td>" + "</td>";
-                      str += "<td>" + "</td>";
-                      str += "<td>" + "</td>";
-                      str += "<td>" + "</td>";
-                      str += "<tr>";
-                  });
-                  $('#tbody').append(str);
-              },
-          });*/
-
           $.ajax({
               type : 'get',
               url : '/home/soldiers',
@@ -151,6 +124,9 @@
           });
       });
 
+      $('#btnHolderCheck').click(function(){
+          $('#table').html('');
+      });
 
       function priceToString(price) {
           return price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
