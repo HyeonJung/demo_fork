@@ -52,6 +52,11 @@ public class HomeController extends CoinController<sunmi> {
             return "/home/index";
     }
 
+    @RequestMapping("/home/samplez")
+    public String samplez(){
+        return "/tiles/view/home/sample1";
+    }
+
     @RequestMapping("/home/sample1")
     public String sample1(){
         return "/home/sample1";

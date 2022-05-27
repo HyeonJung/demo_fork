@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jstl/core" prefix="c" %>
 <%@ taglib uri="http://www.springframework.org/security/tags" prefix="sec" %>
+<%@ taglib prefix="tiles" uri="http://tiles.apache.org/tags-tiles" %>
 <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -29,40 +30,6 @@
   <body>
 
   <section id="container" class="">
-      <!--header start-->
-      <header class="header white-bg">
-          <div class="sidebar-toggle-box">
-              <i class="fa fa-bars"></i>
-          </div>
-          <!--logo start-->
-<%--          <a href="#" class="logo">Flat<span>lab</span></a>--%>
-          <img style="width:100px; height: 50px;" src="/img/logo.jpeg"/>
-          <!--logo end-->
-      </header>
-      <!--header end-->
-      <!--sidebar start-->
-      <aside>
-          <div id="sidebar"  class="nav-collapse ">
-              <!-- sidebar menu start-->
-              <ul class="sidebar-menu" id="nav-accordion">
-                  <li>
-                      <a href="#">
-                          <i class="fa fa-dashboard"></i>
-                          <span>Dashboard</span>
-                      </a>
-                  </li>
-                  <li>
-                      <a id="btnHolderCheck" href="#">
-                          <i class="fa fa-dashboard"></i>
-                          <span>홀더 추세</span>
-                      </a>
-                  </li>
-              </ul>
-              <!-- sidebar menu end-->
-          </div>
-      </aside>
-      <!--sidebar end-->
-      <!--main content start-->
       <section id="main-content">
           <section class="wrapper">
               <!-- page start-->
