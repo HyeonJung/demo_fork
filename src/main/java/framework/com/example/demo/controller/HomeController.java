@@ -54,17 +54,17 @@ public class HomeController extends CoinController<sunmi> {
 
     @RequestMapping("/home/samplez")
     public String samplez(){
-        return "/tiles/view/home/sample1";
+        return "/tiles/views/home/sample1";
     }
 
     @RequestMapping("/home/sample1")
     public String sample1(){
-        return "/home/sample1";
+        return "/tiles/view/home/sample1";
     }
 
     @RequestMapping("/home/sample2")
     public String sample2(){
-        return "/home/sample2";
+        return "/tiles/view//home/sample2";
     }
 
     @RequestMapping("/home/sample3")

@@ -3,17 +3,19 @@
 <%@ taglib uri="http://www.springframework.org/security/tags" prefix="sec" %>
 <%@ taglib prefix="tiles" uri="http://tiles.apache.org/tags-tiles" %>
 <section class="wrapper">
-    <!-- page start-->
-    <div class="row">
-        <div class="col-lg-12">
-            <section class="card">
-                <header id="coin-title" class="card-header">
+<!-- page start-->
+<div class="row">
+    <div class="col-lg-12">
+        <section class="card">
+            <header id="coin-title" class="card-header">
 
-                </header>
-            테스트
-            </section>
-        </div>
+            </header>
+            <table class="table table-striped table-advance table-hover" id="table">
+
+            </table>
+        </section>
     </div>
+</div>
 </section>
 <script>
     $(function () {

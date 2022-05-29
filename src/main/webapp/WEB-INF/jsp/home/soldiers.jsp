@@ -29,9 +29,10 @@
     Coin - <c:out value="${unit.name}"/> <br/>
     환율 - <c:out value="${unit.price}"/> <br/>
     FP - <fmt:formatNumber value="${unit.soldiersFP}"/><br/>
-    하루 채굴량 - <b id="dayTotalAmout"></b><br/>
-    한달 채굴량 - <b id="monthTotalAmout"></b><br/>
-
+    하루 채굴금액(설정) - <b id="dayTotalAmout"></b><br/>
+    한달 채굴금액(설정) - <b id="monthTotalAmout"></b><br/>
+    하루 채굴수량(TSS) - <b id="dayTSSTotalQty"></b>, 하루 채굴수량(TSG) - <b id="dayTSGTotalQty"></b> <br/>
+    한달 채굴수량(TSS) - <b id="monthTSSTotalQty"></b>, 한달 채굴수량(TSG) - <b id="monthTSGTotalQty"></b> <br/>
 </header>
 <table class="table table-striped table-advance table-hover">
     <thead>
@@ -68,7 +69,7 @@
             <td><fmt:formatNumber value="${unit.qty}"/></td>
             <td><fmt:formatNumber value="${unit.getQty}"/></td>
             <td><input type="text" class="input-small" style="width:40px;" id="txtSoldierQty${status.index}" value="0"
-                       onkeyup="DayCalc(${unit.day_item}, ${unit.month_item}, ${status.index}, this)"></td>
+                       onkeyup="DayCalc(${unit.day_item}, ${unit.month_item}, ${status.index}, ${unit.getQty}, this)"></td>
             <td id="tdFixItem${status.index}"><fmt:formatNumber value="${unit.day_item}"/></td>
             <td id="tdDayItem${status.index}"><fmt:formatNumber value="${unit.day_item}"/></td>
             <td id="tdMonthItem${status.index}"><fmt:formatNumber value="${unit.month_item}"/></td>
@@ -84,19 +85,7 @@
 
 </section>
 
-<!-- js placed at the end of the document so the pages load faster -->
-<script src="/js/jquery.js"></script>
-<script type="text/javascript" src="/js/jquery.cookie.js"></script>
-<script src="/js/bootstrap.bundle.min.js"></script>
-<script class="include" type="text/javascript" src="/js/jquery.dcjqaccordion.2.7.js"></script>
-<script src="/js/jquery.scrollTo.min.js"></script>
-<script src="/js/jquery.nicescroll.js" type="text/javascript"></script>
-<script src="/js/respond.min.js"></script>
 
-<script src="/js/slidebars.min.js"></script>
-
-<!--common script for all pages-->
-<script src="/js/common-scripts.js"></script>
 <script>
     $(function(){
         setCount();
@@ -107,7 +96,7 @@
         return price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
     }
 
-    function DayCalc(dayPrice, monthPrice, index, qty) {
+    function DayCalc(dayPrice, monthPrice, index, getQty, qty) {
         var DayItem = 1 * dayPrice;
         var MonthItem = 1 * monthPrice;
         if (qty.value != '1' && qty.value != '') {
@@ -118,11 +107,14 @@
         $('#tdMonthItem' + index).text(priceToString(MonthItem));
         $.cookie(('DayPrice' + index), dayPrice, {expires: 365});
         $.cookie(('DayQty' + index), qty.value, {expires: 365});
+        $.cookie(('DayGetQty' + index), getQty, {expires: 365});
+        console.log(getQty);
         setCount();
     }
 
     function setCount(){
         var totalAmount=0;
+        var totalQty = 0;
         for (var i = 0; i < 19; i++) {
             if ($.cookie(('DayQty' + i)) != null && $.cookie(('DayQty' + i)) != '0') {
                 console.log($('#tdFixItem' + i).val());
@@ -130,10 +122,17 @@
                 $('#tdDayItem' + i).text(priceToString((DayItem)));
                 $('#txtSoldierQty' + i).val(priceToString($.cookie(('DayQty' + i))));
                 totalAmount =  totalAmount + DayItem;
+                if( $.cookie(('DayGetQty' + i)) != null && $.cookie(('DayGetQty' + i)) != '0')
+                totalQty += Number($.cookie(('DayQty' + i))) * Number($.cookie(('DayGetQty' + i)));
+
             }
         }
         $('#dayTotalAmout').text(priceToString((totalAmount)));
         $('#monthTotalAmout').text(priceToString((totalAmount * 30))); //솔져스에 저장은 하지만 굳이 쿠키에 저장할 필요 없음
+        $('#dayTSSTotalQty').text(priceToString((totalQty * 2)));
+        $('#monthTSSTotalQty').text(priceToString((totalQty * 30 * 2)));
+        $('#dayTSGTotalQty').text(priceToString((totalQty)));
+        $('#monthTSGTotalQty').text(priceToString((totalQty * 30)));
 
     }
 </script>

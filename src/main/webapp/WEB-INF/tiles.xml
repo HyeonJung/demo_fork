@@ -8,6 +8,8 @@
         <put-attribute name="scripts"            value="/WEB-INF/template/common/scripts.jsp"/>
         <put-attribute name="header"             value="/WEB-INF/template/common/header.jsp"/>
         <put-attribute name="snb"                value="/WEB-INF/template/common/snb.jsp"/>
+        <put-attribute name="footer"                value="/WEB-INF/template/common/footer.jsp"/>
+
     </definition>
 
     <!-- Depth(4) : / A / B / C / D / E.jsp -->
@@ -29,7 +31,7 @@
     </definition>
 
     <!-- Depth(1) : / A / B.jsp -->
-    <definition name="/tiles/view/*/*/*"            extends="tiles/default/template">
+    <definition name="/tiles/view/*/*"            extends="tiles/default/template">
         <put-attribute name="contents"           value="/WEB-INF/jsp/{1}/{2}.jsp"/>
         <put-attribute name="contents-js"        value="/WEB-INF/jsp/{1}/{2}-js.jsp"/>
     </definition>
