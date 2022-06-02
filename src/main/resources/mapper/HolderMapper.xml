@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="framework.com.example.demo.domain.holder.HolderMapper">
+
+    <select id="selectHolder" resultType="framework.com.example.demo.model.dao.holder">
+        select address, amount_held
+          from holder
+         where chkyn is null
+    </select>
+
+    <select id="findByAddress" resultType="framework.com.example.demo.model.dao.holder">
+        select address, amount_held, id
+          from holder
+         where address = #{address}
+    </select>
+</mapper>

@@ -2,17 +2,13 @@ package framework.com.example.demo.service.coin;
 
 import framework.com.example.demo.domain.sunmi.SunmiApiRepository;
 import framework.com.example.demo.domain.sunmi.ssunmi;
-import framework.com.example.demo.model.network.request.SunmiApiRequestDto;
-import framework.com.example.demo.model.network.response.SunmiApiResponseDto;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import framework.com.example.demo.model.network.request.coin.SunmiApiRequestDto;
+import framework.com.example.demo.model.network.response.coin.SunmiApiResponseDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import javax.persistence.Entity;
 import javax.transaction.Transactional;
 import java.util.List;
-import java.util.Optional;
 
 @RequiredArgsConstructor
 @Service

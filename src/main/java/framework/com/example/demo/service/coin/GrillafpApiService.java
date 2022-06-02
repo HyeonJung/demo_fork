@@ -2,12 +2,8 @@ package framework.com.example.demo.service.coin;
 
 import framework.com.example.demo.domain.grilla.GrillaApiRepository;
 import framework.com.example.demo.domain.grilla.grillafp;
-import framework.com.example.demo.domain.metakongs.MetakongsApiRepository;
-import framework.com.example.demo.domain.metakongs.metakongsfp;
-import framework.com.example.demo.model.network.request.GrillaApiRequestDto;
-import framework.com.example.demo.model.network.request.MetaKongsApiRequestDto;
-import framework.com.example.demo.model.network.response.GrillaApiResponseDto;
-import framework.com.example.demo.model.network.response.MetaKongsApiResponseDto;
+import framework.com.example.demo.model.network.request.coin.GrillaApiRequestDto;
+import framework.com.example.demo.model.network.response.coin.GrillaApiResponseDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 

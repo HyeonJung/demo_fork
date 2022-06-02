@@ -2,7 +2,6 @@ package framework.com.example.demo.controller;
 
 import framework.com.example.demo.model.dto.MemberDto;
 import framework.com.example.demo.model.entity.User;
-import framework.com.example.demo.model.entity.sunmi;
 import framework.com.example.demo.service.MemberService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -11,7 +10,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 @Controller
 @RequestMapping("/")
-public class HomeController extends CoinController<sunmi> {
+public class HomeController {
     @Autowired
     private  MemberService memberService;
 

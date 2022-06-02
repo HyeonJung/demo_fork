@@ -53,6 +53,8 @@ public class UserApiLogicService extends BaseService<UserApiRequest, UserApiResp
 
     }
 
+
+
     @Override
     public Header<UserApiResponse> update(Header<UserApiRequest> request) {
         UserApiRequest userApiRequest = request.getData();

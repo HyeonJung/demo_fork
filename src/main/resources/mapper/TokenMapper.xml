@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="framework.com.example.demo.domain.token.TokenMapper">
+
+    <insert id="insertToken" parameterType="framework.com.example.demo.domain.token.tokenVO">
+        insert into token(token_id, nft_code, created_date, modified_date)
+        values (#{tokenId}, #{nftCode}, #{createdDate}, #{modifiedDate})
+        <selectKey keyColumn="token_id" keyProperty="rTokenId" order="AFTER" resultType="java.lang.String">
+            select token_id
+              from token
+             where token_id = #{tokenId}
+               and nft_code = #{nftCode}
+        </selectKey>
+    </insert>
+
+    <select id="findByTokenId" resultType="framework.com.example.demo.domain.token.tokenVO">
+        select token_id
+        from token
+        where token_id = #{tokenId}
+    </select>
+</mapper>
