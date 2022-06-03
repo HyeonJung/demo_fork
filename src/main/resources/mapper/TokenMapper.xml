@@ -18,4 +18,39 @@
         from token
         where token_id = #{tokenId}
     </select>
+
+    <select id="findByTokenMapngId" resultType="framework.com.example.demo.domain.token.tokenmapng.TokenMapngVO">
+        select token_id, address, get_status
+        from tb_tokenmapping
+        where token_id = #{tokenId}
+          and nft_code = #{nftCode}
+          and get_status = 'WAIT'
+    </select>
+
+    <update id="updateTokenMapng" parameterType="framework.com.example.demo.domain.token.tokenmapng.TokenMapngVO">
+        update tb_tokenmapping
+           set address = #{address},
+               get_status = 'SUCCESS'
+         where token_id = #{tokenId}
+           and nft_code = #{nftCode}
+        <selectKey keyColumn="token_id,address,get_status" keyProperty="rTokenId,rAddress,rGetStatus" order="AFTER" resultType="map">
+            select token_id, address, get_status
+            from tb_tokenmapping
+            where token_id = #{tokenId}
+              and nft_code = #{nftCode}
+        </selectKey>
+    </update>
+
+    <select id="findByAllTokenID" resultType="framework.com.example.demo.domain.token.tokenmapng.TokenMapngVO">
+        select token_id
+        from tb_tokenmapping
+        where nft_code = #{nftCode}
+          and get_status = 'WAIT'
+    </select>
+
+    <update id="updateTokenMapngInit" parameterType="framework.com.example.demo.domain.token.tokenmapng.TokenMapngVO">
+        update tb_tokenmapping
+        set get_status = 'WAIT'
+        where nft_code = #{nftCode}
+    </update>
 </mapper>
