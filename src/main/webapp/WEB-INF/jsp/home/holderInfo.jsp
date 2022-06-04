@@ -18,7 +18,7 @@
         <div class="col-sm-12">
             <section class="card">
                 <header class="card-header">
-                    The Soldiers 홀더 리스트 test<br/>
+                    The Soldiers 홀더 리스트<br/>
                     <font color="red"> 매일 24:00 기준 업데이트</font>
 
                     <span class="tools pull-right">
