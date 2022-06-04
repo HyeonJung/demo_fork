@@ -1,5 +1,6 @@
 package framework.com.example.demo.service.coin;
 
+import framework.com.example.demo.domain.holder.HolderInfoVO;
 import framework.com.example.demo.domain.token.TokenMapper;
 import framework.com.example.demo.domain.token.tokenVO;
 import framework.com.example.demo.domain.token.tokenmapng.TokenMapngVO;
@@ -54,8 +55,16 @@ public class TokenApiService {
     public Header<ArrayList<TokenMapngVO>> GetTokenIDList(TokenMapngVO vo){
         try {
             ArrayList<TokenMapngVO> result =  tokenMapper.findByAllTokenID(vo);
+            return Header.OK(result);
+        } catch (Exception ex) {
+            return Header.ERROR("데이터가 없습니다.");
+        }
+    }
 
-            return response(result);
+    public Header<ArrayList<TokenMapngVO>> GetAllTokenInfoList(TokenMapngVO vo){
+        try {
+            ArrayList<TokenMapngVO> result =  tokenMapper.getAllTokenInfoList(vo);
+            return Header.OK(result);
         } catch (Exception ex) {
             return Header.ERROR("데이터가 없습니다.");
         }
@@ -65,6 +74,16 @@ public class TokenApiService {
         try {
             tokenMapper.updateTokenMapngInit(vo);
             return Header.OK("성공");
+        } catch (Exception ex) {
+            return Header.ERROR("데이터가 없습니다.");
+        }
+    }
+
+    public Header<ArrayList<HolderInfoVO>> getHolderInfoList(TokenMapngVO vo){
+        try {
+            ArrayList<HolderInfoVO> result =  tokenMapper.getHolderInfoList(vo);
+
+            return Header.OK(result);
         } catch (Exception ex) {
             return Header.ERROR("데이터가 없습니다.");
         }
@@ -91,9 +110,5 @@ public class TokenApiService {
         return Header.OK(tokenApiResponse);
     }
 
-    private Header<ArrayList<TokenMapngVO>> response(ArrayList<TokenMapngVO> vo) {
-
-        return Header.OK(vo);
-    }
 
 }

@@ -42,15 +42,66 @@
     </update>
 
     <select id="findByAllTokenID" resultType="framework.com.example.demo.domain.token.tokenmapng.TokenMapngVO">
-        select token_id
-        from tb_tokenmapping
+        select ROWNUM, token_id, address, get_status '준비중' as tmp_msg
+          from (
+                  select @ROWNUM := @ROWNUM + 1 AS rownum, T.*
+                    from tb_tokenmapping T, (SELECT @ROWNUM := 0) TMP
+                   order by CAST(T.token_id AS UNSIGNED)
+               ) SUB
+         where nft_code = #{nftCode}
+           and get_status = 'ING'
+    </select>
+
+    <select id="getAllTokenInfoList" resultType="framework.com.example.demo.domain.token.tokenmapng.TokenMapngVO">
+        select ROWNUM, token_id, address, level, CASE WHEN get_status = 'WAIT' THEN '대기중'
+                                                      WHEN get_status = 'SUCCESS' THEN '완료'
+                                                      ELSE '진행중'
+                                                 END as get_status,
+               '준비중' as tmp_msg
+        from (
+                 select @ROWNUM := @ROWNUM + 1 AS rownum, T.token_id as token_id, T.address as address, T.nft_code as nft_code, T.get_status as get_status, T2.level as level
+                 from tb_tokenmapping T, token T2, (SELECT @ROWNUM := 0) TMP
+                 where T.token_id = T2.token_id
+                 order by CAST(T.token_id AS UNSIGNED)
+             ) SUB
         where nft_code = #{nftCode}
-          and get_status = 'WAIT'
     </select>
 
     <update id="updateTokenMapngInit" parameterType="framework.com.example.demo.domain.token.tokenmapng.TokenMapngVO">
         update tb_tokenmapping
-        set get_status = 'WAIT'
+        set get_status = #{getStatus}
         where nft_code = #{nftCode}
+        <if test="getStatus != null and getStatus != '' and getStatus == 'WAIT' ">
+            AND get_status != 'ING'
+        </if>
+        <if test="getStatus != null and getStatus != '' and getStatus == 'ING' ">
+            AND get_status != 'SUCCESS'
+        </if>
     </update>
+
+    <select id="getHolderInfoList" resultType="framework.com.example.demo.domain.holder.HolderInfoVO">
+        select @ROWNUM := @ROWNUM + 1 AS rownum, nvl(address,holderaddress) as address, nvl(nft_code, 'TSO') as nfc_code,
+               nvl(amount, 0) as amount ,amount_held, tsg_amount_held
+          from(
+                select a.address, b.address as holderaddress, a.nft_code, a.amount, nvl(b.amount_held, '클레임 전') as amount_held, nvl(b.tsg_amount_held, '준비중') as tsg_amount_held
+                  from (
+                       select count(*) as amount, address, nft_code
+                         from tb_tokenmapping
+                        group by address ) a
+                         left outer JOIN holder b
+                           on a.address = b.address
+                        where nft_code = #{nftCode}
+                       union distinct
+                       select a.address, b.address as holderaddress, a.nft_code, a.amount, nvl(b.amount_held, '클레임 전') as amount_held, nvl(b.tsg_amount_held, '준비중') as tsg_amount_held
+                         from (
+                              select count(*) as amount, address, nft_code
+                                from tb_tokenmapping
+                               where nft_code = #{nftCode}
+                               group by address ) a
+                        right outer JOIN holder b
+                           on a.address = b.address) A,
+                  (select @ROWNUM := 0) TMP
+        order by amount desc
+
+    </select>
 </mapper>

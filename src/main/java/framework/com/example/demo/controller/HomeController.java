@@ -17,16 +17,6 @@ public class HomeController {
     @RequestMapping("/")
     public String main(){
         return "redirect:/auth/login";
-/*
-        return "/home/home001";
-*/
-    }
-    @RequestMapping("/toastr")
-    public String toastr(){
-        return "toastr";
-/*
-        return "/home/home001";
-*/
     }
     @PostMapping("/SignUp")
     public String SignUp(User user){
@@ -45,15 +35,9 @@ public class HomeController {
         return "redirect:/mainPage";
     }
 
-
     @RequestMapping("/home/mainPage")
         public String mainPage(){
             return "/home/index";
-    }
-
-    @RequestMapping("/home/samplez")
-    public String samplez(){
-        return "/tiles/views/home/sample1";
     }
 
     @RequestMapping("/home/sample1")
@@ -61,13 +45,23 @@ public class HomeController {
         return "/tiles/view/home/sample1";
     }
 
-    @RequestMapping("/home/sample2")
-    public String sample2(){
-        return "/tiles/view//home/sample2";
+    @RequestMapping("/home/nftinfo")
+    public String nftinfo(){
+        return "/tiles/view/home/nftinfo";
     }
 
-    @RequestMapping("/home/sample3")
-    public String sample3(){
-        return "/index";
+    @RequestMapping("/home/holderinfo")
+    public String holderInfo(){
+        return "/tiles/view/home/holderInfo";
+    }
+
+    @RequestMapping("/toastr")
+    public String toastr(){
+        return "toastr";
+    }
+
+    @RequestMapping("/dynamictable")
+    public String dynamictable(){
+        return "/demo/dynamic_table";
     }
 }

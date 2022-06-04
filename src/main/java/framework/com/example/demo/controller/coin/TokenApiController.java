@@ -1,5 +1,6 @@
 package framework.com.example.demo.controller.coin;
 
+import framework.com.example.demo.domain.holder.HolderInfoVO;
 import framework.com.example.demo.domain.token.tokenVO;
 import framework.com.example.demo.domain.token.tokenmapng.TokenMapngVO;
 import framework.com.example.demo.model.network.Header;
@@ -31,9 +32,19 @@ public class TokenApiController {
         return tokenApiService.GetTokenIDList(request.getData());
     }
 
+    @PostMapping("/api/getalltokeninfolist")
+    public Header<ArrayList<TokenMapngVO>> GetAllTokenInfoList(@RequestBody Header<TokenMapngVO> request){
+        return tokenApiService.GetAllTokenInfoList(request.getData());
+    }
+
     @PutMapping("/api/tokenmapnginit")
     public Header<String> TokenMapngInit(@RequestBody Header<TokenMapngVO> request){
         return tokenApiService.updateTokenMapngInit(request.getData());
     }
 
+
+    @PostMapping("/api/getholderlist")
+    public Header<ArrayList<HolderInfoVO>> GetHolderList(@RequestBody Header<TokenMapngVO> request){
+        return tokenApiService.getHolderInfoList(request.getData());
+    }
 }

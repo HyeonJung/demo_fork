@@ -22,6 +22,8 @@ public class TokenMapngVO {
 
     private String getStatus;
 
+    private String rownum;
+
     private LocalDateTime createdDate;
 
     private LocalDateTime modifiedDate;
@@ -31,4 +33,9 @@ public class TokenMapngVO {
     private String rAddress;
 
     private String rGetStatus;
+
+    private String tmpMsg;
+
+    private String level;
+
 }

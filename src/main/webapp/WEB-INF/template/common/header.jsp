@@ -23,9 +23,15 @@
                 </a>
             </li>
             <li>
-                <a href="/home/sample2">
+                <a href="/home/nftinfo">
                     <i class="fa fa-dashboard"></i>
-                    <span>홀더 추세</span>
+                    <span>NFT정보</span>
+                </a>
+            </li>
+            <li>
+                <a href="/home/holderinfo">
+                    <i class="fa fa-user"></i>
+                    <span>지갑(홀더&코인) 정보</span>
                 </a>
             </li>
         </ul>
