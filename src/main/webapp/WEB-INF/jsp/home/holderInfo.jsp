@@ -121,12 +121,23 @@
                 { bSearchable: false,  "aTargets": [ 3 ],render: $.fn.dataTable.render.number(',', '.', 0, '') },
                 { bSearchable: false, "aTargets": [ 4 ], render: $.fn.dataTable.render.number(',', '.', 0, '')  }, //정렬 사용안함
             ],
-            aoColumns:[
-                {mData: "rownum"},
-                {mData: "address", width:"15%"},
-                {mData: "amount"},
-                {mData: "amount_held"},
-                {mData: "tsg_amount_held"}
+            columns:[
+                {data: "rownum"},
+                {data: "address", width:"15%"},
+                {data: "amount"},
+                {data: "amount_held",
+                    render: function (data, type, row, mete)
+                    {
+                        if(type == 'display')
+                            if (row.calc_tss_coin.toString().indexOf('-') == 0)
+                                return row.amount_held + '( <i style="color:blue; "class="fa fa-caret-down"></i> ' + row.calc_tss_coin + ')';
+                             else
+                                return row.amount_held + '( <i style="color:red; "class="fa fa-caret-up"></i> ' + row.calc_tss_coin + ')';
+                        else
+                            return data;
+                    }
+                },
+                {data: "tsg_amount_held"}
             ],
             "aaSorting": [[2, 'desc']],
             language : {

@@ -18,10 +18,12 @@ public class HolderInfoVO {
 
     private String nftCode;
 
-    private String amount;
+    private Long amount; //늪 수량
 
-    private String amountHeld;
+    private Long amountHeld; //실버코인
 
-    private String tsgAmountHeld;
+    private String tsgAmountHeld; //골드코인
+
+    private Long calcTssCoin; //전일 수량과 비교 한 값
 
 }
