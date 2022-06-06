@@ -19,7 +19,6 @@
             <section class="card">
                 <header class="card-header">
                     The Soldiers NFT 리스트 <br/>
-                    <font color="red"> 스테이킹 여부 - <b>준비중</b></font> <br/>
                     <font color="red"> 최신여부 매일 24:00 기준 업데이트</font>
                     <span class="tools pull-right">
                 <a href="javascript:;" class="fa fa-chevron-down"></a>
@@ -77,7 +76,7 @@
         $('#hidden-table-info tfoot th').each(function () {
             var title = $(this).text();
             console.log(title);
-            if (title != 'No' && title != '스테이킹 여부')
+            if (title != 'No' )
                 $(this).html('<input type="text" placeholder="Search ' + title + '" />');
             else{
                 $(this).html('');
@@ -140,15 +139,15 @@
                 { "aTargets": [ 1 ], },
                 { "aTargets": [ 2 ] },
                 {  "aTargets": [ 3 ] },
-                { "bSortable": false, bSearchable: false, "aTargets": [ 4 ] }, //정렬 사용안함
-                { "bSortable": false, bSearchable: false, "aTargets": [ 4 ] } //정렬 사용안함
+                { "aTargets": [ 4 ] }, //정렬 사용안함
+                {  "aTargets": [ 5 ] } //정렬 사용안함
             ],
             aoColumns:[
                 {mData: "rownum"},
                 {mData: "token_id", width:"15%"},
                 {mData: "level"},
                 {mData: "address"},
-                {mData: "tmp_msg", width:"15%"},
+                {mData: "staking_status", width:"15%"},
                 {mData: "get_status"}
             ],
             "aaSorting": [[1, 'asc']],

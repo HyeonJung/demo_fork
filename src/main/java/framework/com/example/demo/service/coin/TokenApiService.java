@@ -79,6 +79,7 @@ public class TokenApiService {
         }
     }
 
+    //홀더 정보 조회
     public Header<ArrayList<HolderInfoVO>> getHolderInfoList(TokenMapngVO vo){
         try {
             ArrayList<HolderInfoVO> result =  tokenMapper.getHolderInfoList(vo);
@@ -86,6 +87,17 @@ public class TokenApiService {
             return Header.OK(result);
         } catch (Exception ex) {
             return Header.ERROR("데이터가 없습니다.");
+        }
+    }
+
+    //데일리 레포트 마감
+    public Header<String> InsertTSODailyEnd(TokenMapngVO vo){
+        try {
+            tokenMapper.insertDailyInfo(vo);
+            tokenMapper.updateDailyInfoForAmount(vo);
+            return Header.OK("OK");
+        } catch (Exception ex) {
+            return Header.ERROR("데일리 리포트 오류 발생");
         }
     }
 
@@ -105,6 +117,7 @@ public class TokenApiService {
                 .tokenId(vo.getTokenId())
                 .address(vo.getRAddress())
                 .getStatus(vo.getRGetStatus())
+                .statkingStatus(vo.getStakingStatus())
                 .build();
 
         return Header.OK(tokenApiResponse);

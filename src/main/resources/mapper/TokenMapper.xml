@@ -30,7 +30,8 @@
     <update id="updateTokenMapng" parameterType="framework.com.example.demo.domain.token.tokenmapng.TokenMapngVO">
         update tb_tokenmapping
            set address = #{address},
-               get_status = 'SUCCESS'
+               get_status = 'SUCCESS',
+               staking_status = #{stakingStatus}
          where token_id = #{tokenId}
            and nft_code = #{nftCode}
         <selectKey keyColumn="token_id,address,get_status" keyProperty="rTokenId,rAddress,rGetStatus" order="AFTER" resultType="map">
@@ -57,9 +58,13 @@
                                                       WHEN get_status = 'SUCCESS' THEN '완료'
                                                       ELSE '진행중'
                                                  END as get_status,
-               '준비중' as tmp_msg
+               CASE WHEN staking_status = 'NONE' THEN '스테이킹 X'
+                    WHEN staking_status = 'Staking' THEN '스테이킹 중'
+                    ELSE '수집중'
+               END as staking_status
         from (
-                 select @ROWNUM := @ROWNUM + 1 AS rownum, T.token_id as token_id, T.address as address, T.nft_code as nft_code, T.get_status as get_status, T2.level as level
+                 select @ROWNUM := @ROWNUM + 1 AS rownum, T.token_id as token_id, T.address as address, T.nft_code as nft_code,
+                        T.staking_status as staking_status, T.get_status as get_status, T2.level as level
                  from tb_tokenmapping T, token T2, (SELECT @ROWNUM := 0) TMP
                  where T.token_id = T2.token_id
                  order by CAST(T.token_id AS UNSIGNED)
@@ -80,8 +85,9 @@
     </update>
 
     <select id="getHolderInfoList" resultType="framework.com.example.demo.domain.holder.HolderInfoVO">
-        select @ROWNUM := @ROWNUM + 1 AS rownum, nvl(A.address, holderaddress) as address, nvl(nft_code, 'TSO') as nfc_code,
-                nvl(A.amount, 0) as amount, amount_held,
+        select @ROWNUM := @ROWNUM + 1 AS rownum, nvl(A.address, holderaddress) as address, nvl(A.nft_code, 'TSO') as nft_code,
+                nvl(A.amount, 0) as amount, nvl((CAST(nvl(tb_tso_daily.amount, A.amount) AS SIGNED) - CAST(A.amount AS SIGNED)) * -1, 0) as calc_amount,
+                amount_held,
                 (CAST(nvl(tss_coin, amount_held) AS SIGNED) - CAST(amount_held AS SIGNED)) * -1 as calc_tss_coin,
                 if(tsg_amount_held = 0, '준비중', tsg_amount_held) as tsg_amount_held
           from  (
@@ -108,4 +114,46 @@
         order by CAST(A.amount AS UNSIGNED) desc
 
     </select>
+
+
+
+
+    <!-- 데일리 마감 -->
+    <insert id="insertDailyInfo" parameterType="framework.com.example.demo.domain.token.tokenVO">
+        insert into tb_tso_daily
+            (address, date, tss_coin, nft_code)
+            (select address, date_format(date_add(now(), interval -0 day), '%Y%m%d'), amount_held, 'TSO' as nft_code from holder)
+    </insert>
+
+    <update id="updateDailyInfoForAmount" parameterType="framework.com.example.demo.domain.token.tokenmapng.TokenMapngVO">
+        update
+            tb_tso_daily T1,
+            (
+            select nvl(A.address, holderaddress) as address, nvl(nft_code, 'TSO') as nft_code,
+                   nvl(A.amount, 0) as amount
+              from  (
+                        select a.address, b.address as holderaddress, a.nft_code, a.amount
+                          from (
+                                 select count(*) as amount, address, nft_code
+                                   from tb_tokenmapping
+                                group by address ) a
+                          left outer JOIN holder b
+                            on a.address = b.address
+                         where nft_code = #{nftCode}
+                        union distinct
+                        select a.address, b.address as holderaddress, a.nft_code, a.amount
+                          from (
+                                 select count(*) as amount, address, nft_code
+                                   from tb_tokenmapping
+                                  where nft_code = #{nftCode}
+                                  group by address ) a
+                         right outer JOIN holder b
+                            on a.address = b.address) A
+             order by CAST(A.amount AS UNSIGNED) desc
+             ) T2
+        set T1.amount = T2.amount
+      where T1.address = T2.address
+        and T1.nft_code = T2.nft_code
+        and T1.date = date_format(date_add(now(), interval -0 day), '%Y%m%d')
+    </update>
 </mapper>

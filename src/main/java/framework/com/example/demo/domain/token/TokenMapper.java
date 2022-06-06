@@ -24,4 +24,7 @@ public interface TokenMapper {
 
         ArrayList<HolderInfoVO> getHolderInfoList(TokenMapngVO vo);
 
+
+        void insertDailyInfo(TokenMapngVO vo);
+        void updateDailyInfoForAmount(TokenMapngVO vo);
 }

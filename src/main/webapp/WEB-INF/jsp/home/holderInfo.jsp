@@ -124,7 +124,18 @@
             columns:[
                 {data: "rownum"},
                 {data: "address", width:"15%"},
-                {data: "amount"},
+                {data: "amount",
+                    render: function (data, type, row, mete)
+                    {
+                        if(type == 'display')
+                            if (row.calc_amount.toString().indexOf('-') == 0)
+                                return row.amount + '( <i style="color:blue; "class="fa fa-caret-down"></i> ' + row.calc_amount + ')';
+                            else
+                                return row.amount + '( <i style="color:red; "class="fa fa-caret-up"></i>' + row.calc_amount + ')';
+                        else
+                            return data;
+                    }
+                },
                 {data: "amount_held",
                     render: function (data, type, row, mete)
                     {

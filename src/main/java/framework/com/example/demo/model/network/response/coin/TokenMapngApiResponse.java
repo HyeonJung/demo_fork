@@ -15,4 +15,6 @@ public class TokenMapngApiResponse {
     private String address;
 
     private String getStatus;
+
+    private String statkingStatus;
 }

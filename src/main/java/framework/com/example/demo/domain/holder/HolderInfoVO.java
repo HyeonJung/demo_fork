@@ -26,4 +26,6 @@ public class HolderInfoVO {
 
     private Long calcTssCoin; //전일 수량과 비교 한 값
 
+    private Long calcAmount;
+
 }

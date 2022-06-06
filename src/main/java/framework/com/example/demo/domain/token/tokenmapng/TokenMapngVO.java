@@ -22,6 +22,8 @@ public class TokenMapngVO {
 
     private String getStatus;
 
+    private String stakingStatus;
+
     private String rownum;
 
     private LocalDateTime createdDate;

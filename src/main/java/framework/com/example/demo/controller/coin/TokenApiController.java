@@ -47,4 +47,9 @@ public class TokenApiController {
     public Header<ArrayList<HolderInfoVO>> GetHolderList(@RequestBody Header<TokenMapngVO> request){
         return tokenApiService.getHolderInfoList(request.getData());
     }
+
+    @PostMapping("/api/insert_tso_daily_end")
+    public Header<String> InsertTSODailyEnd(@RequestBody Header<TokenMapngVO> request){
+        return tokenApiService.InsertTSODailyEnd(request.getData());
+    }
 }

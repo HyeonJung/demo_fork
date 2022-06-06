@@ -27,12 +27,13 @@
 
 <header id="coin-title" class="card-header">
     Coin - <c:out value="${unit.name}"/> <br/>
-    환율 - <c:out value="${unit.price}"/> <br/>
+    환율 - <input type='text' id="txtBasePrice" value='<c:out value="${unit.price}"/>' /> <br/>
     FP - <fmt:formatNumber value="${unit.soldiersFP}"/><br/>
     하루 채굴금액(설정) - <b id="dayTotalAmout"></b><br/>
     한달 채굴금액(설정) - <b id="monthTotalAmout"></b><br/>
     하루 채굴수량(TSS) - <b id="dayTSSTotalQty"></b>, 하루 채굴수량(TSG) - <b id="dayTSGTotalQty"></b> <br/>
     한달 채굴수량(TSS) - <b id="monthTSSTotalQty"></b>, 한달 채굴수량(TSG) - <b id="monthTSGTotalQty"></b> <br/>
+    <input type="hidden" id="hdnBasePrice" value='<c:out value="${unit.price}"/>' />
 </header>
 <table class="table table-striped table-advance table-hover">
     <thead>
@@ -68,7 +69,7 @@
             <td>${unit.name}</td>
             <td><fmt:formatNumber value="${unit.qty}"/></td>
             <td><fmt:formatNumber value="${unit.getQty}"/></td>
-            <td><input type="text" class="input-small" style="width:40px;" id="txtSoldierQty${status.index}" value="0"
+            <td><input type="text" class="input-small" numberOnly style="width:40px;" id="txtSoldierQty${status.index}" value="0"
                        onkeyup="DayCalc(${unit.day_item}, ${unit.month_item}, ${status.index}, ${unit.getQty}, this)"></td>
             <td id="tdFixItem${status.index}"><fmt:formatNumber value="${unit.day_item}"/></td>
             <td id="tdDayItem${status.index}"><fmt:formatNumber value="${unit.day_item}"/></td>
@@ -89,6 +90,15 @@
 <script>
     $(function(){
         setCount();
+        $("input:text[numberOnly]").on("keyup", function() {
+            $(this).val($(this).val().replace(/[^0-9]/g,"0"));
+            if($(this).val() != '0')
+            $(this).val($(this).val().replace(/[^0-9]/g,"0").replace(/(^0+)/g,""));
+        });
+
+        $("#txtBasePrice").on("keyup", function() {
+            setCount();
+        });
     });
 
 
@@ -97,9 +107,11 @@
     }
 
     function DayCalc(dayPrice, monthPrice, index, getQty, qty) {
+
+        console.log(dayPrice);
         var DayItem = 1 * dayPrice;
         var MonthItem = 1 * monthPrice;
-        if (qty.value != '1' && qty.value != '') {
+        if (qty.value != '1' && qty.value != '' && qty.value != '0' ){
             DayItem = qty.value * dayPrice;
             MonthItem = qty.value * monthPrice;
         }
@@ -108,7 +120,6 @@
         $.cookie(('DayPrice' + index), dayPrice, {expires: 365});
         $.cookie(('DayQty' + index), qty.value, {expires: 365});
         $.cookie(('DayGetQty' + index), getQty, {expires: 365});
-        console.log(getQty);
         setCount();
     }
 
@@ -116,10 +127,18 @@
         var totalAmount=0;
         var totalQty = 0;
         for (var i = 0; i < 19; i++) {
+
+
+            var dayPrice = $('#tdFixItem' + i).text().replaceAll(",","")
+            var qty = $.cookie(('DayGetQty' + i));
+            if($("#hdnBasePrice").val() != $("#txtBasePrice").val())
+                dayPrice = $("#txtBasePrice").val() * qty;
+
             if ($.cookie(('DayQty' + i)) != null && $.cookie(('DayQty' + i)) != '0') {
-                console.log($('#tdFixItem' + i).val());
-                var DayItem = $.cookie(('DayQty' + i)) * $('#tdFixItem' + i).text().replaceAll(",","");
+                var DayItem = $.cookie(('DayQty' + i)) * dayPrice;
+                var MonthItem = $.cookie(('DayQty' + i)) * dayPrice * 30;
                 $('#tdDayItem' + i).text(priceToString((DayItem)));
+                $('#tdMonthItem' + i).text(priceToString((MonthItem)));
                 $('#txtSoldierQty' + i).val(priceToString($.cookie(('DayQty' + i))));
                 totalAmount =  totalAmount + DayItem;
                 if( $.cookie(('DayGetQty' + i)) != null && $.cookie(('DayGetQty' + i)) != '0')
