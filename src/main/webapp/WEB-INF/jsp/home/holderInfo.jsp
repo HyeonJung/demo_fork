@@ -157,7 +157,7 @@
                     '<option value="10">10</option>'+
                     '<option value="25">25</option>'+
                     '<option value="50">50</option>'+
-                    '<option value="100">10</option>'+
+                    '<option value="100">100</option>'+
                     '</select> 개씩',
                 "info":"_START_ 부터 _END_ 까지 총 _TOTAL_ 건"
             },

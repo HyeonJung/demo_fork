@@ -18,7 +18,7 @@ public class TokenApiController {
     TokenApiService tokenApiService;
 
     @PostMapping("/api/token")
-    public Header<TokenApiResponse> insert(@RequestBody Header<tokenVO> request){
+    public Header<TokenApiResponse> insert(@RequestBody Header<TokenMapngVO> request){
         return tokenApiService.insert(request.getData());
     }
 

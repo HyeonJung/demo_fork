@@ -26,13 +26,16 @@ public class HolderApiService extends BaseService<HolderApiRequest, HolderApiRes
     @Override
     public Header<HolderApiResponse> create(Header<HolderApiRequest> request) {
         HolderApiRequest holderApiRequest = request.getData();
-
-        holder findHolder = holderMapper.findByAddress(holderApiRequest.getAddress());
+        if(holderApiRequest.getAddress() == null || holderApiRequest.getNftCode() == null || holderApiRequest.getAddress().isEmpty() || holderApiRequest.getNftCode().isEmpty()){
+            return Header.ERROR("Address와 nft_code는 필수입니다");
+        }
+        holder findHolder = holderMapper.findByAddress(holderApiRequest.getAddress(), holderApiRequest.getNftCode());
         if (findHolder == null) {
             Holder holder = Holder.builder()
                     .address(holderApiRequest.getAddress())
                     .amount(holderApiRequest.getAmount())
                     .amountHeld(holderApiRequest.getAmountHeld())
+                    .nftCode(holderApiRequest.getNftCode())
                     .build();
 
             Holder newHolder = baseRepository.save(holder);
@@ -75,9 +78,6 @@ public class HolderApiService extends BaseService<HolderApiRequest, HolderApiRes
     @Override
     public Header<HolderApiResponse> read(Long id) {
         return null;
-
-
-
     }
 
     public Header<HolderApiResponse> read() {

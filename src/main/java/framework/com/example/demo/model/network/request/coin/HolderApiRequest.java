@@ -19,4 +19,6 @@ public class HolderApiRequest {
     private Long amountHeld;
 
     private String chkYN;
+
+    private String nftCode;
 }

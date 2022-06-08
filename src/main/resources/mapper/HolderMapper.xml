@@ -12,5 +12,7 @@
         select address, amount_held, id
           from holder
          where address = #{address}
+           and nft_code = #{nftCode}
     </select>
+
 </mapper>

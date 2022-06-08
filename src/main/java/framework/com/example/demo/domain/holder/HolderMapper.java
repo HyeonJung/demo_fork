@@ -10,6 +10,6 @@ import java.util.Optional;
 public interface HolderMapper {
    ArrayList<holder> selectHolder();
 
-   holder findByAddress(String adress);
+   holder findByAddress(String address, String nftCode);
 
 }

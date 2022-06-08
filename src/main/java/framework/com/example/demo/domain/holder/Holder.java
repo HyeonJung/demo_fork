@@ -31,6 +31,8 @@ public class Holder extends BaseTimeEntity {
 
     private String chkYN;
 
+    private String nftCode;
+
     public Holder toEntity(){
         return Holder.builder()
                 .id(id)

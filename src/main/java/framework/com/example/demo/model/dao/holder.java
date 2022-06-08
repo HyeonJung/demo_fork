@@ -13,4 +13,6 @@ public class holder {
     private Long amountHeld;
 
     private Long id;
+
+    private String nftCode;
 }

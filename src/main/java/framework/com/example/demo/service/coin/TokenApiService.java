@@ -18,7 +18,7 @@ public class TokenApiService {
     @Autowired
     TokenMapper tokenMapper;
 
-    public Header<TokenApiResponse> insert(tokenVO vo){
+    public Header<TokenApiResponse> insert(TokenMapngVO vo){
         vo.setCreatedDate(LocalDateTime.now());
         vo.setModifiedDate(LocalDateTime.now());
 
@@ -29,7 +29,7 @@ public class TokenApiService {
         try {
             tokenMapper.insertToken(vo);
 
-            return response(vo);
+            return responseByTokenMapng(vo);
         }catch (Exception ex) {
             return Header.ERROR("토큰 생성중 오류 발생");
         }
@@ -48,8 +48,11 @@ public class TokenApiService {
             tokenMapper.updateTokenMapng(vo);
 
             return response(vo);
+        }else{
+            tokenMapper.insertToken(vo);
+            return response(vo);
+
         }
-        return Header.ERROR("데이터가 없습니다.");
     }
 
     public Header<ArrayList<TokenMapngVO>> GetTokenIDList(TokenMapngVO vo){
@@ -110,7 +113,15 @@ public class TokenApiService {
 
         return Header.OK(tokenApiResponse);
     }
+    private Header<TokenApiResponse> responseByTokenMapng(TokenMapngVO vo) {
+        //user -> userApiResponse
+        TokenApiResponse tokenApiResponse = TokenApiResponse.builder()
+                .tokenId(vo.getTokenId())
+                .nftCode(vo.getNftCode())
+                .build();
 
+        return Header.OK(tokenApiResponse);
+    }
     private Header<TokenMapngApiResponse> response(TokenMapngVO vo) {
         //user -> userApiResponse
         TokenMapngApiResponse tokenApiResponse = TokenMapngApiResponse.builder()
@@ -118,6 +129,7 @@ public class TokenApiService {
                 .address(vo.getRAddress())
                 .getStatus(vo.getRGetStatus())
                 .statkingStatus(vo.getStakingStatus())
+                .nftCode(vo.getNftCode())
                 .build();
 
         return Header.OK(tokenApiResponse);

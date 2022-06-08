@@ -9,9 +9,9 @@ import java.util.ArrayList;
 
 @Mapper
 public interface TokenMapper {
-        void insertToken(tokenVO vo);
+        void insertToken(TokenMapngVO vo);
 
-        tokenVO findByTokenId(tokenVO vo);
+        tokenVO findByTokenId(TokenMapngVO vo);
         TokenMapngVO findByTokenMapngId(TokenMapngVO vo);
 
         void updateTokenMapng(TokenMapngVO vo);

@@ -13,25 +13,38 @@ import framework.com.example.demo.domain.soldierfp.SoldierFPApiRepository;
 import framework.com.example.demo.domain.soldierfp.soldierfp;
 import framework.com.example.demo.domain.sunmi.SunmiApiRepository;
 import framework.com.example.demo.domain.sunmi.ssunmi;
+import framework.com.example.demo.domain.token.tokenmapng.TokenMapngVO;
 import framework.com.example.demo.model.coin.Soldier;
 import framework.com.example.demo.model.coin.Unit;
 import framework.com.example.demo.model.coin.sunmi;
+import jdk.vm.ci.meta.Local;
 import lombok.RequiredArgsConstructor;
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.HttpClientBuilder;
 import org.apache.http.util.EntityUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.script.ScriptException;
 import java.io.*;
 import java.net.*;
+import java.sql.Timestamp;
+import java.time.Instant;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.ZoneOffset;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 
 @RequiredArgsConstructor
 @Service
 public class SunmiLogicService extends CoinBaseService<sunmi> {
+
+    @Autowired
+    TokenApiService tokenApiService;
     private final SunmiApiRepository sunmiApiRepository;
     private final SoldierFPApiRepository soldierFPApiRepository;
 
@@ -456,7 +469,6 @@ public class SunmiLogicService extends CoinBaseService<sunmi> {
 
         HttpGet request = new HttpGet("https://www.lbank.info/request/ticker/tick24hr?symbol=usd&");
         request.addHeader("REFERER", "www.lbank.info");
-
         HttpResponse response = Excute(request);
         HttpEntity entity = response.getEntity();
         String result = "";
@@ -491,6 +503,124 @@ public class SunmiLogicService extends CoinBaseService<sunmi> {
         unit.setSoldiers(soldiers);
 
         return unit;
+    }
+
+    public void GetTsoDayAmount() throws IOException, InterruptedException {
+
+        for (int i = 30; i  >= 1; i--) {
+            Thread.sleep(1500);
+
+            HttpGet request = new HttpGet("https://api-cypress-v2.scope.klaytn.com/v2/tokens/0x1068fc803c8f4cdaa4ece881e6be747f48119a1a/transfers?page=" + i);
+            request.addHeader("REFERER", "https://scope.klaytn.com/");
+            HttpResponse response = Excute(request);
+            HttpEntity entity = response.getEntity();
+            String result = "";
+            if (entity != null) {
+                // return it as a String
+                result = EntityUtils.toString(entity);
+            }
+
+            if (result != "") {
+                Gson gson = new Gson();
+                JsonObject jsonObject = gson.fromJson(result, JsonObject.class);
+                JsonArray items = jsonObject.getAsJsonArray("result");
+                if(items == null){
+                    break;
+                }
+
+
+                for (int j = items.size()-1 ; j >= 0; j--) {
+
+                    String createdAt = items.get(j).getAsJsonObject().get("createdAt").toString().replace("\"", "");
+                    Instant instant = Instant.ofEpochSecond(Long.parseLong(createdAt));
+                    LocalDateTime tsTime = LocalDateTime.ofInstant(instant, ZoneOffset.ofHours(9));
+                    LocalDateTime agoDate = LocalDateTime.now().minusDays(2);
+
+                    if (agoDate.isAfter(tsTime)) {
+                        //agoDate 보다 과거이면 리턴
+                        break;
+                    }
+                    String tokenId = items.get(j).getAsJsonObject().get("tokenId").toString().replace("\"", "");
+                    String fromAddress = items.get(j).getAsJsonObject().get("fromAddress").toString().replace("\"", "");
+                    String toAddress = items.get(j).getAsJsonObject().get("toAddress").toString().replace("\"", "");
+                    String isStaking = "None";
+                    TokenMapngVO vo = new TokenMapngVO();
+                    vo.setTokenId(tokenId);
+                    vo.setNftCode("TSO");
+                    vo.setModifiedDate(LocalDateTime.now());
+                    String data = "0x4c1c2794e3414712f92a786b6bc68fe22216ed7e";
+                    if (toAddress.equals(data)) {
+                        isStaking = "Staking";
+                        vo.setAddress(fromAddress);
+                        vo.setStakingStatus(isStaking);
+                    } else {
+                        isStaking = "None";
+                        vo.setAddress(toAddress);
+                        vo.setStakingStatus(isStaking);
+                    }
+                    tokenApiService.update(vo);
+                }
+            }
+        }
+    }
+
+    public void GetBmzDayAmount() throws IOException, InterruptedException {
+
+        for (int i = 30; i  >= 1; i--) {
+            Thread.sleep(1500);
+
+            HttpGet request = new HttpGet("https://api-cypress-v2.scope.klaytn.com/v2/tokens/0xff99f673d453245512e28f4dfbe4fb24428e55c1/transfers?page=" + i);
+            request.addHeader("REFERER", "https://scope.klaytn.com/");
+            HttpResponse response = Excute(request);
+            HttpEntity entity = response.getEntity();
+            String result = "";
+            if (entity != null) {
+                // return it as a String
+                result = EntityUtils.toString(entity);
+            }
+
+            if (result != "") {
+                Gson gson = new Gson();
+                JsonObject jsonObject = gson.fromJson(result, JsonObject.class);
+                JsonArray items = jsonObject.getAsJsonArray("result");
+                if(items == null){
+                    break;
+                }
+
+
+                for (int j = items.size()-1 ; j >= 0; j--) {
+
+                    String createdAt = items.get(j).getAsJsonObject().get("createdAt").toString().replace("\"", "");
+                    Instant instant = Instant.ofEpochSecond(Long.parseLong(createdAt));
+                    LocalDateTime tsTime = LocalDateTime.ofInstant(instant, ZoneOffset.ofHours(9));
+                    LocalDateTime agoDate = LocalDateTime.now().minusDays(2);
+
+                    if (agoDate.isAfter(tsTime)) {
+                        //agoDate 보다 과거이면 리턴
+                        break;
+                    }
+                    String tokenId = items.get(j).getAsJsonObject().get("tokenId").toString().replace("\"", "");
+                    String fromAddress = items.get(j).getAsJsonObject().get("fromAddress").toString().replace("\"", "");
+                    String toAddress = items.get(j).getAsJsonObject().get("toAddress").toString().replace("\"", "");
+                    String isStaking = "None";
+                    TokenMapngVO vo = new TokenMapngVO();
+                    vo.setTokenId(tokenId);
+                    vo.setNftCode("TSO");
+                    vo.setModifiedDate(LocalDateTime.now());
+                    String data = "0xc7e3aa68f2fb0091bd3c7392eff139b5f95e11a0";
+                    if (toAddress.equals(data)) {
+                        isStaking = "Staking";
+                        vo.setAddress(fromAddress);
+                        vo.setStakingStatus(isStaking);
+                    } else {
+                        isStaking = "None";
+                        vo.setAddress(toAddress);
+                        vo.setStakingStatus(isStaking);
+                    }
+                    tokenApiService.update(vo);
+                }
+            }
+        }
     }
 
 }

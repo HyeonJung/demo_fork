@@ -17,4 +17,6 @@ public class TokenMapngApiResponse {
     private String getStatus;
 
     private String statkingStatus;
+
+    private String nftCode;
 }
