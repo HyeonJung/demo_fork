@@ -1,4 +1,7 @@
 <%@ page contentType="text/html; charset=utf-8" pageEncoding="utf-8" %>
+<%@ taglib uri="http://java.sun.com/jstl/core" prefix="c" %>
+<%@ taglib uri="http://www.springframework.org/security/tags" prefix="sec" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <%@ taglib prefix="tiles" uri="http://tiles.apache.org/tags-tiles" %>
 
 <!--header start-->
@@ -25,13 +28,19 @@
             <li>
                 <a href="/home/nftinfo">
                     <i class="fa fa-dashboard"></i>
-                    <span>NFT정보</span>
+                    <span>NFT정보 - 더 솔져스</span>
                 </a>
             </li>
             <li>
-                <a href="/home/holderinfo">
+                <a href="/home/holderinfo?nftcode=TSO">
                     <i class="fa fa-user"></i>
-                    <span>지갑(홀더&코인) 정보</span>
+                    <span>지갑(홀더&코인) 정보 - 더 솔져스</span>
+                </a>
+            </li>
+            <li>
+                <a href="/home/holderinfo?nftcode=BMZ">
+                    <i class="fa fa-user"></i>
+                    <span>지갑(홀더&코인) 정보 - 베이비몽즈</span>
                 </a>
             </li>
         </ul>

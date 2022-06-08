@@ -1,6 +1,5 @@
 package framework.com.example.demo.model.network.response.coin;
 
-import jdk.jpackage.internal.Log;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;

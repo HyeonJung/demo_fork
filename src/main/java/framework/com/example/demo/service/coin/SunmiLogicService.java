@@ -17,7 +17,6 @@ import framework.com.example.demo.domain.token.tokenmapng.TokenMapngVO;
 import framework.com.example.demo.model.coin.Soldier;
 import framework.com.example.demo.model.coin.Unit;
 import framework.com.example.demo.model.coin.sunmi;
-import jdk.vm.ci.meta.Local;
 import lombok.RequiredArgsConstructor;
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;

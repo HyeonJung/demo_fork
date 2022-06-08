@@ -50,6 +50,9 @@
                    order by CAST(T.token_id AS SIGNED)
                ) SUB
          where nft_code = #{nftCode}
+        <if test="nftCode == 'BMZ' ">
+            AND modified_date is null
+        </if>
     </select>
 
     <select id="getAllTokenInfoList" resultType="framework.com.example.demo.domain.token.tokenmapng.TokenMapngVO">
@@ -94,11 +97,10 @@
                           from (
                                select count(*) as amount, address, nft_code
                                  from tb_tokenmapping
+                                where nft_code = #{nftCode}
                                 group by address ) a
-                                 left outer JOIN holder b
+                                 left outer JOIN (SELECT * from holder WHERE nft_code = #{nftCode}) b
                                    on a.address = b.address
-                         where a.nft_code = #{nftCode}
-                           and b.nft_code = 'TSO'
                        union distinct
                        select a.address, b.address as holderaddress, a.nft_code, b.nft_code as holder_nft_code, a.amount, nvl(b.amount_held, '0') as amount_held, nvl(b.tsg_amount_held, 0) as tsg_amount_held
                          from (
@@ -106,11 +108,9 @@
                                 from tb_tokenmapping
                                where nft_code = #{nftCode}
                                group by address ) a
-                        right outer JOIN holder b
-                           on a.address = b.address
-                        where a.nft_code = 'TSO'
-                          and b.nft_code = 'TSO') A
-          left outer join (select  * from tb_tso_daily where date = date_format(date_add(now(), interval -1 day), '%Y%m%d') and nft_code ='TSO') tb_tso_daily
+                        right outer JOIN (SELECT * from holder WHERE nft_code = #{nftCode}) b
+                           on a.address = b.address) A
+          left outer join (select  * from tb_tso_daily where date = date_format(date_add(now(), interval -1 day), '%Y%m%d') and nft_code =#{nftCode}) tb_tso_daily
             on nvl(A.address, holderaddress) = tb_tso_daily.address,
                   (select @ROWNUM := 0) TMP
         order by CAST(A.amount AS UNSIGNED) desc

@@ -1,8 +1,8 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jstl/core" prefix="c" %>
 <%@ taglib uri="http://www.springframework.org/security/tags" prefix="sec" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <%@ taglib prefix="tiles" uri="http://tiles.apache.org/tags-tiles" %>
-
 
 <!--dynamic table-->
 <link href="/assets/advanced-datatable/media/css/demo_page.css" rel="stylesheet" />
@@ -13,6 +13,7 @@
 <link href="/css/style-responsive.css" rel="stylesheet" />
 
 <section class="wrapper">
+    <input type='hidden' id="code" value='${code}'/>
     <!-- page start-->
     <div class="row">
         <div class="col-sm-12">
@@ -68,7 +69,7 @@
 
     $(document).ready(function() {
         const param ={};
-        param["nft_code"]="TSO";
+        param["nft_code"]=$('#code').val();
         const data={};
         data["data"]=param;
 
