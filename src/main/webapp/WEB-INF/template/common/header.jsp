@@ -19,7 +19,7 @@
             <li>
                 <a href="/home/sample1">
                     <i class="fa fa-dashboard"></i>
-                    <span>Dashboard</span>
+                    <span>솔져스 코인 계산기</span>
                 </a>
             </li>
             <li>
