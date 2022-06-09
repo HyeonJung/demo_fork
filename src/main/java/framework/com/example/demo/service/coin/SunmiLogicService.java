@@ -533,7 +533,7 @@ public class SunmiLogicService extends CoinBaseService<sunmi> {
                     String createdAt = items.get(j).getAsJsonObject().get("createdAt").toString().replace("\"", "");
                     Instant instant = Instant.ofEpochSecond(Long.parseLong(createdAt));
                     LocalDateTime tsTime = LocalDateTime.ofInstant(instant, ZoneOffset.ofHours(9));
-                    LocalDateTime agoDate = LocalDateTime.now().minusDays(2);
+                    LocalDateTime agoDate = LocalDateTime.now().minusDays(3);
 
                     if (agoDate.isAfter(tsTime)) {
                         //agoDate 보다 과거이면 리턴
@@ -592,7 +592,7 @@ public class SunmiLogicService extends CoinBaseService<sunmi> {
                     String createdAt = items.get(j).getAsJsonObject().get("createdAt").toString().replace("\"", "");
                     Instant instant = Instant.ofEpochSecond(Long.parseLong(createdAt));
                     LocalDateTime tsTime = LocalDateTime.ofInstant(instant, ZoneOffset.ofHours(9));
-                    LocalDateTime agoDate = LocalDateTime.now().minusDays(2);
+                    LocalDateTime agoDate = LocalDateTime.now().minusDays(3);
 
                     if (agoDate.isAfter(tsTime)) {
                         //agoDate 보다 과거이면 리턴
@@ -604,7 +604,7 @@ public class SunmiLogicService extends CoinBaseService<sunmi> {
                     String isStaking = "None";
                     TokenMapngVO vo = new TokenMapngVO();
                     vo.setTokenId(tokenId);
-                    vo.setNftCode("TSO");
+                    vo.setNftCode("BMZ");
                     vo.setModifiedDate(LocalDateTime.now());
                     String data = "0xc7e3aa68f2fb0091bd3c7392eff139b5f95e11a0";
                     if (toAddress.equals(data)) {

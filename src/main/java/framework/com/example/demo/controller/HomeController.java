@@ -50,8 +50,12 @@ public class HomeController {
     }
 
     @RequestMapping("/home/nftinfo")
-    public String nftinfo(){
-        return "/tiles/view/home/nftinfo";
+    public ModelAndView nftinfo(@RequestParam String nftcode){
+        ModelAndView mav = new ModelAndView("/tiles/view/home/nftinfo");
+
+        mav.addObject("code",nftcode);
+
+        return mav;
     }
 
     @RequestMapping("/home/holderinfo")

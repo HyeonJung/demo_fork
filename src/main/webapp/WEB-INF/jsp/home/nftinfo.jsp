@@ -2,7 +2,11 @@
 <%@ taglib uri="http://java.sun.com/jstl/core" prefix="c" %>
 <%@ taglib uri="http://www.springframework.org/security/tags" prefix="sec" %>
 <%@ taglib prefix="tiles" uri="http://tiles.apache.org/tags-tiles" %>
-
+<style>
+    .dt-buttons{
+        margin-left: 50%;
+    }
+</style>
 
 <!--dynamic table-->
 <link href="/assets/advanced-datatable/media/css/demo_page.css" rel="stylesheet" />
@@ -11,14 +15,23 @@
 <!-- Custom styles for this template -->
 <link href="/css/style.css" rel="stylesheet">
 <link href="/css/style-responsive.css" rel="stylesheet" />
+<link href="https://cdn.datatables.net/buttons/2.2.3/css/buttons.dataTables.min.css" rel="stylesheet" />
+
+<!--dynamic table initialization -->
+<script type="text/javascript" src="/assets/advanced-datatable/media/js/datatables-1.12.1.min.js"></script>
+<script type="text/javascript" src="https://cdn.datatables.net/buttons/2.2.3/js/dataTables.buttons.min.js"></script>
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.1.3/jszip.min.js"></script>
+<script type="text/javascript" src="https://cdn.datatables.net/buttons/2.2.3/js/buttons.html5.min.js"></script>
+<script type="text/javascript" src="/assets/data-tables/DT_bootstrap.js"></script>
 
 <section class="wrapper">
+    <input type='hidden' id="code" value='${code}'/>
     <!-- page start-->
     <div class="row">
         <div class="col-sm-12">
             <section class="card">
                 <header class="card-header">
-                    The Soldiers NFT 리스트 <br/>
+                    <span id="naming">The Soldiers NFT 리스트</span> <br/>
                     <font color="red"> 최신여부 매일 24:00 기준 업데이트</font>
                     <span class="tools pull-right">
                 <a href="javascript:;" class="fa fa-chevron-down"></a>
@@ -58,18 +71,19 @@
     </div>
     <!-- page end-->
 </section>
-<!--dynamic table initialization -->
-<%--
-<script type="text/javascript" src="/assets/advanced-datatable/media/js/datatables-1.12.1.min.js"></script>
---%>
-<script type="text/javascript" src="/assets/advanced-datatable/media/js/datatables-1.12.1.min.js"></script>
 
-<script type="text/javascript" src="/assets/data-tables/DT_bootstrap.js"></script>
 <script>
 
     $(document).ready(function() {
+
+        if($('#code').val()=="TSO"){
+            $('#naming').text("The Soldiers NFT 리스트")
+        } else if($('#code').val()=="BMZ"){
+            $('#naming').text("베이비몽즈 NFT 리스트")
+        }
+
         var param ={};
-        param["nft_code"]="TSO";
+        param["nft_code"]=$('#code').val();
         var data={};
         data["data"]=param;
 
@@ -161,6 +175,13 @@
                     '</select> 개씩',
                 "info":"_START_ 부터 _END_ 까지 총 _TOTAL_ 건"
             },
+            "dom": 'lBfrtip',
+            buttons: [
+                {
+                    extend: 'excel',
+                    text: '엑셀다운'
+                }
+            ]
         });
 
     } );

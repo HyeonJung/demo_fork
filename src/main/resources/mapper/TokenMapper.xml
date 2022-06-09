@@ -69,9 +69,10 @@
                         T.staking_status as staking_status, T.get_status as get_status, T2.level as level
                  from tb_tokenmapping T, token T2, (SELECT @ROWNUM := 0) TMP
                  where T.token_id = T2.token_id
+                   and T.nft_code = #{nftCode}
+                   and T2.nft_code = #{nftCode}
                  order by CAST(T.token_id AS UNSIGNED)
              ) SUB
-        where nft_code = #{nftCode}
     </select>
 
     <update id="updateTokenMapngInit" parameterType="framework.com.example.demo.domain.token.tokenmapng.TokenMapngVO">

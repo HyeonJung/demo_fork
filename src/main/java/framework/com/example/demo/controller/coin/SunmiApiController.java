@@ -39,16 +39,5 @@ public class SunmiApiController {
     }
 
 
-    //나중에 옮기기 다른컨트롤러로
-    //더 솔져스 하루 이동물량 수집
-    @GetMapping("/gettsodayamount")
-    public void getTSODayAmount() throws IOException, InterruptedException {
-            sunmiLogicService.GetTsoDayAmount();
-    }
 
-    //베이비몽즈 하루 이동물량 수집
-    @GetMapping("/getbmzdayamount")
-    public void getBmzDayAmount() throws IOException, InterruptedException {
-        sunmiLogicService.GetTsoDayAmount();
-    }
 }

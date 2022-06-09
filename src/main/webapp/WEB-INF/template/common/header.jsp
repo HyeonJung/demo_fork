@@ -26,9 +26,15 @@
                 </a>
             </li>
             <li>
-                <a href="/home/nftinfo">
+                <a href="/home/nftinfo?nftcode=TSO">
                     <i class="fa fa-dashboard"></i>
                     <span>NFT정보 - 더 솔져스</span>
+                </a>
+            </li>
+            <li>
+                <a href="/home/nftinfo?nftcode=BMZ">
+                    <i class="fa fa-dashboard"></i>
+                    <span>NFT정보 - 베이비몽즈</span>
                 </a>
             </li>
             <li>
