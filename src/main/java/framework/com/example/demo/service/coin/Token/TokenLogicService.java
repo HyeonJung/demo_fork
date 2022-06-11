@@ -31,11 +31,6 @@ public class TokenLogicService {
     @Autowired
     TransactionService transactionService;
     private HttpResponse Excute(HttpGet request) throws IOException {
-//        RequestConfig.Builder requestBuilder = RequestConfig.custom();
-//        requestBuilder.setProxy(new HttpHost("127.0.0.1", 8888, "http"));
-//
-
-        //.setDefaultRequestConfig(requestBuilder.build())
         return HttpClientBuilder.create().build().execute(request);
 
     }
@@ -160,6 +155,10 @@ public class TokenLogicService {
         ArrayList<TransactionVO> result = transactionService.read(nftCode);
         return result;
     }
+
+    public void  test(){
+    }
+
 
     public String GetUrl(String nftCode){
 

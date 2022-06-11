@@ -37,4 +37,9 @@ public class TransactionController extends CurdController<TransactionApiRequest,
         return result;
     }
 
+    @GetMapping("/test")
+    public void Test(@RequestParam String nftCode) throws Exception {
+        tokenLogicService.test();
+    }
+
 }
