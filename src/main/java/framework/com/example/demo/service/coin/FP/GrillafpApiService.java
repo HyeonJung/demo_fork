@@ -1,9 +1,9 @@
-package framework.com.example.demo.service.coin;
+package framework.com.example.demo.service.coin.FP;
 
 import framework.com.example.demo.domain.grilla.GrillaApiRepository;
 import framework.com.example.demo.domain.grilla.grillafp;
-import framework.com.example.demo.model.network.request.coin.GrillaApiRequestDto;
-import framework.com.example.demo.model.network.response.coin.GrillaApiResponseDto;
+import framework.com.example.demo.model.network.request.coin.FP.GrillaApiRequestDto;
+import framework.com.example.demo.model.network.response.coin.FP.GrillaApiResponseDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 

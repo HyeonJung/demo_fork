@@ -13,7 +13,7 @@
     <meta name="keyword" content="FlatLab, Dashboard, Bootstrap, Admin, Template, Theme, Responsive, Fluid, Retina">
     <link rel="shortcut icon" href="/img/favicon.png">
 
-    <title>Basic Table</title>
+    <title>더 솔져스 정보페이지</title>
 
     <!-- Bootstrap core CSS -->
     <link href="/css/bootstrap.min.css" rel="stylesheet">
@@ -33,6 +33,7 @@
 <script type="text/javascript" src="/js/jquery.cookie.js"></script>
 <script src="/js/bootstrap.bundle.min.js"></script>
 <script class="include" type="text/javascript" src="/js/jquery.dcjqaccordion.2.7.js"></script>
+
 <script src="/js/jquery.scrollTo.min.js"></script>
 <script src="/js/jquery.nicescroll.js" type="text/javascript"></script>
 <script src="/js/respond.min.js"></script>

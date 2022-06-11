@@ -1,4 +1,4 @@
-package framework.com.example.demo.model.network.response.coin;
+package framework.com.example.demo.model.network.response.coin.FP;
 
 import framework.com.example.demo.domain.grilla.grillafp;
 import framework.com.example.demo.domain.metakongs.metakongsfp;

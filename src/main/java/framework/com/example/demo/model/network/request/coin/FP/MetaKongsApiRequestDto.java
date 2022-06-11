@@ -1,6 +1,5 @@
-package framework.com.example.demo.model.network.request.coin;
+package framework.com.example.demo.model.network.request.coin.FP;
 
-import framework.com.example.demo.domain.grilla.grillafp;
 import framework.com.example.demo.domain.metakongs.metakongsfp;
 import lombok.Builder;
 import lombok.Getter;
@@ -8,17 +7,17 @@ import lombok.NoArgsConstructor;
 
 @Getter
 @NoArgsConstructor
-public class GrillaApiRequestDto {
+public class MetaKongsApiRequestDto {
     private String fp;
 
 
     @Builder
-    public GrillaApiRequestDto(String fp){
+    public MetaKongsApiRequestDto(String fp){
         this.fp=fp;
     }
 
-    public grillafp toEntity(){
-        return grillafp.builder()
+    public metakongsfp toEntity(){
+        return metakongsfp.builder()
                 .fp(fp)
                 .build();
     }

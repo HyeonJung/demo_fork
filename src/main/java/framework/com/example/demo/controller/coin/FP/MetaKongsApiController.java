@@ -1,9 +1,9 @@
-package framework.com.example.demo.controller.coin;
+package framework.com.example.demo.controller.coin.FP;
 
 
-import framework.com.example.demo.model.network.request.coin.MetaKongsApiRequestDto;
-import framework.com.example.demo.model.network.response.coin.MetaKongsApiResponseDto;
-import framework.com.example.demo.service.coin.MetaKongfpApiService;
+import framework.com.example.demo.model.network.request.coin.FP.MetaKongsApiRequestDto;
+import framework.com.example.demo.model.network.response.coin.FP.MetaKongsApiResponseDto;
+import framework.com.example.demo.service.coin.FP.MetaKongfpApiService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 

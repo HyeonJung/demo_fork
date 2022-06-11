@@ -1,7 +1,6 @@
 package framework.com.example.demo.domain.token;
 
 import framework.com.example.demo.domain.holder.HolderInfoVO;
-import framework.com.example.demo.domain.token.tokenmapng.TokenMapng;
 import framework.com.example.demo.domain.token.tokenmapng.TokenMapngVO;
 import org.apache.ibatis.annotations.Mapper;
 
@@ -10,6 +9,7 @@ import java.util.ArrayList;
 @Mapper
 public interface TokenMapper {
         void insertToken(TokenMapngVO vo);
+        void insertTokenMapping(TokenMapngVO vo);
 
         tokenVO findByTokenId(TokenMapngVO vo);
         TokenMapngVO findByTokenMapngId(TokenMapngVO vo);

@@ -2,6 +2,7 @@ package framework.com.example.demo.controller.coin;
 
 import framework.com.example.demo.domain.holder.HolderInfoVO;
 import framework.com.example.demo.domain.token.tokenVO;
+import framework.com.example.demo.domain.token.tokenmapng.TokenMapng;
 import framework.com.example.demo.domain.token.tokenmapng.TokenMapngVO;
 import framework.com.example.demo.model.network.Header;
 import framework.com.example.demo.model.network.response.coin.TokenApiResponse;
@@ -70,4 +71,12 @@ public class TokenApiController {
     public void getBmzDayAmount() throws IOException, InterruptedException {
         sunmiLogicService.GetBmzDayAmount();
     }
+
+    //제네시스몽즈 하루 이동물량 수집
+    @GetMapping("/api/getmgdayamount")
+    public void getMGDayAmount() throws IOException, InterruptedException {
+        sunmiLogicService.GetMGDayAmount();
+    }
+
+
 }

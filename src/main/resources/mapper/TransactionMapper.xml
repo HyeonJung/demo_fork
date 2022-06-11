@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="framework.com.example.demo.domain.token.tokenTransaction.TransactionMapper">
+
+    <insert id="insertTransaction" parameterType="framework.com.example.demo.domain.token.tokenTransaction.TransactionVO">
+        insert into tb_transaction(nft_code, date, amount, created_date, modified_date)
+        values ( #{nftCode}, #{date}, #{amount}, #{createdDate}, #{modifiedDate})
+    </insert>
+
+    <select id="findTransactionById" resultType="framework.com.example.demo.domain.token.tokenTransaction.TransactionVO">
+        select *
+          from tb_transaction
+         where nft_code = #{nftCode}
+           and date = #{date}
+    </select>
+
+    <update id="updateTransaction" parameterType="framework.com.example.demo.domain.token.tokenTransaction.TransactionVO">
+        update tb_transaction
+           set amount = #{amount},
+               modified_date = #{modifiedDate}
+         where nft_code = #{nftCode}
+           and date = #{date}
+    </update>
+
+    <select id="readTransActionAmount" resultType="framework.com.example.demo.domain.token.tokenTransaction.TransactionVO" parameterType="String">
+        select substring(date, 6,5)as date, amount
+          from (select date_format(aa.date, '%Y-%m-%d') date, nvl(sum(amount), 0) as amount
+                  from temp_date aa left join
+                       (select * from tb_transaction where nft_code = #{nftCofr} ) bb
+                    on aa.date = bb.date
+                 group by date
+             ) a
+        where date between (select date_format(date_add(now(), interval -30 DAY), '%Y-%m-%d')) AND (select date_format(now(), '%Y-%m-%d'))
+    </select>
+</mapper>

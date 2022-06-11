@@ -80,6 +80,8 @@
             $('#naming').text("The Soldiers NFT 리스트")
         } else if($('#code').val()=="BMZ"){
             $('#naming').text("베이비몽즈 NFT 리스트")
+        } else if($('#code').val()=="MG"){
+            $('#naming').text("제네시스몽즈 홀더 리스트")
         }
 
         var param ={};

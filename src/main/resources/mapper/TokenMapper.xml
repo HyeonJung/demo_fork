@@ -13,6 +13,11 @@
         </selectKey>
     </insert>
 
+    <insert id="insertTokenMapping" parameterType="framework.com.example.demo.domain.token.tokenVO">
+        insert into tb_tokenmapping (token_id, nft_code, get_status, created_date, modified_date)
+        values (#{tokenId}, #{nftCode}, 'None',  #{createdDate}, #{modifiedDate})
+    </insert>
+
     <select id="findByTokenId" resultType="framework.com.example.demo.domain.token.tokenVO">
         select token_id
         from token

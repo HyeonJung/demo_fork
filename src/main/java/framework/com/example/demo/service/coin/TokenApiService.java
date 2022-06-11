@@ -27,8 +27,12 @@ public class TokenApiService {
             return Header.ERROR("이미 입력");
         }
         try {
-            tokenMapper.insertToken(vo);
-
+            try {
+                tokenMapper.insertToken(vo);
+            }catch (Exception ex){}
+            try {
+                tokenMapper.insertTokenMapping(vo);
+            }catch (Exception ex){}
             return responseByTokenMapng(vo);
         }catch (Exception ex) {
             return Header.ERROR("토큰 생성중 오류 발생");

@@ -1,9 +1,9 @@
-package framework.com.example.demo.service.coin;
+package framework.com.example.demo.service.coin.FP;
 
 import framework.com.example.demo.domain.metakongs.MetakongsApiRepository;
 import framework.com.example.demo.domain.metakongs.metakongsfp;
-import framework.com.example.demo.model.network.request.coin.MetaKongsApiRequestDto;
-import framework.com.example.demo.model.network.response.coin.MetaKongsApiResponseDto;
+import framework.com.example.demo.model.network.request.coin.FP.MetaKongsApiRequestDto;
+import framework.com.example.demo.model.network.response.coin.FP.MetaKongsApiResponseDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 

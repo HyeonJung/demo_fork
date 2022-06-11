@@ -1,9 +1,9 @@
-package framework.com.example.demo.controller.coin;
+package framework.com.example.demo.controller.coin.FP;
 
 
-import framework.com.example.demo.model.network.request.coin.GrillaApiRequestDto;
-import framework.com.example.demo.model.network.response.coin.GrillaApiResponseDto;
-import framework.com.example.demo.service.coin.GrillafpApiService;
+import framework.com.example.demo.model.network.request.coin.FP.GrillaApiRequestDto;
+import framework.com.example.demo.model.network.response.coin.FP.GrillaApiResponseDto;
+import framework.com.example.demo.service.coin.FP.GrillafpApiService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 

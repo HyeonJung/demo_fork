@@ -38,15 +38,27 @@
                 </a>
             </li>
             <li>
+                <a href="/home/nftinfo?nftcode=MG">
+                    <i class="fa fa-dashboard"></i>
+                    <span>NFT정보 - 제네시스몽즈</span>
+                </a>
+            </li>
+            <li>
                 <a href="/home/holderinfo?nftcode=TSO">
                     <i class="fa fa-user"></i>
-                    <span>지갑(홀더&코인) 정보 - 더 솔져스</span>
+                    <span>지갑 - 더 솔져스</span>
                 </a>
             </li>
             <li>
                 <a href="/home/holderinfo?nftcode=BMZ">
                     <i class="fa fa-user"></i>
-                    <span>지갑(홀더&코인) 정보 - 베이비몽즈</span>
+                    <span>지갑  - 베이비몽즈</span>
+                </a>
+            </li>
+            <li>
+                <a href="/home/holderinfo?nftcode=MG">
+                    <i class="fa fa-user"></i>
+                    <span>지갑  - 제네시스몽즈</span>
                 </a>
             </li>
         </ul>

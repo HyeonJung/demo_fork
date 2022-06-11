@@ -1,4 +1,4 @@
-package framework.com.example.demo.model.network.response.coin;
+package framework.com.example.demo.model.network.response.coin.FP;
 
 import framework.com.example.demo.domain.soldierfp.soldierfp;
 import framework.com.example.demo.domain.sunmi.ssunmi;

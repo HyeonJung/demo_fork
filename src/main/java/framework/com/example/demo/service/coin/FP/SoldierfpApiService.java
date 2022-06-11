@@ -1,9 +1,9 @@
-package framework.com.example.demo.service.coin;
+package framework.com.example.demo.service.coin.FP;
 
 import framework.com.example.demo.domain.soldierfp.SoldierFPApiRepository;
 import framework.com.example.demo.domain.soldierfp.soldierfp;
-import framework.com.example.demo.model.network.request.coin.SoldierfpApiRequestDto;
-import framework.com.example.demo.model.network.response.coin.SoldierfpApiResponseDto;
+import framework.com.example.demo.model.network.request.coin.FP.SoldierfpApiRequestDto;
+import framework.com.example.demo.model.network.response.coin.FP.SoldierfpApiResponseDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 

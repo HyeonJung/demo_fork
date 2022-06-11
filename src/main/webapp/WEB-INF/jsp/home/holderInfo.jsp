@@ -7,6 +7,7 @@
     .dt-buttons{
         margin-left: 50%;
     }
+
 </style>
 
 <!--dynamic table-->
@@ -15,17 +16,11 @@
 <link rel="stylesheet" href="/assets/data-tables/DT_bootstrap.css" />
 <!-- Custom styles for this template -->
 <link href="/css/style.css" rel="stylesheet">
-<link href="/css/style-responsive.css" rel="stylesheet" />
 <link href="https://cdn.datatables.net/buttons/2.2.3/css/buttons.dataTables.min.css" rel="stylesheet" />
+<link href="/css/style-responsive.css" rel="stylesheet" />
 
-<!--dynamic table initialization -->
-<script type="text/javascript" src="/assets/advanced-datatable/media/js/datatables-1.12.1.min.js"></script>
-<script type="text/javascript" src="https://cdn.datatables.net/buttons/2.2.3/js/dataTables.buttons.min.js"></script>
-<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.1.3/jszip.min.js"></script>
-<script type="text/javascript" src="https://cdn.datatables.net/buttons/2.2.3/js/buttons.html5.min.js"></script>
-<script type="text/javascript" src="/assets/data-tables/DT_bootstrap.js"></script>
 
-<section class="wrapper">
+<section class="wrapper" id="holderContent">
     <input type='hidden' id="code" value='${code}'/>
     <!-- page start-->
     <div class="row">
@@ -48,8 +43,8 @@
                                 <th>No</th>
                                 <th>지갑 주소</th>
                                 <th>NFT 보유 수량</th>
-                                <th>TSS 코인</th>
-                                <th>TSG 코인</th>
+                                <th><span id="mainCoin"></span></th>
+                                <th><span id="subCoin"></span></th>
                             </tr>
                             </thead>
                             <tbody>
@@ -69,24 +64,59 @@
             </section>
         </div>
     </div>
+    <div class="row">
+        <div class="col-sm-12">
+            <section class="card">
+                <div>
+                    <canvas id="myChart"></canvas>
+                </div>
+            </section>
+        </div>
+    </div>
+
     <!-- page end-->
 </section>
+<!--dynamic table initialization -->
+<script type="text/javascript" src="/assets/advanced-datatable/media/js/datatables-1.12.1.min.js"></script>
+<script type="text/javascript" src="https://cdn.datatables.net/buttons/2.2.3/js/dataTables.buttons.min.js"></script>
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.1.3/jszip.min.js"></script>
+<script type="text/javascript" src="https://cdn.datatables.net/buttons/2.2.3/js/buttons.html5.min.js"></script>
+<script type="text/javascript" src="/assets/data-tables/DT_bootstrap.js"></script>
 
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.8.0/chart.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/hammerjs@2.0.8"></script>
+<script src="/js/chartjs-plugin-zoom.js"></script>
 
 <script>
+    var myChart;
+    var config;
+    function priceToString(price) {
+        return price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+    }
 
     $(document).ready(function() {
+
         if($('#code').val()=="TSO"){
             $('#naming').text("The Soldiers 홀더 리스트")
+            $('#mainCoin').text("TSS코인");
+            $('#subCoin').text("TSG코인");
         } else if($('#code').val()=="BMZ"){
             $('#naming').text("베이비몽즈 홀더 리스트")
+            $('#mainCoin').text("BBA코인");
+            $('#subCoin').text("준비중");
+        } else if($('#code').val()=="MG"){
+            $('#naming').text("제네시스몽즈 홀더 리스트");
+            $('#mainCoin').text("준비중");
+            $('#subCoin').text("준비중");
         }
+
+        setChart();
 
         const param ={};
         param["nft_code"]=$('#code').val();
         const data={};
         data["data"]=param;
-
         $('#hidden-table-info tfoot th').each(function () {
             var title = $(this).text();
             console.log(title);
@@ -144,9 +174,9 @@
                     {
                         if(type == 'display')
                             if (row.calc_amount.toString().indexOf('-') == 0)
-                                return row.amount + '( <i style="color:blue; "class="fa fa-caret-down"></i> ' + row.calc_amount + ')';
+                                return priceToString(row.amount) + '( <i style="color:blue; "class="fa fa-caret-down"></i> ' + priceToString(row.calc_amount) + ')';
                             else
-                                return row.amount + '( <i style="color:red; "class="fa fa-caret-up"></i>' + row.calc_amount + ')';
+                                return priceToString(row.amount) + '( <i style="color:red; "class="fa fa-caret-up"></i>' + priceToString(row.calc_amount) + ')';
                         else
                             return data;
                     }
@@ -154,11 +184,14 @@
                 {data: "amount_held",
                     render: function (data, type, row, mete)
                     {
+                        if($('#code').val()=="MG"){
+                            return "준비중";
+                        }
                         if(type == 'display')
                             if (row.calc_tss_coin.toString().indexOf('-') == 0)
-                                return row.amount_held + '( <i style="color:blue; "class="fa fa-caret-down"></i> ' + row.calc_tss_coin + ')';
+                                return priceToString(row.amount_held) + '( <i style="color:blue; "class="fa fa-caret-down"></i> ' + priceToString(row.calc_tss_coin) + ')';
                              else
-                                return row.amount_held + '( <i style="color:red; "class="fa fa-caret-up"></i> ' + row.calc_tss_coin + ')';
+                                return priceToString(row.amount_held) + '( <i style="color:red; "class="fa fa-caret-up"></i> ' + priceToString(row.calc_tss_coin) + ')';
                         else
                             return data;
                     }
@@ -186,6 +219,115 @@
         });
 
     } );
+
+   function setChart(){
+       $.ajax({
+          url:'/api/transaction/readecttransaction?nftCode=TSO',
+          type:'get',
+           async:false,
+           success:function(data){
+              let dateList =[];
+              let dataList =[];
+              for(let i=0; i<data.length; i++){
+                  dateList.push(data[i].date);
+                  dataList.push(data[i].amount);
+              }
+
+               const chartData = {
+                   labels: dateList,
+                   datasets: [{
+                       label: '더 솔저스',
+                       backgroundColor: 'rgb(255, 99, 132)',
+                       borderColor: 'rgb(255, 99, 132)',
+                       data: dataList
+                   }]
+               };
+               config = {
+                   type: 'line',
+                   data: chartData,
+                   options: {
+                   }
+               };
+
+               myChart = new Chart(
+                   document.getElementById('myChart'),
+                   config
+               );
+
+           },
+           error:function(data){
+              alert(data);
+           }
+       });
+
+
+       $.ajax({
+           url:'/api/transaction/readecttransaction?nftCode=BMZ',
+           type:'get',
+           async:false,
+           success:function(data){
+               let dateList =[];
+               let dataList =[];
+               for(let i=0; i<data.length; i++){
+                   dateList.push(data[i].date);
+                   dataList.push(data[i].amount);
+               }
+
+               var color1 = Math.floor(Math.random() * 256);
+               var color2 = Math.floor(Math.random() * 256);
+               var color3 = Math.floor(Math.random() * 256);
+
+               var newDataset = {
+                   label: '베이비몽즈',
+                   borderColor : 'rgba('+color1+', '+color2+', '+color3+', 1)',
+                   backgroundColor : 'rgba('+color1+', '+color2+', '+color3+', 1)',
+                   data: dataList,
+                   fill: false
+               }
+               // chart에 newDataset 푸쉬
+               config.data.datasets.push(newDataset);
+
+               myChart.update();	//차트 업데이트
+           },
+           error:function(data){
+               alert(data);
+           }
+       });
+
+       $.ajax({
+           url:'/api/transaction/readecttransaction?nftCode=MG',
+           type:'get',
+           async:false,
+           success:function(data){
+               let dateList =[];
+               let dataList =[];
+               for(let i=0; i<data.length; i++){
+                   dateList.push(data[i].date);
+                   dataList.push(data[i].amount);
+               }
+
+               var color1 = Math.floor(Math.random() * 256);
+               var color2 = Math.floor(Math.random() * 256);
+               var color3 = Math.floor(Math.random() * 256);
+
+               var newDataset = {
+                   label: '제네시스몽즈',
+                   borderColor : 'rgba('+color1+', '+color2+', '+color3+', 1)',
+                   backgroundColor : 'rgba('+color1+', '+color2+', '+color3+', 1)',
+                   data: dataList,
+                   fill: false
+               }
+               // chart에 newDataset 푸쉬
+               config.data.datasets.push(newDataset);
+
+               myChart.update();	//차트 업데이트
+           },
+           error:function(data){
+               alert(data);
+           }
+       });
+
+   }
 
 </script>
 

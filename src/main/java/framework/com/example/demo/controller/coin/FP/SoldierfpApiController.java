@@ -1,9 +1,9 @@
-package framework.com.example.demo.controller.coin;
+package framework.com.example.demo.controller.coin.FP;
 
 
-import framework.com.example.demo.model.network.request.coin.SoldierfpApiRequestDto;
-import framework.com.example.demo.model.network.response.coin.SoldierfpApiResponseDto;
-import framework.com.example.demo.service.coin.SoldierfpApiService;
+import framework.com.example.demo.model.network.request.coin.FP.SoldierfpApiRequestDto;
+import framework.com.example.demo.model.network.response.coin.FP.SoldierfpApiResponseDto;
+import framework.com.example.demo.service.coin.FP.SoldierfpApiService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 

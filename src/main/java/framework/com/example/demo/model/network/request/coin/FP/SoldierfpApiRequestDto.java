@@ -1,5 +1,6 @@
-package framework.com.example.demo.model.network.request.coin;
+package framework.com.example.demo.model.network.request.coin.FP;
 
+import framework.com.example.demo.domain.soldierfp.soldierfp;
 import framework.com.example.demo.domain.sunmi.ssunmi;
 import lombok.Builder;
 import lombok.Getter;
@@ -7,17 +8,17 @@ import lombok.NoArgsConstructor;
 
 @Getter
 @NoArgsConstructor
-public class SunmiApiRequestDto {
+public class SoldierfpApiRequestDto {
     private String fp;
 
 
     @Builder
-    public SunmiApiRequestDto(String fp){
+    public SoldierfpApiRequestDto(String fp){
         this.fp=fp;
     }
 
-    public ssunmi toEntity(){
-        return ssunmi.builder()
+    public soldierfp toEntity(){
+        return soldierfp.builder()
                 .fp(fp)
                 .build();
     }
