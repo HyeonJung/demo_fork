@@ -162,6 +162,6 @@
         set T1.amount = T2.amount
       where T1.address = T2.address
         and T1.nft_code = T2.nft_code
-        and T1.date = date_format(date_add(now(), interval -1 day), '%Y%m%d')
+        and T1.date = date_format(date_add(now(), interval -0 day), '%Y%m%d')
     </update>
 </mapper>
