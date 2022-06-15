@@ -3,20 +3,41 @@ package framework.com.example.demo.service.coin.Token;
 import com.google.gson.Gson;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
+import framework.com.example.demo.domain.lass.LassDataVO;
+import framework.com.example.demo.domain.lass.LassVO;
 import framework.com.example.demo.domain.token.tokenTransaction.TransactionVO;
+import framework.com.example.demo.service.Scraper.Scraper;
 import framework.com.example.demo.service.coin.TransactionService;
 import lombok.RequiredArgsConstructor;
 import org.apache.http.HttpEntity;
+import org.apache.http.HttpHost;
 import org.apache.http.HttpResponse;
+import org.apache.http.NameValuePair;
+import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpGet;
+import org.apache.http.conn.ssl.SSLConnectionSocketFactory;
+import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClientBuilder;
+import org.apache.http.impl.client.HttpClients;
+import org.apache.http.impl.conn.DefaultProxyRoutePlanner;
+import org.apache.http.message.BasicNameValuePair;
 import org.apache.http.util.EntityUtils;
+
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
+import org.jsoup.nodes.Element;
+import org.jsoup.select.Elements;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.net.ssl.SSLContext;
+import javax.net.ssl.TrustManager;
+import javax.net.ssl.X509TrustManager;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
+import java.security.SecureRandom;
+import java.security.cert.X509Certificate;
 import java.time.Instant;
 import java.time.LocalDateTime;
 import java.time.ZoneOffset;
@@ -24,6 +45,7 @@ import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeFormatterBuilder;
 import java.time.temporal.ChronoField;
 import java.util.ArrayList;
+import java.util.List;
 
 @RequiredArgsConstructor
 @Service
@@ -32,7 +54,30 @@ public class TokenLogicService {
     TransactionService transactionService;
     private HttpResponse Excute(HttpGet request) throws IOException {
         return HttpClientBuilder.create().build().execute(request);
+    }
+    private HttpResponse proxyExcute(HttpGet request) throws Exception {
 
+        TrustManager[] trustAllCerts = new TrustManager[] {
+                (TrustManager) new X509TrustManager() {
+                    public X509Certificate[] getAcceptedIssuers() {
+                        return null;
+                    }
+
+                    public void checkClientTrusted(X509Certificate[] certs, String authType) {}
+                    public void checkServerTrusted(X509Certificate[] certs, String authType) {}
+                }
+        };
+
+        SSLContext sc = SSLContext.getInstance("SSL");
+        sc.init(null, trustAllCerts, new SecureRandom());
+        SSLConnectionSocketFactory csf = new SSLConnectionSocketFactory(sc);
+
+        //HttpHost proxy = new HttpHost("localhost", 8888, "http");
+        //DefaultProxyRoutePlanner routePlanner = new DefaultProxyRoutePlanner(proxy);
+        //CloseableHttpClient client = HttpClients.custom().setSSLSocketFactory(csf).setRoutePlanner(routePlanner).build();
+        CloseableHttpClient client = HttpClients.custom().setSSLSocketFactory(csf).build();
+        CloseableHttpResponse response = client.execute(request);
+        return response;
     }
 
     public static String encodeURIComponent(String s) {
@@ -80,7 +125,7 @@ public class TokenLogicService {
             Thread.sleep(3000);
             HttpGet request = new HttpGet("https://api-cypress-v2.scope.klaytn.com/v2/tokens/" + url + "/transfers?page=" + page);
             request.addHeader("REFERER", "https://scope.klaytn.com/");
-            HttpResponse response = Excute(request);
+            HttpResponse response = proxyExcute(request);
             HttpEntity entity = response.getEntity();
             String result = "";
             if (entity != null) {
@@ -156,7 +201,32 @@ public class TokenLogicService {
         return result;
     }
 
-    public void  test(){
+    public LassDataVO  test() throws Exception {
+        List<NameValuePair> params = new ArrayList<NameValuePair>();
+        params.add(new BasicNameValuePair("LoginAction", "login"));
+        params.add(new BasicNameValuePair("memId", "soldiers"));
+        params.add(new BasicNameValuePair("memPw", "1234"));
+
+        Scraper scraper = new Scraper();
+        scraper.Go("http://www.lsstation.co.kr/member_login_ok.php", params);
+        scraper.Go("http://www.lsstation.co.kr/index.php");
+        scraper.Go("http://www.lsstation.co.kr/sub_pension_inch.php");
+
+        String html = scraper.Html;
+        Document doc = Jsoup.parseBodyFragment(html);
+        ArrayList<LassVO> list =new ArrayList<LassVO>();
+
+        Elements elem  = doc.select("table > tbody > tr > td");
+        for(Element e: elem.select("a")) {
+            LassVO vo = new LassVO();
+            vo.setName(e.text());
+            vo.setLoc("인천시");
+            vo.setLink("http://www.lsstation.co.kr/" + e.attr("href"));
+            list.add(vo);
+        }
+        LassDataVO result =  new LassDataVO();
+        result.data =list;
+        return result;
     }
 
 

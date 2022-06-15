@@ -61,6 +61,12 @@
                     <span>지갑  - 제네시스몽즈</span>
                 </a>
             </li>
+            <li>
+                <a href="/lass/lassinfo?nftcode=MG">
+                    <i class="fa fa-user"></i>
+                    <span>레저스테이션 정보</span>
+                </a>
+            </li>
         </ul>
         <!-- sidebar menu end-->
     </div>

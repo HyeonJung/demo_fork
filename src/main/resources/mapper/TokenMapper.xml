@@ -145,7 +145,7 @@
                                  select count(*) as amount, address, nft_code
                                    from tb_tokenmapping
                                 group by address ) a
-                          left outer JOIN holder b
+                          left outer JOIN  (select * from holder where nft_code = #{nftCode}) b
                             on a.address = b.address
                          where a.nft_code = #{nftCode}
                         union distinct
@@ -155,13 +155,13 @@
                                    from tb_tokenmapping
                                   where nft_code = #{nftCode}
                                   group by address ) a
-                         right outer JOIN holder b
+                         right outer JOIN (select * from holder where nft_code = #{nftCode}) b
                             on a.address = b.address) A
              order by CAST(A.amount AS UNSIGNED) desc
              ) T2
         set T1.amount = T2.amount
       where T1.address = T2.address
         and T1.nft_code = T2.nft_code
-        and T1.date = date_format(date_add(now(), interval -0 day), '%Y%m%d')
+        and T1.date = date_format(date_add(now(), interval -1 day), '%Y%m%d')
     </update>
 </mapper>

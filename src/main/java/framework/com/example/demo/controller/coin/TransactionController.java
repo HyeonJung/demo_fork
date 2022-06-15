@@ -1,6 +1,8 @@
 package framework.com.example.demo.controller.coin;
 
 import framework.com.example.demo.controller.CurdController;
+import framework.com.example.demo.domain.lass.LassDataVO;
+import framework.com.example.demo.domain.lass.LassVO;
 import framework.com.example.demo.domain.token.tokenTransaction.TransactionVO;
 import framework.com.example.demo.model.network.request.coin.TransactionApiRequest;
 import framework.com.example.demo.model.network.response.coin.TransactionApiResponse;
@@ -38,8 +40,9 @@ public class TransactionController extends CurdController<TransactionApiRequest,
     }
 
     @GetMapping("/test")
-    public void Test(@RequestParam String nftCode) throws Exception {
-        tokenLogicService.test();
+    public LassDataVO Test() throws Exception {
+        LassDataVO result = tokenLogicService.test();
+        return result;
     }
 
 }
