@@ -5,18 +5,10 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.reflect.TypeToken;
-import framework.com.example.demo.domain.grilla.GrillaApiRepository;
-import framework.com.example.demo.domain.grilla.grillafp;
-import framework.com.example.demo.domain.metakongs.MetakongsApiRepository;
-import framework.com.example.demo.domain.metakongs.metakongsfp;
-import framework.com.example.demo.domain.soldierfp.SoldierFPApiRepository;
-import framework.com.example.demo.domain.soldierfp.soldierfp;
-import framework.com.example.demo.domain.sunmi.SunmiApiRepository;
-import framework.com.example.demo.domain.sunmi.ssunmi;
 import framework.com.example.demo.domain.token.tokenmapng.TokenMapngVO;
 import framework.com.example.demo.model.coin.Soldier;
 import framework.com.example.demo.model.coin.Unit;
-import framework.com.example.demo.model.coin.sunmi;
+import framework.com.example.demo.token.service.FloorPriceInfoService;
 import lombok.RequiredArgsConstructor;
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
@@ -29,27 +21,21 @@ import org.springframework.stereotype.Service;
 import javax.script.ScriptException;
 import java.io.*;
 import java.net.*;
-import java.sql.Timestamp;
 import java.time.Instant;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.ZoneOffset;
-import java.util.Collection;
-import java.util.Collections;
 import java.util.List;
 
 @RequiredArgsConstructor
 @Service
-public class SunmiLogicService extends CoinBaseService<sunmi> {
+public class CoinService extends CoinBaseService {
 
     @Autowired
     TokenApiService tokenApiService;
-    private final SunmiApiRepository sunmiApiRepository;
-    private final SoldierFPApiRepository soldierFPApiRepository;
 
-    private  final  MetakongsApiRepository metakongsApiRepository;
+    @Autowired
+    FloorPriceInfoService floorPriceInfoService;
 
-    private final GrillaApiRepository grillaApiRepository;
     private String GetRate(String price) throws IOException {
         String url = "https://ko.valutafx.com/LookupRate.aspx?to=KRW&from=USD&amount=" +
                 encodeURIComponent(price) +
@@ -359,7 +345,7 @@ public class SunmiLogicService extends CoinBaseService<sunmi> {
         return jsonObject;
     }
 
-    public JsonObject 선미Rate() throws IOException {
+    public JsonObject sunmiRate() throws IOException {
         String url = "https://www.mexc.com/api/platform/spot/market/symbols";
         HttpGet request = new HttpGet(url);
         request.addHeader("Referer", "https://www.mexc.com/exchange/FAVOR_USDT");
@@ -378,7 +364,13 @@ public class SunmiLogicService extends CoinBaseService<sunmi> {
 //        return jsonObject.get("Rate").toString().replace("\"","");
     }
 
-    public String 메타콩즈Rate() throws IOException {
+    /**
+     * 메콩 수수료
+     * @return
+     * @throws IOException
+     */
+
+    public String mkzRate() throws IOException {
         String usdt = "0";
 
         String url = "https://www.mexc.com/api/platform/spot/market/symbols";
@@ -412,60 +404,49 @@ public class SunmiLogicService extends CoinBaseService<sunmi> {
 //        return jsonObject.get("Rate").toString().replace("\"","");
     }
 
+    /**
+     * 코인수집
+     * @return
+     * @throws IOException
+     * @throws URISyntaxException
+     * @throws ScriptException
+     * @throws InterruptedException
+     */
     @Override
-    public Unit<sunmi> getCoin() throws IOException, URISyntaxException, ScriptException,InterruptedException {
-        Unit<sunmi> unit = new Unit<sunmi>();
+    public Unit getCoin() throws IOException, URISyntaxException, ScriptException,InterruptedException {
+        Unit unit = new Unit();
+
+        String sunmiUsdt = "";
+        String mkzRate = mkzRate();
+
+        JsonObject sunmi = sunmiRate();
+        sunmiUsdt = getSunmiUsdt(sunmiUsdt, sunmi);
 
 
-        /*  선미   */
-        String 선미FP = "0";
-        String 솔져스FP = "0";
-        String 메타콩즈FP = "0";
-        String 지릴라FP = "0";
+        Gson gson = getTSOGson(unit);
 
-        JsonObject 선미 = 선미Rate();
-        JsonArray 환율리스트 = 선미.getAsJsonObject("data")
-                .getAsJsonArray("USDT");
-        String 선미usdt = "";
-        String 메타콩즈Rate = 메타콩즈Rate();
-        for (JsonElement 환율 : 환율리스트) {
-            if (환율.getAsJsonObject()
-                    .get("currency")
-                    .toString().replace("\"", "").equals("FAVOR")){
-                선미usdt = 환율.getAsJsonObject()
-                        .get("c")
-                        .toString().replace("\"", "");
 
-            }
-        }
-        선미usdt = GetRate(선미usdt);
-        메타콩즈Rate = GetRate(메타콩즈Rate);
-        List<ssunmi> sunmiList = sunmiApiRepository.findAll();
-        if(sunmiList.size() > 0){
-            선미FP = sunmiList.get(0).getFp();
-        }
-        List<soldierfp> soldierList = soldierFPApiRepository.findAll();
-        if(soldierList.size() > 0){
-            솔져스FP = soldierList.get(0).getFp();
-        }
-        List<metakongsfp> metakongsfps = metakongsApiRepository.findAll();
-        if(metakongsfps.size() > 0){
-            메타콩즈FP = metakongsfps.get(0).getFp();
-        }
-        List<grillafp> grillafps = grillaApiRepository.findAll();
-        if(grillafps.size() > 0){
-            지릴라FP = grillafps.get(0).getFp();
-        }
-        unit.setSunmiOnePrice(String.valueOf(Math.floor(Double.parseDouble(선미usdt) * 4.16)));
-        unit.setMetaKongsOnePrice(String.valueOf(Math.floor(Double.parseDouble(메타콩즈Rate) * 4)));
-        unit.setGrillaOnePrice(String.valueOf(Math.floor(Double.parseDouble(메타콩즈Rate) * 0.4)));
-        unit.setSunmiFP(선미FP);
-        unit.setSoldiersFP(솔져스FP);
-        unit.setMetakongsFP(메타콩즈FP);
-        unit.setGrillaFP(지릴라FP);
+        sunmiUsdt = GetRate(sunmiUsdt);
+        mkzRate = GetRate(mkzRate);
+        String tsoRate = GetRate(unit.getPrice());
+        String sunmiFp = floorPriceInfoService.getFP("SUNMI");
+        String soldiersFp = floorPriceInfoService.getFP("TSO");
+        String metaKongzFp = floorPriceInfoService.getFP("MTKZ");
+        String grillaFp = floorPriceInfoService.getFP("GRILLA");
 
-        /**********************/
+        setPrice(unit, sunmiUsdt, mkzRate, sunmiFp, soldiersFp, metaKongzFp, grillaFp);
 
+        List<Soldier> soldiers = gson.fromJson(UserInit(tsoRate, sunmiUsdt, mkzRate, mkzRate,  sunmiFp, soldiersFp, metaKongzFp, grillaFp).getAsJsonArray("users"),
+                new TypeToken<List<Soldier>>() {
+                }.getType());
+
+        unit.setPrice(GetRate(unit.getPrice()));
+        unit.setSoldiers(soldiers);
+
+        return unit;
+    }
+
+    private Gson getTSOGson(Unit unit) throws IOException {
         HttpGet request = new HttpGet("https://www.lbank.info/request/ticker/tick24hr?symbol=usd&");
         request.addHeader("REFERER", "www.lbank.info");
         HttpResponse response = Excute(request);
@@ -494,14 +475,34 @@ public class SunmiLogicService extends CoinBaseService<sunmi> {
                 break;
             }
         }
-        List<Soldier> soldiers = gson.fromJson(UserInit(GetRate(unit.getPrice()), 선미usdt, 메타콩즈Rate, 메타콩즈Rate,  선미FP, 솔져스FP, 메타콩즈FP, 지릴라FP).getAsJsonArray("users"),
-                new TypeToken<List<Soldier>>() {
-                }.getType());
+        return gson;
+    }
 
-        unit.setPrice(GetRate(unit.getPrice()));
-        unit.setSoldiers(soldiers);
+    private String getSunmiUsdt(String sunmiUsdt, JsonObject sunmi) {
+        JsonArray exchangeRates = sunmi.getAsJsonObject("data")
+                .getAsJsonArray("USDT");
 
-        return unit;
+        for (JsonElement exchangeRate : exchangeRates) {
+            if (exchangeRate.getAsJsonObject()
+                    .get("currency")
+                    .toString().replace("\"", "").equals("FAVOR")){
+                sunmiUsdt = exchangeRate.getAsJsonObject()
+                        .get("c")
+                        .toString().replace("\"", "");
+
+            }
+        }
+        return sunmiUsdt;
+    }
+
+    private void setPrice(Unit unit, String sunmiUsdt, String mkzRate, String sunmiFp, String soldiersFp, String metaKongzFp, String grillaFp) {
+        unit.setSunmiOnePrice(String.valueOf(Math.floor(Double.parseDouble(sunmiUsdt) * 4.16)));
+        unit.setMetaKongsOnePrice(String.valueOf(Math.floor(Double.parseDouble(mkzRate) * 4)));
+        unit.setGrillaOnePrice(String.valueOf(Math.floor(Double.parseDouble(mkzRate) * 0.4)));
+        unit.setSunmiFP(sunmiFp);
+        unit.setSoldiersFP(soldiersFp);
+        unit.setMetakongsFP(metaKongzFp);
+        unit.setGrillaFP(grillaFp);
     }
 
     public void GetTsoDayAmount() throws IOException, InterruptedException {

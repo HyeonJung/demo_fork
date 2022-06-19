@@ -201,34 +201,6 @@ public class TokenLogicService {
         return result;
     }
 
-    public LassDataVO  test() throws Exception {
-        List<NameValuePair> params = new ArrayList<NameValuePair>();
-        params.add(new BasicNameValuePair("LoginAction", "login"));
-        params.add(new BasicNameValuePair("memId", "soldiers"));
-        params.add(new BasicNameValuePair("memPw", "1234"));
-
-        Scraper scraper = new Scraper();
-        scraper.Go("http://www.lsstation.co.kr/member_login_ok.php", params);
-        scraper.Go("http://www.lsstation.co.kr/index.php");
-        scraper.Go("http://www.lsstation.co.kr/sub_pension_inch.php");
-
-        String html = scraper.Html;
-        Document doc = Jsoup.parseBodyFragment(html);
-        ArrayList<LassVO> list =new ArrayList<LassVO>();
-
-        Elements elem  = doc.select("table > tbody > tr > td");
-        for(Element e: elem.select("a")) {
-            LassVO vo = new LassVO();
-            vo.setName(e.text());
-            vo.setLoc("인천시");
-            vo.setLink("http://www.lsstation.co.kr/" + e.attr("href"));
-            list.add(vo);
-        }
-        LassDataVO result =  new LassDataVO();
-        result.data =list;
-        return result;
-    }
-
 
     public String GetUrl(String nftCode){
 

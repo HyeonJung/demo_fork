@@ -1,13 +1,11 @@
 package framework.com.example.demo.controller.coin;
 
 import framework.com.example.demo.domain.holder.HolderInfoVO;
-import framework.com.example.demo.domain.token.tokenVO;
-import framework.com.example.demo.domain.token.tokenmapng.TokenMapng;
 import framework.com.example.demo.domain.token.tokenmapng.TokenMapngVO;
 import framework.com.example.demo.model.network.Header;
 import framework.com.example.demo.model.network.response.coin.TokenApiResponse;
 import framework.com.example.demo.model.network.response.coin.TokenMapngApiResponse;
-import framework.com.example.demo.service.coin.SunmiLogicService;
+import framework.com.example.demo.service.coin.CoinService;
 import framework.com.example.demo.service.coin.TokenApiService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -21,7 +19,7 @@ public class TokenApiController {
     TokenApiService tokenApiService;
 
     @Autowired
-    private SunmiLogicService sunmiLogicService;
+    private CoinService coinService;
 
     @PostMapping("/api/token")
     public Header<TokenApiResponse> insert(@RequestBody Header<TokenMapngVO> request){
@@ -63,19 +61,19 @@ public class TokenApiController {
     //더 솔져스 하루 이동물량 수집
     @GetMapping("/api/gettsodayamount")
     public void getTSODayAmount() throws IOException, InterruptedException {
-        sunmiLogicService.GetTsoDayAmount();
+        coinService.GetTsoDayAmount();
     }
 
     //베이비몽즈 하루 이동물량 수집
     @GetMapping("/api/getbmzdayamount")
     public void getBmzDayAmount() throws IOException, InterruptedException {
-        sunmiLogicService.GetBmzDayAmount();
+        coinService.GetBmzDayAmount();
     }
 
     //제네시스몽즈 하루 이동물량 수집
     @GetMapping("/api/getmgdayamount")
     public void getMGDayAmount() throws IOException, InterruptedException {
-        sunmiLogicService.GetMGDayAmount();
+        coinService.GetMGDayAmount();
     }
 
 

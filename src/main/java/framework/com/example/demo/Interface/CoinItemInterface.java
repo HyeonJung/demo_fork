@@ -6,7 +6,15 @@ import javax.script.ScriptException;
 import java.io.IOException;
 import java.net.URISyntaxException;
 
-public interface CoinItemInterface<coin>
+public interface CoinItemInterface
 {
-    Unit<coin> getCoin() throws IOException, URISyntaxException, ScriptException, InterruptedException;
+    /**
+     * 코인수집
+     * @return
+     * @throws IOException
+     * @throws URISyntaxException
+     * @throws ScriptException
+     * @throws InterruptedException
+     */
+    Unit getCoin() throws IOException, URISyntaxException, ScriptException, InterruptedException;
 }

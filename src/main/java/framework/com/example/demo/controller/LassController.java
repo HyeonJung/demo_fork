@@ -25,4 +25,15 @@ public class LassController {
         return mav;
     }
 
+    @RequestMapping("/modalLass")
+    public ModelAndView modalLass(@RequestParam String loc, @RequestParam String name, @RequestParam String link){
+
+        ModelAndView mav = new ModelAndView("/lass/modalLass");
+        mav.addObject("loc", loc);
+        mav.addObject("name", name);
+        mav.addObject("link", link);
+
+        return mav;
+    }
+
 }

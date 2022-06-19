@@ -42,7 +42,7 @@
         <div class="col-sm-12">
             <section class="card">
                 <header class="card-header">
-                    <span id="type" ><strong>인천시</strong></span><br/>
+                    <span id="type"><strong class="loc">인천시</strong></span><br/>
                     <span class="tools pull-right">
                 <a href="javascript:;" class="fa fa-chevron-down"></a>
                 <a href="javascript:;" class="fa fa-times"></a>
@@ -56,7 +56,6 @@
                                 <th>지역</th>
                                 <th>펜션명</th>
                                 <th>이동</th>
-
                             </tr>
                             </thead>
                             <tbody>
@@ -76,6 +75,28 @@
         </div>
     </div>
     <!-- page end-->
+
+    <!-- Modal -->
+    <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="tmyModal">Modal title</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body" id="modalBody">
+
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary">Save changes</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- modal -->
 </section>
 <!--dynamic table initialization -->
 <script type="text/javascript" src="/assets/advanced-datatable/media/js/datatables-1.12.1.min.js"></script>
@@ -120,6 +141,12 @@
         _aa.location.href = url;
     }
 
+
+    function move(url, moveurl){
+        sendform(setParam('${id}', '${pw}'), url);
+        setTimeout("moceredirectUrl('" + moveurl + "')",500);
+    }
+
     $(document).ready(function() {
 
 
@@ -151,7 +178,7 @@
             },
             bProcessing:true,
             ajax:{
-                url:"/api/transaction/test",
+                url:"/api/Lass/getLassList",
                 type:"GET"
             },
             autoWidth:false,
@@ -165,13 +192,27 @@
                 { "aTargets": [ 2 ]}, //정렬 사용안함
             ],
             columns:[
-                {data: "loc", width:"15%"},
-                {data: "name"},
+                {data: "loc", width:"15%",
+                       render:function(data, type, row, meta){
+                           let loc = $(".loc").text();
+                           let result  =data;
+                           result += '<input type="hidden" class="hdnLoc" value="' + loc + '"/>';
+                           return result;
+                       }
+                },
+                {data: "name",
+                    render:function(data, type, row, meta){
+                        let result = data;
+                        result += '<input type="hidden" class="hdnName" value="' + data + '"/>';
+                        return result;
+                    }
+                },
                 {data: "link",
                     render: function (data, type, row, mete)
                     {
-                           const url ="";
-                        return '<button class="btn btn-sm btn-info" onclick="move(\'http://www.lsstation.co.kr/member_login_ok.php\', \'' + data + '\')")>이동</button>';
+                        let result  ='<button class="btn btn-sm btn-info" onclick="move(\'http://www.lsstation.co.kr/member_login_ok.php\', \'' + data + '\')")>이동</button>';
+                        result += '<input type="hidden" class="hdnLink" value="'+data+'"/>';
+                        return result;
                     }
                 },
             ],
@@ -188,12 +229,30 @@
             }
         });
 
+        $('#hidden-table-info').on('click', 'tr', function () {
+            let loc = $(this).find('.hdnLoc').val();
+            let link = $(this).find('.hdnLink').val();
+            let name = $(this).find('.hdnName').val();
+            console.log(name);
+            let param = '?loc=' + loc + '&name=' + encodeURIComponent(name)
+            param += '&link=' + encodeURIComponent(link);
+            $.ajax({
+                type : 'get',
+                url : '/lass/modalLass' + param,
+                error: function(xhr, status, error){
+                    alert(status);
+                },
+                success : function(data){
+                    $('#modalBody').html(data);
+                    $('#myModal').modal('show');
+
+                }
+            });
+        });
+
+
     } );
 
-    function move(url, moveurl){
-            sendform(setParam('${id}', '${pw}'), url);
-            setTimeout("moceredirectUrl('" + moveurl + "')",500);
-    }
 
 </script>
 

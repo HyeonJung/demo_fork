@@ -39,10 +39,4 @@ public class TransactionController extends CurdController<TransactionApiRequest,
         return result;
     }
 
-    @GetMapping("/test")
-    public LassDataVO Test() throws Exception {
-        LassDataVO result = tokenLogicService.test();
-        return result;
-    }
-
 }

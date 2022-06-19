@@ -1,7 +1,5 @@
 package framework.com.example.demo.controller;
 
-import framework.com.example.demo.model.coin.Unit;
-import framework.com.example.demo.model.coin.sunmi;
 import framework.com.example.demo.model.dto.MemberDto;
 import framework.com.example.demo.model.entity.User;
 import framework.com.example.demo.service.MemberService;
@@ -60,9 +58,7 @@ public class HomeController {
 
     @RequestMapping("/home/holderinfo")
     public ModelAndView holderInfo(@RequestParam String nftcode){
-
         ModelAndView mav = new ModelAndView("/tiles/view/home/holderInfo");
-
         mav.addObject("code",nftcode);
 
         return mav;
