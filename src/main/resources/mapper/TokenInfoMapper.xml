@@ -1,67 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="framework.com.example.demo.domain.token.TokenMapper">
+<mapper namespace="framework.com.example.demo.token.dao.mapper.TokenInfoMapper">
 
-    <insert id="insertToken" parameterType="framework.com.example.demo.domain.token.tokenVO">
-        insert into token(token_id, nft_code, created_date, modified_date)
-        values (#{tokenId}, #{nftCode}, #{createdDate}, #{modifiedDate})
-        <selectKey keyColumn="token_id" keyProperty="rTokenId" order="AFTER" resultType="java.lang.String">
-            select token_id
-              from token
-             where token_id = #{tokenId}
-               and nft_code = #{nftCode}
-        </selectKey>
-    </insert>
 
-    <insert id="insertTokenMapping" parameterType="framework.com.example.demo.domain.token.tokenVO">
-        insert into tb_tokenmapping (token_id, nft_code, get_status, created_date, modified_date)
-        values (#{tokenId}, #{nftCode}, 'None',  #{createdDate}, #{modifiedDate})
-    </insert>
-
-    <select id="findByTokenId" resultType="framework.com.example.demo.domain.token.tokenVO">
-        select token_id
-        from token
-        where token_id = #{tokenId}
-    </select>
-
-    <select id="findByTokenMapngId" resultType="framework.com.example.demo.domain.token.tokenmapng.TokenMapngVO">
-        select token_id, address, get_status
-        from tb_tokenmapping
-        where token_id = #{tokenId}
-          and nft_code = #{nftCode}
-    </select>
-
-    <update id="updateTokenMapng" parameterType="framework.com.example.demo.domain.token.tokenmapng.TokenMapngVO">
-        update tb_tokenmapping
-           set address = #{address},
-               get_status = 'SUCCESS',
-               staking_status = #{stakingStatus},
-               modified_date = #{modifiedDate}
-         where token_id = #{tokenId}
-           and nft_code = #{nftCode}
-        <selectKey keyColumn="token_id,address,get_status" keyProperty="rTokenId,rAddress,rGetStatus" order="AFTER" resultType="map">
-            select token_id, address, get_status
-            from tb_tokenmapping
-            where token_id = #{tokenId}
-              and nft_code = #{nftCode}
-        </selectKey>
-    </update>
-
-    <select id="findByAllTokenID" resultType="framework.com.example.demo.domain.token.tokenmapng.TokenMapngVO">
-        select ROWNUM, token_id, address, get_status, '준비중'  as tmp_msg
-          from (
-                  select @ROWNUM := @ROWNUM + 1 AS rownum, T.*
-                    from tb_tokenmapping T, (SELECT @ROWNUM := 0) TMP
-                   order by CAST(T.token_id AS SIGNED)
-               ) SUB
-         where nft_code = #{nftCode}
-        <if test="nftCode == 'BMZ' ">
-            AND modified_date is null
-        </if>
-    </select>
-
-    <select id="getAllTokenInfoList" resultType="framework.com.example.demo.domain.token.tokenmapng.TokenMapngVO">
-        select ROWNUM, token_id, address, level, CASE WHEN get_status = 'WAIT' THEN '대기중'
+    <select id="getAllTokenInfoList" resultType="framework.com.example.demo.token.dao.TokenInfoAndTokenMapping">
+        select ROWNUM, token_id, address, grade as level, CASE WHEN get_status = 'WAIT' THEN '대기중'
                                                       WHEN get_status = 'SUCCESS' THEN '완료'
                                                       ELSE '진행중'
                                                  END as get_status,
@@ -71,8 +14,8 @@
                END as staking_status
         from (
                  select @ROWNUM := @ROWNUM + 1 AS rownum, T.token_id as token_id, T.address as address, T.nft_code as nft_code,
-                        T.staking_status as staking_status, T.get_status as get_status, T2.level as level
-                 from tb_tokenmapping T, token T2, (SELECT @ROWNUM := 0) TMP
+                        T.staking_status as staking_status, T.get_status as get_status, T2.grade as grade
+                 from tb_tokenmapping T, token_info T2, (SELECT @ROWNUM := 0) TMP
                  where T.token_id = T2.token_id
                    and T.nft_code = #{nftCode}
                    and T2.nft_code = #{nftCode}
@@ -80,19 +23,7 @@
              ) SUB
     </select>
 
-    <update id="updateTokenMapngInit" parameterType="framework.com.example.demo.domain.token.tokenmapng.TokenMapngVO">
-        update tb_tokenmapping
-        set get_status = #{getStatus}
-        where nft_code = #{nftCode}
-        <if test="getStatus != null and getStatus != '' and getStatus == 'WAIT' ">
-            AND get_status != 'ING'
-        </if>
-        <if test="getStatus != null and getStatus != '' and getStatus == 'ING' ">
-            AND get_status != 'SUCCESS'
-        </if>
-    </update>
-
-    <select id="getHolderInfoList" resultType="framework.com.example.demo.domain.holder.HolderInfoVO">
+    <select id="getHolderInfoList" resultType="Map">
         select @ROWNUM := @ROWNUM + 1 AS rownum, nvl(A.address, holderaddress) as address, nvl(A.nft_code, holder_nft_code) as nft_code,
                 nvl(A.amount, 0) as amount, nvl((CAST(nvl(tb_tso_daily.amount, A.amount) AS SIGNED) - CAST(A.amount AS SIGNED)) * -1, 0) as calc_amount,
                 amount_held,
@@ -127,13 +58,13 @@
 
 
     <!-- 데일리 마감 -->
-    <insert id="insertDailyInfo" parameterType="framework.com.example.demo.domain.token.tokenVO">
+    <insert id="insertDailyInfo">
         insert into tb_tso_daily
             (address, date, tss_coin, nft_code)
             (select address, date_format(date_add(now(), interval -0 day), '%Y%m%d'), amount_held, nft_code from holder)
     </insert>
 
-    <update id="updateDailyInfoForAmount" parameterType="framework.com.example.demo.domain.token.tokenmapng.TokenMapngVO">
+    <update id="updateDailyInfoForAmount" parameterType="framework.com.example.demo.token.dto.TokenInfoDto">
         update
             tb_tso_daily T1,
             (

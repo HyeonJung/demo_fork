@@ -15,11 +15,11 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @Builder
 @Accessors(chain = true)
-@Entity(name = "token_info")
+@Entity(name = "tb_tokenmapping")
 @AllArgsConstructor
 @Data
 @IdClass(TokenInfoPK.class)
-public class TokenInfo extends BaseTimeEntity implements Serializable {
+public class TokenMapping extends BaseTimeEntity implements Serializable {
     private static final long serialVersionID = 1L;
 
     @Id
@@ -28,13 +28,13 @@ public class TokenInfo extends BaseTimeEntity implements Serializable {
     @Id
     private String nftCode;
 
-    private String imageUrl;
+    private String address;
 
-    private String description;
+    private String getStatus;
 
-    private String grade;
+    private String stakingStatus;
 
-    private LocalDateTime createDate;
+    private LocalDateTime createdDate;
 
     private LocalDateTime modifiedDate;
 

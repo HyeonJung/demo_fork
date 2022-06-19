@@ -1,7 +1,8 @@
-package framework.com.example.demo.token;
+package framework.com.example.demo.token.dao;
 
 
 import framework.com.example.demo.domain.BaseTimeEntity;
+import framework.com.example.demo.token.TokenInfoPK;
 import lombok.*;
 import lombok.experimental.Accessors;
 
@@ -15,27 +16,22 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @Builder
 @Accessors(chain = true)
-@Entity(name = "token_info")
 @AllArgsConstructor
-@Data
 @IdClass(TokenInfoPK.class)
-public class TokenInfo extends BaseTimeEntity implements Serializable {
-    private static final long serialVersionID = 1L;
+public class TokenInfoAndTokenMapping  {
+    private Long rownum;
 
-    @Id
     private String tokenId;
 
-    @Id
     private String nftCode;
 
-    private String imageUrl;
+    private String address;
 
-    private String description;
+    private String level;
 
-    private String grade;
+    private String getStatus;
 
-    private LocalDateTime createDate;
+    private String stakingStatus;
 
-    private LocalDateTime modifiedDate;
 
 }

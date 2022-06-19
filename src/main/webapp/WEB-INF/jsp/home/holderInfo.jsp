@@ -147,7 +147,7 @@
             bProcessing:true,
             ajax:{
                 dataType:'json',
-                url:"/api/getholderlist",
+                url:"/api/tokeninfo/getholderlist",
                 contentType:"application/json; charset=utf-8",
                 type:"POST",
                 data: function(){

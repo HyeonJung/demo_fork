@@ -5,10 +5,11 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.reflect.TypeToken;
-import framework.com.example.demo.domain.token.tokenmapng.TokenMapngVO;
 import framework.com.example.demo.model.coin.Soldier;
 import framework.com.example.demo.model.coin.Unit;
+import framework.com.example.demo.token.TokenMapping;
 import framework.com.example.demo.token.service.FloorPriceInfoService;
+import framework.com.example.demo.token.service.TokenInfoService;
 import lombok.RequiredArgsConstructor;
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
@@ -29,12 +30,12 @@ import java.util.List;
 @RequiredArgsConstructor
 @Service
 public class CoinService extends CoinBaseService {
-
-    @Autowired
-    TokenApiService tokenApiService;
-
     @Autowired
     FloorPriceInfoService floorPriceInfoService;
+
+    @Autowired
+    TokenInfoService tokenInfoService;
+
 
     private String GetRate(String price) throws IOException {
         String url = "https://ko.valutafx.com/LookupRate.aspx?to=KRW&from=USD&amount=" +
@@ -345,6 +346,11 @@ public class CoinService extends CoinBaseService {
         return jsonObject;
     }
 
+    /**
+     * 선미 수수료
+     * @return
+     * @throws IOException
+     */
     public JsonObject sunmiRate() throws IOException {
         String url = "https://www.mexc.com/api/platform/spot/market/symbols";
         HttpGet request = new HttpGet(url);
@@ -507,10 +513,12 @@ public class CoinService extends CoinBaseService {
 
     public void GetTsoDayAmount() throws IOException, InterruptedException {
 
+        String conractUrl = GetContractUrl("TSO");
+        String stakingUrl = GetStakingUrl("TSO");
         for (int i = 30; i  >= 1; i--) {
             Thread.sleep(1500);
 
-            HttpGet request = new HttpGet("https://api-cypress-v2.scope.klaytn.com/v2/tokens/0x1068fc803c8f4cdaa4ece881e6be747f48119a1a/transfers?page=" + i);
+            HttpGet request = new HttpGet("https://api-cypress-v2.scope.klaytn.com/v2/tokens/" + conractUrl + "/transfers?page=" + i);
             request.addHeader("REFERER", "https://scope.klaytn.com/");
             HttpResponse response = Excute(request);
             HttpEntity entity = response.getEntity();
@@ -543,22 +551,20 @@ public class CoinService extends CoinBaseService {
                     String tokenId = items.get(j).getAsJsonObject().get("tokenId").toString().replace("\"", "");
                     String fromAddress = items.get(j).getAsJsonObject().get("fromAddress").toString().replace("\"", "");
                     String toAddress = items.get(j).getAsJsonObject().get("toAddress").toString().replace("\"", "");
-                    String isStaking = "None";
-                    TokenMapngVO vo = new TokenMapngVO();
-                    vo.setTokenId(tokenId);
-                    vo.setNftCode("TSO");
-                    vo.setModifiedDate(LocalDateTime.now());
-                    String data = "0x4c1c2794e3414712f92a786b6bc68fe22216ed7e";
-                    if (toAddress.equals(data)) {
-                        isStaking = "Staking";
-                        vo.setAddress(fromAddress);
-                        vo.setStakingStatus(isStaking);
+                    TokenMapping tokenMapping = new TokenMapping();
+                    tokenMapping.setTokenId(tokenId);
+                    tokenMapping.setNftCode("TSO");
+                    tokenMapping.setModifiedDate(LocalDateTime.now());
+
+                    if (toAddress.equals(stakingUrl)) {
+                        tokenMapping.setStakingStatus("Staking");
+                        tokenMapping.setAddress(fromAddress);
                     } else {
-                        isStaking = "None";
-                        vo.setAddress(toAddress);
-                        vo.setStakingStatus(isStaking);
+                        tokenMapping.setAddress(toAddress);
+                        tokenMapping.setStakingStatus("None");
                     }
-                    tokenApiService.update(vo);
+
+                    tokenInfoService.update(tokenMapping);
                 }
             }
         }
@@ -566,10 +572,12 @@ public class CoinService extends CoinBaseService {
 
     public void GetBmzDayAmount() throws IOException, InterruptedException {
 
+        String conractUrl = GetContractUrl("BMZ");
+        String stakingUrl = GetStakingUrl("BMZ");
         for (int i = 30; i  >= 1; i--) {
             Thread.sleep(1500);
 
-            HttpGet request = new HttpGet("https://api-cypress-v2.scope.klaytn.com/v2/tokens/0xff99f673d453245512e28f4dfbe4fb24428e55c1/transfers?page=" + i);
+            HttpGet request = new HttpGet("https://api-cypress-v2.scope.klaytn.com/v2/tokens/" + conractUrl + "/transfers?page=" + i);
             request.addHeader("REFERER", "https://scope.klaytn.com/");
             HttpResponse response = Excute(request);
             HttpEntity entity = response.getEntity();
@@ -602,33 +610,33 @@ public class CoinService extends CoinBaseService {
                     String tokenId = items.get(j).getAsJsonObject().get("tokenId").toString().replace("\"", "");
                     String fromAddress = items.get(j).getAsJsonObject().get("fromAddress").toString().replace("\"", "");
                     String toAddress = items.get(j).getAsJsonObject().get("toAddress").toString().replace("\"", "");
-                    String isStaking = "None";
-                    TokenMapngVO vo = new TokenMapngVO();
-                    vo.setTokenId(tokenId);
-                    vo.setNftCode("BMZ");
-                    vo.setModifiedDate(LocalDateTime.now());
-                    String data = "0xc7e3aa68f2fb0091bd3c7392eff139b5f95e11a0";
-                    if (toAddress.equals(data)) {
-                        isStaking = "Staking";
-                        vo.setAddress(fromAddress);
-                        vo.setStakingStatus(isStaking);
+                    TokenMapping tokenMapping = new TokenMapping();
+                    tokenMapping.setTokenId(tokenId);
+                    tokenMapping.setNftCode("BMZ");
+                    tokenMapping.setModifiedDate(LocalDateTime.now());
+
+                    if (toAddress.equals(stakingUrl)) {
+                        tokenMapping.setStakingStatus("Staking");
+                        tokenMapping.setAddress(fromAddress);
                     } else {
-                        isStaking = "None";
-                        vo.setAddress(toAddress);
-                        vo.setStakingStatus(isStaking);
+                        tokenMapping.setAddress(toAddress);
+                        tokenMapping.setStakingStatus("None");
                     }
-                    tokenApiService.update(vo);
+
+                    tokenInfoService.update(tokenMapping);
                 }
             }
         }
     }
 
     public void GetMGDayAmount() throws IOException, InterruptedException {
+        String conractUrl = GetContractUrl("MG");
+        String stakingUrl = GetStakingUrl("MG");
 
         for (int i = 15; i  >= 1; i--) {
             Thread.sleep(1500);
 
-            HttpGet request = new HttpGet("https://api-cypress-v2.scope.klaytn.com/v2/tokens/0x3b80e85929758018079cc4c7118ce61ce34cc221/transfers?page=" + i);
+            HttpGet request = new HttpGet("https://api-cypress-v2.scope.klaytn.com/v2/tokens/" + conractUrl + "/transfers?page=" + i);
             request.addHeader("REFERER", "https://scope.klaytn.com/");
             HttpResponse response = Excute(request);
             HttpEntity entity = response.getEntity();
@@ -661,27 +669,45 @@ public class CoinService extends CoinBaseService {
                     String tokenId = items.get(j).getAsJsonObject().get("tokenId").toString().replace("\"", "");
                     String fromAddress = items.get(j).getAsJsonObject().get("fromAddress").toString().replace("\"", "");
                     String toAddress = items.get(j).getAsJsonObject().get("toAddress").toString().replace("\"", "");
-                    String isStaking = "None";
-                    TokenMapngVO vo = new TokenMapngVO();
-                    vo.setTokenId(tokenId);
-                    vo.setNftCode("MG");
-                    vo.setModifiedDate(LocalDateTime.now());
-                    isStaking = "None";
-                    vo.setAddress(toAddress);
-                    vo.setStakingStatus(isStaking);
-                    String data = "0xc7e3aa68f2fb0091bd3c7392eff139b5f95e11a0";
-          /*          if (toAddress.equals(data)) {
-                        isStaking = "None";
-                        vo.setAddress(fromAddress);
-                        vo.setStakingStatus(isStaking);
+                    TokenMapping tokenMapping = new TokenMapping();
+                    tokenMapping.setTokenId(tokenId);
+                    tokenMapping.setNftCode("MG");
+                    tokenMapping.setModifiedDate(LocalDateTime.now());
+
+                    if (toAddress.equals(stakingUrl)) {
+                        tokenMapping.setStakingStatus("Staking");
+                        tokenMapping.setAddress(fromAddress);
                     } else {
-                        isStaking = "None";
-                        vo.setAddress(toAddress);
-                        vo.setStakingStatus(isStaking);
-                    }*/
-                    tokenApiService.update(vo);
+                        tokenMapping.setAddress(toAddress);
+                        tokenMapping.setStakingStatus("None");
+                    }
+
+                    tokenInfoService.update(tokenMapping);
                 }
             }
         }
+    }
+
+    public String GetContractUrl(String nftCode){
+        if(nftCode.equals("TSO")){
+            return "0x1068fc803c8f4cdaa4ece881e6be747f48119a1a";
+        }else if(nftCode.equals("BMZ")){
+            return "0xff99f673d453245512e28f4dfbe4fb24428e55c1";
+        }else if(nftCode.equals("MG")){
+            return "0x3b80e85929758018079cc4c7118ce61ce34cc221";
+        }
+        else return "";
+    }
+
+    public String GetStakingUrl(String nftCode){
+        if(nftCode.equals("TSO")){
+            return "0x4c1c2794e3414712f92a786b6bc68fe22216ed7e";
+        }else if(nftCode.equals("BMZ")){
+            return "0xc7e3aa68f2fb0091bd3c7392eff139b5f95e11a0";
+        }else if(nftCode.equals("MG")){
+            return "";
+        }
+        else return "";
+
     }
 }

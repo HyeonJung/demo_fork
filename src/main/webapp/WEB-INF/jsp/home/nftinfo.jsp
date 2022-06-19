@@ -119,7 +119,7 @@
             bProcessing:true,
             ajax:{
                 dataType:'json',
-                url:"/api/getalltokeninfolist",
+                url:"/api/tokeninfo/getalltokeninfolist",
                 contentType:"application/json; charset=utf-8",
                 type:"POST",
                 data: function(){
@@ -127,25 +127,6 @@
                 }
             },
             autoWidth:false,
-
-          /*  sAjaxSource:"/api/getalltokeninfolist",
-            sAjaxDataProp: "data",
-
-            fnServerData:function(sSource, aoData, fnCallback){
-              console.log(sSource);
-              $.ajax({
-                  dataType:'json',
-                  type:"POST",
-                  url:sSource,
-                  contentType: "application/json; charset=utf-8",
-                  data:JSON.stringify(data),
-                  success:fnCallback,
-                  error:function (){
-                      alert("error");
-                  }
-              });
-            },*/
-
 
             fnRowCallback:function(nRow, aData, iDisplayIndex){
                 $(nRow).addClass('gradeA')
