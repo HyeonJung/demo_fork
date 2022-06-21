@@ -73,4 +73,10 @@ public class HomeController {
     public String dynamictable(){
         return "/demo/dynamic_table";
     }
+
+    @RequestMapping("/home/kkswallet")
+    public String kksWallet(){
+        return "/home/kksWallet";
+    }
 }
+
