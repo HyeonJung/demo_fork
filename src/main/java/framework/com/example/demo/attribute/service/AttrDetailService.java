@@ -23,6 +23,7 @@ public class AttrDetailService {
                 .nftCode(dto.getNftCode())
                 .tokenId(dto.getTokenId())
                 .detail(dto.getDetail())
+                .idx(dto.getIdx())
                 .createdDate(LocalDateTime.now())
                 .modifiedDate(LocalDateTime.now())
                 .build();

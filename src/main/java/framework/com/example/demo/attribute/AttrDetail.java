@@ -34,6 +34,8 @@ public class AttrDetail extends BaseTimeEntity implements Serializable {
     @Id
     private String detail;
 
+    private String idx;
+
     private LocalDateTime createdDate;
 
     private LocalDateTime modifiedDate;

@@ -61,6 +61,8 @@ public class TestController {
                 vo.setHeader(type);
                 vo.setNftCode(nftCode);
                 vo.setTokenId(tokenId);
+                vo.setIdx(String.valueOf(index));
+
                 detailService.insert(vo);
             }
         });

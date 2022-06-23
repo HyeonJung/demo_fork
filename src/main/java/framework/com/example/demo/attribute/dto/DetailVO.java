@@ -11,4 +11,6 @@ public class DetailVO {
     private String header;
 
     private String detail;
+
+    private String idx;
 }
