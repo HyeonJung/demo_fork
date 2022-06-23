@@ -1,4 +1,4 @@
-package framework.com.example.demo.token;
+package framework.com.example.demo.attribute;
 
 import lombok.*;
 
@@ -10,10 +10,11 @@ import java.io.Serializable;
 @AllArgsConstructor
 @ToString
 @Data
-public class TokenInfoPK implements Serializable {
+@EqualsAndHashCode
+public class HeaderPK implements Serializable {
     private static final long serialVersionID = 1L;
 
-    private String tokenId;
-
     private String nftCode;
+
+    private String header;
 }

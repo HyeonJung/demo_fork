@@ -3,7 +3,6 @@ package framework.com.example.demo.token.dto;
 
 import framework.com.example.demo.domain.BaseTimeEntity;
 import framework.com.example.demo.token.TokenInfoPK;
-import jdk.vm.ci.meta.Local;
 import lombok.*;
 import lombok.experimental.Accessors;
 
