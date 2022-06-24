@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.script.ScriptException;
@@ -40,21 +41,23 @@ public class CalcController {
 
 
 
-    //나중에 옮기기 다른컨트롤러로
-    //더 솔져스 하루 이동물량 수집
     @GetMapping("/api/gettsodayamount")
-    public void getTSODayAmount() throws IOException, InterruptedException {
+    @ResponseBody
+    public String getTSODayAmount() throws IOException, InterruptedException {
         coinService.GetTsoDayAmount();
+        return "200 OK";
     }
 
     //베이비몽즈 하루 이동물량 수집
     @GetMapping("/api/getbmzdayamount")
+    @ResponseBody
     public void getBmzDayAmount() throws IOException, InterruptedException {
         coinService.GetBmzDayAmount();
     }
 
     //제네시스몽즈 하루 이동물량 수집
     @GetMapping("/api/getmgdayamount")
+    @ResponseBody
     public void getMGDayAmount() throws IOException, InterruptedException {
         coinService.GetMGDayAmount();
     }
