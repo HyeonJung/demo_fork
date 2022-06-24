@@ -126,8 +126,8 @@ public class Scraper {
             DefaultProxyRoutePlanner routePlanner = new DefaultProxyRoutePlanner(proxy);
 
             //피들러 캡쳐
-            client = HttpClients.custom().setSSLSocketFactory(csf).setRoutePlanner(routePlanner).setDefaultCookieStore(cookieStore).build();
-            //client = HttpClients.custom().setSSLSocketFactory(csf).setDefaultCookieStore(cookieStore).build();
+            //client = HttpClients.custom().setSSLSocketFactory(csf).setRoutePlanner(routePlanner).setDefaultCookieStore(cookieStore).build();
+            client = HttpClients.custom().setSSLSocketFactory(csf).setDefaultCookieStore(cookieStore).build();
 
             HttpGet httpGet = new HttpGet(targetUrl);
 

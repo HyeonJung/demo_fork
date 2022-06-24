@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="framework.com.example.demo.attribute.dao.mapper.AttributeMapper">
+
+    <select id="getAllAttributeList" resultType="map">
+        select  a.token_id, b.cnt, idx
+        FROM attr_detail a, (
+        SELECT a.header, a.nft_code, a.detail, cnt
+        FROM (
+        SELECT b.header, b.nft_code, b.detail, COUNT(*) over(PARTITION BY b.header, b.nft_code, b.detail) cnt
+        FROM attr_header a, attr_detail b
+        WHERE a.header = b.header
+        AND a.nft_code = b.nft_code) a
+        WHERE cnt <![CDATA[<]]> 30
+        GROUP BY a.header, a.nft_code, cnt
+        ORDER BY cnt ) b
+        where a.header = b.header
+        AND a.nft_code = b.nft_code
+        AND a.detail = b.detail
+        AND a.nft_code != "MTG"
+        GROUP BY a.token_id, b.cnt
+        ORDER BY b.cnt
+
+    </select>
+
+
+</mapper>
