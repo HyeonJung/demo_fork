@@ -16,9 +16,14 @@ sourceCompatibility = '1.8'
 repositories {
     mavenCentral()
     jcenter()
+    maven { url 'https://jitpack.io' }
 }
 
 dependencies {
+    /* Klaytn */
+    implementation 'com.klaytn.caver:core:1.6.2'
+
+
     /* Jsoup*/
     implementation 'org.jsoup:jsoup:1.15.1'
 

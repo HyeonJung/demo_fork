@@ -92,7 +92,7 @@
             if (!accounts) {
                 alert("KaiKas 확장 프로그램을 활성화 해주세요!");
             }*/
-            connect();
+            connectHeader();
         });
     });
 

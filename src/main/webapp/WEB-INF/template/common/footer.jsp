@@ -5,7 +5,7 @@
 <!--footer start-->
 <footer class="site-footer">
     <div class="text-center">
-        2018 &copy; FlatLab by VectorLab. 2022.06.19.1
+        2018 &copy; FlatLab by VectorLab. 2022.06.24.0
         <a href="#" class="go-top">
             <i class="fa fa-angle-up"></i>
         </a>
