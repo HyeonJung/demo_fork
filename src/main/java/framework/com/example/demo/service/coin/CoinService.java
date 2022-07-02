@@ -29,7 +29,7 @@ import java.util.List;
 
 @RequiredArgsConstructor
 @Service
-public class CoinService extends CoinBaseService {
+public class CoinService{
     @Autowired
     FloorPriceInfoService floorPriceInfoService;
 
@@ -341,6 +341,18 @@ public class CoinService extends CoinBaseService {
 
         Users.add(User);
 
+        Qty = 2.5;
+        User = new JsonObject();
+        User.addProperty("name", "베이비몽즈");
+        User.addProperty("qty", "7777");
+        User.addProperty("getQty", Qty);
+        User.addProperty("day_item", Math.floor(Double.parseDouble(price) * Qty));
+        User.addProperty("month_item", Math.floor(Double.parseDouble(price) * Qty * 30));
+        User.addProperty("sunmi", Math.floor(((Double.parseDouble(price) * Qty) /  (Double.parseDouble(선미price)  * 4.16) * 100) * Double.parseDouble(선미FP) / 100));;
+        User.addProperty("metakongs", Math.floor(((Double.parseDouble(price) * Qty) /  (Double.parseDouble(메타콩즈price)  * 4) * 100) * Double.parseDouble(메타콩즈FP) / 100));
+        User.addProperty("grilla", Math.floor(((Double.parseDouble(price) * Qty) /  (Double.parseDouble(메타콩즈price)  * 0.4) * 100) * Double.parseDouble(지릴라FP) / 100));
+
+        Users.add(User);
 
         jsonObject.add("users", Users);
         return jsonObject;
@@ -418,7 +430,6 @@ public class CoinService extends CoinBaseService {
      * @throws ScriptException
      * @throws InterruptedException
      */
-    @Override
     public Unit getCoin() throws IOException, URISyntaxException, ScriptException,InterruptedException {
         Unit unit = new Unit();
 
@@ -439,8 +450,9 @@ public class CoinService extends CoinBaseService {
         String soldiersFp = floorPriceInfoService.getFP("TSO");
         String metaKongzFp = floorPriceInfoService.getFP("MTKZ");
         String grillaFp = floorPriceInfoService.getFP("GRILLA");
+        String bmz = floorPriceInfoService.getFP("BMZ");
 
-        setPrice(unit, sunmiUsdt, mkzRate, sunmiFp, soldiersFp, metaKongzFp, grillaFp);
+        setPrice(unit, sunmiUsdt, mkzRate, sunmiFp, soldiersFp, metaKongzFp, grillaFp, bmz);
 
         List<Soldier> soldiers = gson.fromJson(UserInit(tsoRate, sunmiUsdt, mkzRate, mkzRate,  sunmiFp, soldiersFp, metaKongzFp, grillaFp).getAsJsonArray("users"),
                 new TypeToken<List<Soldier>>() {
@@ -501,7 +513,7 @@ public class CoinService extends CoinBaseService {
         return sunmiUsdt;
     }
 
-    private void setPrice(Unit unit, String sunmiUsdt, String mkzRate, String sunmiFp, String soldiersFp, String metaKongzFp, String grillaFp) {
+    private void setPrice(Unit unit, String sunmiUsdt, String mkzRate, String sunmiFp, String soldiersFp, String metaKongzFp, String grillaFp, String bmzFp) {
         unit.setSunmiOnePrice(String.valueOf(Math.floor(Double.parseDouble(sunmiUsdt) * 4.16)));
         unit.setMetaKongsOnePrice(String.valueOf(Math.floor(Double.parseDouble(mkzRate) * 4)));
         unit.setGrillaOnePrice(String.valueOf(Math.floor(Double.parseDouble(mkzRate) * 0.4)));
@@ -509,6 +521,7 @@ public class CoinService extends CoinBaseService {
         unit.setSoldiersFP(soldiersFp);
         unit.setMetakongsFP(metaKongzFp);
         unit.setGrillaFP(grillaFp);
+        unit.setBmzFP(bmzFp);
     }
 
     public void GetTsoDayAmount() throws IOException, InterruptedException {

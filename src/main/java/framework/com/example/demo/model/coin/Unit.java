@@ -9,7 +9,7 @@ import java.util.List;
 @Getter
 @Setter
 @Builder
-public class Unit<coin>{
+public class Unit {
     private String name;
 
     private String price;
@@ -29,6 +29,8 @@ public class Unit<coin>{
     private String grillaOnePrice;
 
     private String grillaFP;
+
+    private String bmzFP;
 
     private List<Soldier> soldiers;
 

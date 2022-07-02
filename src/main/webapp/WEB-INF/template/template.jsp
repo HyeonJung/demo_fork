@@ -25,6 +25,7 @@
     <!-- Custom styles for this template -->
     <link href="/css/style.css" rel="stylesheet">
     <link href="/css/style-responsive.css" rel="stylesheet" />
+    <link href="/css/soldiers/loading.css" rel="stylesheet"/>
 
 </head>
 
@@ -40,7 +41,16 @@
 <script src="/js/slidebars.min.js"></script>
 
 <body>
-
+<!-- 로딩 -->
+<div class="loadingWrap">
+    <div class="loadingArea">
+        <span class="icon xposDragon1"></span>
+        <span class="icon xposDragon2"></span>
+        <span class="icon xposDragon3"></span>
+        <span class="icon xposDragon4"></span>
+    </div>
+</div>
+<!-- //로딩 -->
 <section id="container" class="">
     <tiles:insertAttribute name="header"/>
 
@@ -55,6 +65,31 @@
 </section>
 
 </body>
+<script>
+    // 로딩
+    (function($) {
+        $.ajaxSetup({
+            beforeSend: function(xhr) {
+                xhr.setRequestHeader("AJAX", "true");
+            },
+            error: function(xhr, status, err) {
+                if (xhr.status == 403) {
+                    location.href = contextPath + "/login?redirect=true";
+                }
+                else {
+                    console.log("error: " + xhr.status);
+                }
+            }
+        });
+
+        $(document).ajaxStart(function() {
+            $(".loadingWrap").show();
+
+        }).ajaxStop(function() {
+            $(".loadingWrap").hide();
+        });
+    })(jQuery);
+</script>
 <!--common script for all pages-->
 <script src="/js/common-scripts.js"></script>
 </html>

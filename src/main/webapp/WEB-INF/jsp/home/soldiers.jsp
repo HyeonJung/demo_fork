@@ -4,6 +4,26 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <!DOCTYPE html>
 <html lang="en">
+<style>
+    .subTitle{
+        padding: 0.3em 0.3em;
+        margin: 0.3em 0;
+        font-weight: bold;
+        color: #FF7D6E;
+        background: #FFF;
+        border: solid 3px #FF7D6E;
+        border-radius: 5px;
+    }
+    .subContent{
+        padding: 0.3em 0.3em;
+        margin: 0.3em 0;
+        font-weight: bold;
+        color: #0e90d2;
+        background: #FFF;
+        border: solid 3px #0e90d2;
+        border-radius: 5px;
+    }
+</style>
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -26,13 +46,48 @@
 <body>
 
 <header id="coin-title" class="card-header">
-    Coin - <c:out value="${unit.name}"/> <br/>
-    환율 - <input type='text' id="txtBasePrice" value='<c:out value="${unit.price}"/>' /> <br/>
-    FP - <fmt:formatNumber value="${unit.soldiersFP}"/><br/>
-    하루 채굴금액(설정) - <b id="dayTotalAmout"></b><br/>
-    한달 채굴금액(설정) - <b id="monthTotalAmout"></b><br/>
-    하루 채굴수량(TSS) - <b id="dayTSSTotalQty"></b>, 하루 채굴수량(TSG) - <b id="dayTSGTotalQty"></b> <br/>
-    한달 채굴수량(TSS) - <b id="monthTSSTotalQty"></b>, 한달 채굴수량(TSG) - <b id="monthTSGTotalQty"></b> <br/>
+    <div>
+        <p>
+        <span class="subTitle"><b>더솔져스 - <c:out value="${unit.name}"/></b></span>
+            <span class="subContent">
+                <input type='text' id="txtBasePrice" class="input-small"  style="width:70px; border:0px; " value='<c:out value="${unit.price}"/>' />
+            </span>
+        </p>
+    </div>
+    <div>
+        <p>
+            <span class="subTitle"><b>솔져스 FP</b></span>
+            <span class="subContent"><b>  <fmt:formatNumber value="${unit.soldiersFP}"/></b></span>
+            <span class="subTitle"><b>베이비몽즈 FP</b></span>
+            <span class="subContent"><b><fmt:formatNumber value="${unit.bmzFP}"/></b></span>
+        </p>
+        <p>
+        </p>
+    </div>
+    <div>
+        <p>
+            <span class="subTitle"><b>하루 채굴금액(설정)</b></span>
+            <span class="subContent"><b id="dayTotalAmout"></b></span>
+            <span class="subTitle"><b>한달 채굴금액(설정)</b></span>
+            <span class="subContent"><b id="monthTotalAmout"></b></span>
+        </p>
+    </div>
+    <div>
+        <p>
+            <span class="subTitle"><b>하루 채굴수량(TSS)</b></span>
+            <span class="subContent"><b id="dayTSSTotalQty"></b></span>
+            <span class="subTitle"><b>하루 채굴수량(TSG)</b></span>
+            <span class="subContent"><b id="dayTSGTotalQty"></b></span>
+        </p>
+    </div>
+    <div>
+        <p>
+            <span class="subTitle"><b>한달 채굴수량(TSS)</b></span>
+            <span class="subContent"><b id="monthTSSTotalQty"></b></span>
+            <span class="subTitle"><b>한달 채굴수량(TSG)</b></span>
+            <span class="subContent"><b id="monthTSGTotalQty"></b></span>
+        </p>
+    </div>
     <input type="hidden" id="hdnBasePrice" value='<c:out value="${unit.price}"/>' />
 </header>
 <table class="table table-striped table-advance table-hover">
@@ -46,17 +101,17 @@
         <th><i class=" fa fa-money"></i>채굴금액(일)</th>
         <th><i class=" fa fa-money"></i>채굴금액(월)</th>
         <th>
-            <i class=" fa fa-money"></i>적정FP가(선미기준)<br/>
+            <i class=" fa fa-money"></i>선미<br/>
             1개 채굴금액(일) - <fmt:formatNumber value="${unit.sunmiOnePrice}"/> <br/>
             FP - <fmt:formatNumber value="${unit.sunmiFP}"/>
         </th>
         <th>
-            <i class=" fa fa-money"></i>적정FP가(메콩기준)<br/>
+            <i class=" fa fa-money"></i>메콩<br/>
             1개 채굴금액(일) - <fmt:formatNumber value="${unit.metaKongsOnePrice}"/> <br/>
             FP - <fmt:formatNumber value="${unit.metakongsFP}"/>
         </th>
         <th>
-            <i class=" fa fa-money"></i>적정FP가(지릴라기준)<br/>
+            <i class=" fa fa-money"></i>지릴라기준<br/>
             1개 채굴금액(일) - <fmt:formatNumber value="${unit.grillaOnePrice}"/> <br/>
             FP - <fmt:formatNumber value="${unit.grillaFP}"/>
         </th>
@@ -126,7 +181,7 @@
     function setCount(){
         var totalAmount=0;
         var totalQty = 0;
-        for (var i = 0; i < 19; i++) {
+        for (var i = 0; i < 20; i++) {
 
 
             var dayPrice = $('#tdFixItem' + i).text().replaceAll(",","")
