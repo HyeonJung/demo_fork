@@ -20,7 +20,7 @@ public class CalcController {
     private CoinService coinService;
 
     @RequestMapping("/home/seonmi")
-    public ModelAndView seonmi() throws IOException, URISyntaxException, ScriptException, InterruptedException {
+    public ModelAndView seonmi() throws Exception {
         ModelAndView mav = new ModelAndView("/home/seonmi");
         Unit unit = coinService.getCoin();
 
@@ -30,7 +30,7 @@ public class CalcController {
     }
 
     @RequestMapping("/home/soldiers")
-    public ModelAndView soldiers() throws IOException, URISyntaxException, ScriptException, InterruptedException {
+    public ModelAndView soldiers() throws Exception {
         ModelAndView mav = new ModelAndView("/home/soldiers");
         Unit unit = coinService.getCoin();
 
@@ -43,7 +43,7 @@ public class CalcController {
 
     @GetMapping("/api/gettsodayamount")
     @ResponseBody
-    public String getTSODayAmount() throws IOException, InterruptedException {
+    public String getTSODayAmount() throws Exception {
         coinService.GetTsoDayAmount();
         return "200 OK";
     }
@@ -51,14 +51,14 @@ public class CalcController {
     //베이비몽즈 하루 이동물량 수집
     @GetMapping("/api/getbmzdayamount")
     @ResponseBody
-    public void getBmzDayAmount() throws IOException, InterruptedException {
+    public void getBmzDayAmount() throws Exception {
         coinService.GetBmzDayAmount();
     }
 
     //제네시스몽즈 하루 이동물량 수집
     @GetMapping("/api/getmgdayamount")
     @ResponseBody
-    public void getMGDayAmount() throws IOException, InterruptedException {
+    public void getMGDayAmount() throws Exception {
         coinService.GetMGDayAmount();
     }
 

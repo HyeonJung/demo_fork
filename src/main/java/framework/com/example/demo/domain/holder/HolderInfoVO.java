@@ -1,6 +1,7 @@
 package framework.com.example.demo.domain.holder;
 
 
+import framework.com.example.demo.domain.BaseTimeEntity;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -10,7 +11,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @Data
 @Builder
-public class HolderInfoVO {
+public class HolderInfoVO extends BaseTimeEntity {
 
     private String rownum;
 

@@ -9,20 +9,19 @@ import framework.com.example.demo.domain.token.tokenTransaction.TransactionVO;
 import framework.com.example.demo.service.Scraper.Scraper;
 import framework.com.example.demo.service.coin.TransactionService;
 import lombok.RequiredArgsConstructor;
-import org.apache.http.HttpEntity;
-import org.apache.http.HttpHost;
-import org.apache.http.HttpResponse;
-import org.apache.http.NameValuePair;
-import org.apache.http.client.methods.CloseableHttpResponse;
-import org.apache.http.client.methods.HttpGet;
-import org.apache.http.conn.ssl.SSLConnectionSocketFactory;
-import org.apache.http.impl.client.CloseableHttpClient;
-import org.apache.http.impl.client.HttpClientBuilder;
-import org.apache.http.impl.client.HttpClients;
-import org.apache.http.impl.conn.DefaultProxyRoutePlanner;
-import org.apache.http.message.BasicNameValuePair;
-import org.apache.http.util.EntityUtils;
 
+import org.apache.hc.client5.http.classic.methods.HttpGet;
+import org.apache.hc.client5.http.impl.classic.CloseableHttpClient;
+import org.apache.hc.client5.http.impl.classic.CloseableHttpResponse;
+import org.apache.hc.client5.http.impl.classic.HttpClientBuilder;
+import org.apache.hc.client5.http.impl.classic.HttpClients;
+import org.apache.hc.client5.http.impl.io.PoolingHttpClientConnectionManagerBuilder;
+import org.apache.hc.client5.http.io.HttpClientConnectionManager;
+import org.apache.hc.client5.http.ssl.SSLConnectionSocketFactory;
+import org.apache.hc.core5.http.ClassicHttpResponse;
+import org.apache.hc.core5.http.HttpEntity;
+import org.apache.hc.core5.http.HttpResponse;
+import org.apache.hc.core5.http.io.entity.EntityUtils;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
@@ -71,11 +70,14 @@ public class TokenLogicService {
         SSLContext sc = SSLContext.getInstance("SSL");
         sc.init(null, trustAllCerts, new SecureRandom());
         SSLConnectionSocketFactory csf = new SSLConnectionSocketFactory(sc);
+        final HttpClientConnectionManager cm = PoolingHttpClientConnectionManagerBuilder.create()
+                .setSSLSocketFactory(csf)
+                .build();
 
         //HttpHost proxy = new HttpHost("localhost", 8888, "http");
         //DefaultProxyRoutePlanner routePlanner = new DefaultProxyRoutePlanner(proxy);
         //CloseableHttpClient client = HttpClients.custom().setSSLSocketFactory(csf).setRoutePlanner(routePlanner).build();
-        CloseableHttpClient client = HttpClients.custom().setSSLSocketFactory(csf).build();
+        CloseableHttpClient client = HttpClients.custom().setConnectionManager(cm).build();
         CloseableHttpResponse response = client.execute(request);
         return response;
     }
@@ -125,7 +127,7 @@ public class TokenLogicService {
             Thread.sleep(3000);
             HttpGet request = new HttpGet("https://api-cypress-v2.scope.klaytn.com/v2/tokens/" + url + "/transfers?page=" + page);
             request.addHeader("REFERER", "https://scope.klaytn.com/");
-            HttpResponse response = proxyExcute(request);
+            ClassicHttpResponse response = (ClassicHttpResponse)Excute(request);
             HttpEntity entity = response.getEntity();
             String result = "";
             if (entity != null) {

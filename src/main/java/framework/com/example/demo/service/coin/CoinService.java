@@ -11,11 +11,12 @@ import framework.com.example.demo.token.TokenMapping;
 import framework.com.example.demo.token.service.FloorPriceInfoService;
 import framework.com.example.demo.token.service.TokenInfoService;
 import lombok.RequiredArgsConstructor;
-import org.apache.http.HttpEntity;
-import org.apache.http.HttpResponse;
-import org.apache.http.client.methods.HttpGet;
-import org.apache.http.impl.client.HttpClientBuilder;
-import org.apache.http.util.EntityUtils;
+import org.apache.hc.client5.http.classic.methods.HttpGet;
+import org.apache.hc.client5.http.impl.classic.HttpClientBuilder;
+import org.apache.hc.core5.http.ClassicHttpResponse;
+import org.apache.hc.core5.http.HttpEntity;
+import org.apache.hc.core5.http.HttpResponse;
+import org.apache.hc.core5.http.io.entity.EntityUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -37,14 +38,14 @@ public class CoinService{
     TokenInfoService tokenInfoService;
 
 
-    private String GetRate(String price) throws IOException {
+    private String GetRate(String price) throws Exception {
         String url = "https://ko.valutafx.com/LookupRate.aspx?to=KRW&from=USD&amount=" +
                 encodeURIComponent(price) +
                 "&offset=" +
                 encodeURIComponent("-540");
         HttpGet request = new HttpGet(url);
 
-        HttpResponse response = Excute(request);
+        ClassicHttpResponse response = (ClassicHttpResponse)Excute(request);
         HttpEntity entity = response.getEntity();
         String result = "";
         if (entity != null) {
@@ -344,14 +345,26 @@ public class CoinService{
         Qty = 2.5;
         User = new JsonObject();
         User.addProperty("name", "베이비몽즈");
-        User.addProperty("qty", "7777");
+        User.addProperty("qty", "");
         User.addProperty("getQty", Qty);
         User.addProperty("day_item", Math.floor(Double.parseDouble(price) * Qty));
         User.addProperty("month_item", Math.floor(Double.parseDouble(price) * Qty * 30));
         User.addProperty("sunmi", Math.floor(((Double.parseDouble(price) * Qty) /  (Double.parseDouble(선미price)  * 4.16) * 100) * Double.parseDouble(선미FP) / 100));;
         User.addProperty("metakongs", Math.floor(((Double.parseDouble(price) * Qty) /  (Double.parseDouble(메타콩즈price)  * 4) * 100) * Double.parseDouble(메타콩즈FP) / 100));
         User.addProperty("grilla", Math.floor(((Double.parseDouble(price) * Qty) /  (Double.parseDouble(메타콩즈price)  * 0.4) * 100) * Double.parseDouble(지릴라FP) / 100));
+        Users.add(User);
 
+
+        Qty = 3.3;
+        User = new JsonObject();
+        User.addProperty("name", "스페셜몽즈");
+        User.addProperty("qty", "");
+        User.addProperty("getQty", Qty);
+        User.addProperty("day_item", Math.floor(Double.parseDouble(price) * Qty));
+        User.addProperty("month_item", Math.floor(Double.parseDouble(price) * Qty * 30));
+        User.addProperty("sunmi", Math.floor(((Double.parseDouble(price) * Qty) /  (Double.parseDouble(선미price)  * 4.16) * 100) * Double.parseDouble(선미FP) / 100));;
+        User.addProperty("metakongs", Math.floor(((Double.parseDouble(price) * Qty) /  (Double.parseDouble(메타콩즈price)  * 4) * 100) * Double.parseDouble(메타콩즈FP) / 100));
+        User.addProperty("grilla", Math.floor(((Double.parseDouble(price) * Qty) /  (Double.parseDouble(메타콩즈price)  * 0.4) * 100) * Double.parseDouble(지릴라FP) / 100));
         Users.add(User);
 
         jsonObject.add("users", Users);
@@ -363,11 +376,11 @@ public class CoinService{
      * @return
      * @throws IOException
      */
-    public JsonObject sunmiRate() throws IOException {
+    public JsonObject sunmiRate() throws Exception {
         String url = "https://www.mexc.com/api/platform/spot/market/symbols";
         HttpGet request = new HttpGet(url);
         request.addHeader("Referer", "https://www.mexc.com/exchange/FAVOR_USDT");
-        HttpResponse response = Excute(request);
+        ClassicHttpResponse response = (ClassicHttpResponse)Excute(request);
         HttpEntity entity = response.getEntity();
         String result = "";
         if (entity != null) {
@@ -388,13 +401,13 @@ public class CoinService{
      * @throws IOException
      */
 
-    public String mkzRate() throws IOException {
+    public String mkzRate() throws Exception {
         String usdt = "0";
 
         String url = "https://www.mexc.com/api/platform/spot/market/symbols";
         HttpGet request = new HttpGet(url);
         request.addHeader("Referer", "https://www.mexc.com/exchange/FAVOR_USDT");
-        HttpResponse response = Excute(request);
+        ClassicHttpResponse response = (ClassicHttpResponse)Excute(request);
         HttpEntity entity = response.getEntity();
         String result = "";
         if (entity != null) {
@@ -430,7 +443,7 @@ public class CoinService{
      * @throws ScriptException
      * @throws InterruptedException
      */
-    public Unit getCoin() throws IOException, URISyntaxException, ScriptException,InterruptedException {
+    public Unit getCoin() throws Exception, URISyntaxException, ScriptException,InterruptedException {
         Unit unit = new Unit();
 
         String sunmiUsdt = "";
@@ -464,10 +477,10 @@ public class CoinService{
         return unit;
     }
 
-    private Gson getTSOGson(Unit unit) throws IOException {
+    private Gson getTSOGson(Unit unit) throws Exception {
         HttpGet request = new HttpGet("https://www.lbank.info/request/ticker/tick24hr?symbol=usd&");
         request.addHeader("REFERER", "www.lbank.info");
-        HttpResponse response = Excute(request);
+        ClassicHttpResponse response = (ClassicHttpResponse)Excute(request);
         HttpEntity entity = response.getEntity();
         String result = "";
         if (entity != null) {
@@ -524,7 +537,7 @@ public class CoinService{
         unit.setBmzFP(bmzFp);
     }
 
-    public void GetTsoDayAmount() throws IOException, InterruptedException {
+    public void GetTsoDayAmount() throws Exception, InterruptedException {
 
         String conractUrl = GetContractUrl("TSO");
         String stakingUrl = GetStakingUrl("TSO");
@@ -533,7 +546,7 @@ public class CoinService{
 
             HttpGet request = new HttpGet("https://api-cypress-v2.scope.klaytn.com/v2/tokens/" + conractUrl + "/transfers?page=" + i);
             request.addHeader("REFERER", "https://scope.klaytn.com/");
-            HttpResponse response = Excute(request);
+            ClassicHttpResponse response = (ClassicHttpResponse)Excute(request);
             HttpEntity entity = response.getEntity();
             String result = "";
             if (entity != null) {
@@ -583,7 +596,7 @@ public class CoinService{
         }
     }
 
-    public void GetBmzDayAmount() throws IOException, InterruptedException {
+    public void GetBmzDayAmount() throws Exception, InterruptedException {
 
         String conractUrl = GetContractUrl("BMZ");
         String stakingUrl = GetStakingUrl("BMZ");
@@ -592,7 +605,7 @@ public class CoinService{
 
             HttpGet request = new HttpGet("https://api-cypress-v2.scope.klaytn.com/v2/tokens/" + conractUrl + "/transfers?page=" + i);
             request.addHeader("REFERER", "https://scope.klaytn.com/");
-            HttpResponse response = Excute(request);
+            ClassicHttpResponse response = (ClassicHttpResponse)Excute(request);
             HttpEntity entity = response.getEntity();
             String result = "";
             if (entity != null) {
@@ -642,7 +655,7 @@ public class CoinService{
         }
     }
 
-    public void GetMGDayAmount() throws IOException, InterruptedException {
+    public void GetMGDayAmount() throws Exception, InterruptedException {
         String conractUrl = GetContractUrl("MG");
         String stakingUrl = GetStakingUrl("MG");
 
@@ -651,7 +664,7 @@ public class CoinService{
 
             HttpGet request = new HttpGet("https://api-cypress-v2.scope.klaytn.com/v2/tokens/" + conractUrl + "/transfers?page=" + i);
             request.addHeader("REFERER", "https://scope.klaytn.com/");
-            HttpResponse response = Excute(request);
+            ClassicHttpResponse response = (ClassicHttpResponse)Excute(request);
             HttpEntity entity = response.getEntity();
             String result = "";
             if (entity != null) {

@@ -40,4 +40,12 @@ public class NftController {
         return mav;
     }
 
+    @RequestMapping("/test")
+    public ModelAndView test(){
+
+        ModelAndView mav = new ModelAndView("/nft/test");
+
+        return mav;
+    }
+
 }

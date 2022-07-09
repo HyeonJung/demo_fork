@@ -181,7 +181,7 @@
     function setCount(){
         var totalAmount=0;
         var totalQty = 0;
-        for (var i = 0; i < 20; i++) {
+        for (var i = 0; i < 21; i++) {
 
 
             var dayPrice = $('#tdFixItem' + i).text().replaceAll(",","")
